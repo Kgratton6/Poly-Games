@@ -1,0 +1,44 @@
+<app-header></app-header>
+<div class="page-container">
+    <div class="flex-page">
+        <div class="header-details">
+            <h1>Welcome Back!</h1>
+            <h2>Please log in to your account</h2>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input matInput type="username" class="form-input" placeholder="Enter username" formControlName="username" name="username" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <div class="button-icon-parent">
+                    <input
+                        [type]="isPasswordVisible ? 'text' : 'password'"
+                        class="form-input"
+                        placeholder="Enter password"
+                        formControlName="password"
+                        name="password"
+                    />
+                    <fa-icon
+                        class="button-icon"
+                        [icon]="isPasswordVisible ? faEye : faEyeSlash"
+                        (click)="isPasswordVisible = !isPasswordVisible"
+                    ></fa-icon>
+                </div>
+            </div>
+            <button mat-button type="submit" class="primary-button">Log in with username and password</button>
+        </form>
+
+        <div class="footer-details">
+            <small class="footer-element"><a routerLink="/forgot-password">Forgot your username or password?</a></small>
+            <small class="footer-element"><a routerLink="/create-account">New to Poly Games? Create an account</a></small>
+            <small class="footer-element"><a>Or log in with</a></small>
+            <div class="footer-element">
+                <button mat-button class="secondary-button">Facebook</button>
+                <button mat-button class="secondary-button">Google</button>
+            </div>
+        </div>
+    </div>
+</div>

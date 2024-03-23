@@ -1,0 +1,71 @@
+h1 {
+    margin-top: 25px;
+    margin-bottom: 0px;
+    font-size: 24px;
+}
+
+h2 {
+    margin-top: 10px;
+    margin-bottom: 0px;
+    font-size: 20px;
+}
+
+form {
+    width: 100%;
+}
+
+.name-area,
+.password-area {
+    width: 600px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.form-input {
+    width: 570px;
+    height: 25px !important;
+}
+
+.form-small {
+    width: 255px;
+}
+
+.primary-button {
+    width: 600px;
+    height: 40px;
+}
+
+.button-icon {
+    right: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px !important;
+}
+
+.primary-button {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.selectIcon {
+    margin: 10px 0;
+}
+
+.choosenIcon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.penIcon {
+    color: var(--input-text-color);
+    transform: scale(1.2);
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    cursor: pointer;
+}

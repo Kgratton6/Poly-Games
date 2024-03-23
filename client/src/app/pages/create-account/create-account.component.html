@@ -1,0 +1,86 @@
+<app-header></app-header>
+<div class="page-container">
+    <div class="flex-page">
+        <h1>Create your account</h1>
+
+        <div class="button-icon-parent selectIcon">
+            <img src="./assets/img/profile-icons/{{ chosenIcon }}.png" class="choosenIcon" (click)="openIcons()" />
+            <fa-icon class="penIcon" [icon]="penIcon"></fa-icon>
+        </div>
+
+        <form [formGroup]="createForm" (ngSubmit)="onSubmit()">
+            <div class="name-area">
+                <div class="form-group">
+                    <label class="form-label">First name</label>
+                    <input
+                        matInput
+                        class="form-input form-small"
+                        type="firstName"
+                        placeholder="Enter first name"
+                        formControlName="firstName"
+                        name="firstName"
+                    />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Last name</label>
+                    <input
+                        matInput
+                        class="form-input form-small"
+                        type="lastName"
+                        placeholder="Enter last name"
+                        formControlName="lastName"
+                        name="lastName"
+                    />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input matInput class="form-input" type="username" placeholder="Enter username" formControlName="username" name="username" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input matInput class="form-input" type="email" placeholder="Enter email" formControlName="email" name="email" />
+            </div>
+            <div class="password-area">
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="button-icon-parent">
+                        <input
+                            [type]="isPasswordVisible1 ? 'text' : 'password'"
+                            class="form-input form-small"
+                            placeholder="Create password"
+                            formControlName="password"
+                            name="password"
+                        />
+                        <fa-icon
+                            class="button-icon"
+                            [icon]="isPasswordVisible1 ? faEye : faEyeSlash"
+                            (click)="isPasswordVisible1 = !isPasswordVisible1"
+                        ></fa-icon>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirm password</label>
+                    <div class="button-icon-parent">
+                        <input
+                            [type]="isPasswordVisible2 ? 'text' : 'password'"
+                            class="form-input form-small"
+                            placeholder="Verify password"
+                            formControlName="passwordVerification"
+                            name="passwordVerification"
+                        />
+                        <fa-icon
+                            class="button-icon"
+                            [icon]="isPasswordVisible2 ? faEye : faEyeSlash"
+                            (click)="isPasswordVisible2 = !isPasswordVisible2"
+                        ></fa-icon>
+                    </div>
+                </div>
+            </div>
+
+            <button mat-button type="submit" class="primary-button">Create account</button>
+        </form>
+
+        <small><a routerLink="/login" class="router-link">Already have an account? go to login</a></small>
+    </div>
+</div>

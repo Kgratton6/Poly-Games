@@ -1,0 +1,46 @@
+<div id="main-container">
+    <h1>Welcome to Poly Games</h1>
+    <div class="description">Play classic games like chess, poker and blackjack with other Polytechnique students!</div>
+
+    <ul id="main-navigation">
+        <li class="nav-item" [ngClass]="{ active: selectedComponent === 'games' }">
+            <a class="pointer-click" (click)="selectedComponent = 'games'">Games</a>
+        </li>
+        <li class="nav-item" [ngClass]="{ active: selectedComponent === 'tables' }">
+            <a class="pointer-click" (click)="selectedComponent = 'tables'">Tables</a>
+        </li>
+    </ul>
+
+    <div id="separation-line"></div>
+
+    <div *ngIf="selectedComponent === 'games'" class="scrollable games-container">
+        <div class="chess-container game-container">
+            <div class="game-title">Chess</div>
+            <div class="game-description">Play chess in a 1 versus 1 mode with friends or ramdom players</div>
+            <div>
+                <button mat-button mat-button class="accent-button-1">Play Now</button>
+                <button mat-button class="accent-button-1">Joind a table</button>
+                <button mat-button class="accent-button-1">Create a table</button>
+            </div>
+        </div>
+        <div class="poker-container game-container">
+            <div class="game-title">Poker</div>
+            <div class="game-description">Join a table and play texas Hold'em up to 8 players</div>
+            <div>
+                <button mat-button mat-button class="accent-button-1">Play Now</button>
+                <button mat-button class="accent-button-1">Joind a table</button>
+                <button mat-button class="accent-button-1">Create a table</button>
+            </div>
+        </div>
+        <div class="blackjack-container game-container">
+            <div class="game-title">Black Jack</div>
+            <div class="game-description">Test your luck in a fast-paces game of 21 agaist a dealder</div>
+            <div>
+                <button mat-button mat-button class="accent-button-1">Play Now</button>
+                <button mat-button class="accent-button-1">Joind a table</button>
+                <button mat-button class="accent-button-1">Create a table</button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="selectedComponent === 'tables'" class="main-tables-container">Tables</div>
+</div>

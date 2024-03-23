@@ -1,0 +1,274 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+@use './app/pages/material-page/material-page.component.theme' as material-page;
+@import './app/consts/colors.scss';
+
+@include mat.core();
+
+$indigo-pink-theme: mat.define-light-theme(
+    (
+        color: (
+            primary: mat.define-palette(mat.$grey-palette, 900),
+            accent: mat.define-palette(mat.$grey-palette, A200, A100, A400),
+            warn: mat.define-palette(mat.$red-palette),
+        ),
+    )
+);
+@include mat.all-component-themes($indigo-pink-theme);
+@include material-page.theme($indigo-pink-theme);
+
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    color: var(--secondary-text-color);
+}
+
+/* You can add global styles to this file, and also import other style files */
+
+// Containers
+.page-container {
+    background-color: var(--background-color);
+    height: calc(100vh - 60px);
+    width: 100%;
+    overflow: auto;
+}
+
+.flex-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden; // à changer peut etre
+}
+
+.grid-page {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    gap: 0px 0px;
+    grid-template-areas: 'main side';
+    // besoin de redefinir
+    // grid-template-columns;
+    // grid-template-rows;
+    // grid-template-areas;
+}
+.main {
+    grid-area: main;
+}
+.side {
+    grid-area: side;
+}
+.main,
+.side {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+// Forms
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;
+}
+.form-label {
+    margin-bottom: 10px;
+    color: var(--normal-text-color);
+}
+.form-input {
+    border-radius: 15px;
+    background-color: var(--input-color);
+    color: var(--input-text-color);
+    border: none;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 15px;
+
+    &:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0px 1000px var(--input-color) inset !important;
+        -webkit-text-fill-color: var(--input-text-color) !important;
+        border: 1px solid transparent;
+    }
+
+    &::placeholder {
+        color: var(--input-text-color) !important;
+    }
+
+    &::-webkit-search-cancel-button {
+        -webkit-appearance: none;
+        appearance: none;
+    }
+}
+
+// Text
+.title {
+    font-size: 30px;
+    font-weight: 400;
+    color: var(--primary-text-color) !important;
+}
+
+h1 {
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--primary-text-color) !important;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--normal-text-color) !important;
+}
+.name {
+    color: var(--primary-text-color);
+}
+.id {
+    font-size: 14px;
+}
+
+// Buttons
+.primary-button {
+    // Bouton bleu grand
+    background-color: var(--main-button) !important;
+    color: var(--main-button-text-color) !important;
+    font-size: 18px !important;
+    font-weight: 300px !important;
+    border-radius: 15px !important;
+    border: none;
+}
+.secondary-button {
+    // bouton gris
+    background-color: var(--regular-button) !important;
+    color: var(--primary-text-color) !important;
+    font-size: 15px !important;
+    border-radius: 13px !important;
+    font-weight: 200px !important;
+    border: none;
+}
+.accent-button-1 {
+    // bouton vert
+    background-color: var(--accent-color-1) !important;
+    color: var(--main-button-text-color) !important;
+    font-size: 20px !important;
+    border-radius: 15px !important;
+    font-weight: 600 !important;
+    border: none;
+}
+.button-icon-parent {
+    // doit etre un div qui contien un bouton et un icon
+    position: relative;
+}
+.button-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    //right: 20px; // à changer par left par exemple
+}
+
+// il faut que l'element soit :
+// Tous les parents container : overflow: auto
+// parent {
+//     display: flex;
+//     overflow: auto;
+// }
+.scrollable {
+    flex-grow: 1; // ou definir une height en px
+    overflow-y: auto !important;
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: rgb(112, 112, 112);
+        border-radius: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: rgb(170, 170, 170);
+        border-radius: 6px;
+    }
+}
+
+// Icons
+.logo {
+    height: 40px;
+    width: 40px;
+}
+.user-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.profile-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.moreIcon {
+    margin-right: 5px;
+    color: var(--normal-text-color);
+    cursor: pointer;
+}
+
+// Mat menu
+.menu {
+    margin-top: 5px;
+    background: var(--input-color) !important;
+    border-radius: 15px !important;
+}
+.slide-element {
+    margin: 8px 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.slide-label {
+    min-width: 90px;
+    color: var(--primary-text-color);
+}
+.slide-toggle {
+    flex-grow: 1;
+}
+
+// Animations
+.zoom-animation:hover {
+    transition: all 0.1s linear;
+    transform: scale(1.2);
+}
+
+.pointer-click {
+    cursor: pointer;
+}
+
+// remove base styles
+a,
+a:visited {
+    color: var(--secondary-text-color);
+}
+
+textarea,
+input {
+    outline: none;
+}
+
+// TODO : not working
+// ::ng-deep .custom-dialog-container {
+//     width: 100px;
+//     border-radius: 50% !important;
+//     mat-dialog-container {
+//         border-radius: 50% !important;
+//     }
+// }

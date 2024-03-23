@@ -1,0 +1,15 @@
+.icons-list-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: auto;
+    gap: 10px;
+    background-color: var(--secondary-background) !important; // TODO : round les egdes
+}
+
+.user-icon {
+    cursor: pointer;
+}

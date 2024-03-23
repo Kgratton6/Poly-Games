@@ -1,0 +1,28 @@
+<div id="user-container">
+    <div id="informations-container">
+        <div class="icon-container">
+            <img src="./assets/img/profile-icons/{{ user.icon }}.png" class="user-icon" />
+            <div *ngIf="user.isOnline" id="online-indicator"></div>
+        </div>
+
+        <div id="user-labels">
+            <div class="name">{{ user.firstName }} {{ user.lastName }}</div>
+            <div class="id">&#64;{{ user.username }}</div>
+        </div>
+    </div>
+    <mat-icon class="moreIcon zoom-animation" [matMenuTriggerFor]="belowMenu">more_horiz</mat-icon>
+    <mat-menu class="menu" #belowMenu="matMenu" yPosition="below" xPosition="before" class="menu">
+        <div class="slide-element" routerLink="/user/{{ user.username }}">
+            <div class="slide-label">See profile</div>
+            <div class="slide-toggle">
+                <mat-icon>account_circle</mat-icon>
+            </div>
+        </div>
+        <div class="slide-element" (click)="removeFriend()">
+            <div class="slide-label">Unfriend</div>
+            <div class="slide-toggle">
+                <mat-icon>delete</mat-icon>
+            </div>
+        </div>
+    </mat-menu>
+</div>

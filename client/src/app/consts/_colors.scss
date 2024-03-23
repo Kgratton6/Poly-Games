@@ -1,0 +1,36 @@
+:root {
+    --background-color: #1c2329;
+    --secondary-background: #1f3844;
+
+    --regular-button: #2e3e4b;
+    --input-color: #2e3e4b;
+    --input-text-color: #8297a5;
+    --main-button: #189be5;
+    --main-button-text-color: #e3eaee;
+
+    --primary-text-color: #fbffff;
+    --secondary-text-color: #95a1a8;
+    --normal-text-color: #e3eaee;
+
+    // ou 009259
+    --accent-color-1: #236209;
+    --accent-color-2: #8297a5;
+}
+
+.light-theme {
+    --background-color: #ffffff;
+    --secondary-background: #f4efe6;
+
+    --regular-button: #f3efe6;
+    --input-color: #f3efe6;
+    --input-text-color: #a8915f;
+    --main-button: #189be5;
+    --main-button-text-color: #ffffff;
+
+    --primary-text-color: #221e15;
+    --secondary-text-color: #464544;
+    --normal-text-color: #262016;
+
+    --accent-color-1: #236209;
+    --accent-color-2: #a0864a;
+}

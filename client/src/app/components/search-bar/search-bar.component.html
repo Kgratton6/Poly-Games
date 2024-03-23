@@ -1,0 +1,6 @@
+<form class="button-icon-parent" [formGroup]="searchForm" (ngSubmit)="onSearch()">
+    <button type="submit" class="button-icon">
+        <fa-icon [icon]="search" id="search-icon" type="submit"></fa-icon>
+    </button>
+    <input matInput class="form-input" type="search" placeholder="Search..." formControlName="search" name="search" (input)="onSearch()" />
+</form>

@@ -1,0 +1,64 @@
+#user-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    height: 75px;
+    width: 100%;
+}
+
+#informations-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#user-labels {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 10px;
+}
+
+#name-label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.icon-container {
+    position: relative;
+}
+
+#online-indicator {
+    position: absolute;
+    transform: translateY(-50%);
+    right: -3px;
+    bottom: -3px;
+
+    content: '';
+    height: 13px;
+    width: 13px;
+    border-radius: 50%;
+
+    background-color: #48cb00;
+    border: 2px solid var(--background-color);
+}
+
+.slide-toggle mat-icon {
+    font-size: 28px !important; /* Adjust the font size to make the icons bigger */
+    display: flex;
+    justify-content: center; /* Center the icon horizontally */
+    align-items: center; /* Center the icon vertically */
+}
+
+.slide-element .slide-label {
+    cursor: pointer;
+    color: var(--secondary-text-color) !important;
+}
+
+.slide-element:hover .slide-label,
+.slide-element:hover mat-icon {
+    color: var(--primary-text-color) !important;
+}

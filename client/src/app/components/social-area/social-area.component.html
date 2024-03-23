@@ -1,0 +1,5 @@
+<div id="social-container">
+    <app-profile [profile]="profile"></app-profile>
+    <app-search-bar (searchChange)="onSearch($event)"></app-search-bar>
+    <app-user-list [users]="filteredUsers" class="scrollable"></app-user-list>
+</div>

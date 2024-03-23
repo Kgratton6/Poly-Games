@@ -1,0 +1,34 @@
+.form-input {
+    width: 100%;
+    height: 50px;
+    margin: 20px 0;
+}
+
+#search-field {
+    margin-bottom: 10px;
+}
+
+.form-input {
+    padding-left: 50px;
+}
+
+.button-icon {
+    border: none;
+    width: auto;
+    height: auto;
+    background: none;
+    color: var(--input-text-color);
+    left: 15px;
+    display: flex;
+    align-items: center;
+}
+
+#search-icon {
+    transform: scale(1.8);
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(2);
+        transition: transform 0.3s ease;
+    }
+}
