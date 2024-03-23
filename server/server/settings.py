@@ -13,7 +13,7 @@ SECRET_KEY = 'django-insecure-cq59z=c%3)sczjqu#=iw5q-r59wo@+xfai7_den2mcmvp3p+cs
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app']
 #CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
@@ -80,7 +80,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'server.wsgi.application'
+WSGI_APPLICATION = 'server.wsgi.app'
 
 
 # Database
@@ -147,4 +147,5 @@ REST_FRAMEWORK = {
 
 CORS_ALLOWED_ORIGINS = [
    "http://localhost:4200",
+   "https://poly-games-9283.vercel.app"
 ]
