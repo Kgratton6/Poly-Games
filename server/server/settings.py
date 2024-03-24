@@ -13,8 +13,12 @@ SECRET_KEY = 'django-insecure-cq59z=c%3)sczjqu#=iw5q-r59wo@+xfai7_den2mcmvp3p+cs
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-#CORS_ALLOW_ALL_ORIGINS = True
+ALLOWED_HOSTS = [ 'localhost', "localhost:4200", "poly-games-9283.vercel.app", "127.0.0.1"]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",
+    "https://poly-games-9283.vercel.app",
+]
 
 # Application definition
 CORS_ALLOW_CREDENTIALS = True
@@ -43,11 +47,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework.authtoken',
     'corsheaders',
     'users',
 ]
 
-AUTH_USER_MODEL = 'users.User' # ajouter des attributs aux users
+AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,7 +84,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'server.wsgi.app'
-
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -142,8 +146,3 @@ REST_FRAMEWORK = {
        'rest_framework.authentication.TokenAuthentication',
    )
 }
-
-CORS_ALLOWED_ORIGINS = [
-   "http://localhost:4200",
-   "https://poly-games-9283.vercel.app"
-]
