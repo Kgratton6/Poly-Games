@@ -13,7 +13,7 @@ SECRET_KEY = 'django-insecure-cq59z=c%3)sczjqu#=iw5q-r59wo@+xfai7_den2mcmvp3p+cs
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ 'localhost', "localhost:4200", "poly-games-9283.vercel.app", "127.0.0.1"]
+ALLOWED_HOSTS = [ 'localhost', "localhost:4200", "poly-games-9283.vercel.app", "127.0.0.1", 'kgratton6.pythonanywhere.com']
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
