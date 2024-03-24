@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    serverUrl: 'myServerURL', // TODO: Add remote server URL
+    serverUrl: 'https://kgratton6.pythonanywhere.com', // TODO: Add remote server URL
 };
