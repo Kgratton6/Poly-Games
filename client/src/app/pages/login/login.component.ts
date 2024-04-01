@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
                     this.router.navigate(['/home']);
                 },
                 error: (error) => {
-                    this.notification.notify('Login failed: ' + error.message);
+                    this.notification.notify(error);
                 },
             });
         } else {

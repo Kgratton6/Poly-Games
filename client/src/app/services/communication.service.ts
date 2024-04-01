@@ -1,13 +1,9 @@
-import { HttpClient, HttpErrorResponse, HttpResponse, HttpStatusCode } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '@app/interfaces/user';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-
-const httpOptions = {
-    observe: 'response' as const,
-    responseType: 'text' as 'json',
-};
+import { TokenService } from './token.service';
 
 @Injectable({
     providedIn: 'root',
@@ -15,26 +11,43 @@ const httpOptions = {
 export class CommunicationService {
     private readonly baseUrl: string = environment.serverUrl;
 
-    constructor(private readonly http: HttpClient) {}
+    constructor(
+        private readonly http: HttpClient,
+        private readonly tokenService: TokenService,
+    ) {}
 
+    // user token needed methods
     login(username: string, password: string): Observable<HttpResponse<string>> {
-        return this.http.post<string>(`${this.baseUrl}/user/login_user`, { username, password }, httpOptions).pipe(catchError(this.handleError));
+        return this.http.post<string>(`${this.baseUrl}/user/login_user`, { username, password }, this.getHeaders()).pipe(
+            map((response: HttpResponse<string>) => {
+                const body = JSON.parse(response.body as string);
+                this.tokenService.setUserToken(body.token);
+                return response;
+            }),
+            catchError(this.handleError),
+        );
     }
 
-    logout(token: string): Observable<HttpResponse<string>> {
-        return this.http.post<string>(`${this.baseUrl}/user/logout_user`, { token }, httpOptions).pipe(catchError(this.handleError));
+    logout(): Observable<HttpResponse<string>> {
+        return this.http.post<string>(`${this.baseUrl}/user/logout_user`, {}, this.getHeadersToken()).pipe(
+            map((response: HttpResponse<string>) => {
+                this.tokenService.deleteUserToken();
+                return response;
+            }),
+            catchError(this.handleError),
+        );
     }
 
-    isLoggedIn(token: string): Observable<HttpResponse<string>> {
-        return this.http.post<HttpResponse<string>>(`${this.baseUrl}/user/is_logged_in`, { token }).pipe(catchError(this.handleError));
+    isLoggedIn(): Observable<HttpResponse<string>> {
+        return this.http.post<string>(`${this.baseUrl}/user/is_logged_in`, {}, this.getHeadersToken()).pipe(catchError(this.handleError));
+    }
+
+    getProfile(): Observable<HttpResponse<string>> {
+        return this.http.get<string>(`${this.baseUrl}/user/profile`, this.getHeadersToken()).pipe(catchError(this.handleError));
     }
 
     createAccount(user: User, password: string): Observable<HttpResponse<string>> {
-        return this.http.post<string>(`${this.baseUrl}/user/create_user`, { user, password }, httpOptions).pipe(catchError(this.handleError));
-    }
-
-    getProfile(token: string): Observable<HttpResponse<string>> {
-        return this.http.post<string>(`${this.baseUrl}/user/profile`, { token }, httpOptions).pipe(catchError(this.handleError));
+        return this.http.post<string>(`${this.baseUrl}/user/create_user`, { user, password }, this.getHeaders()).pipe(catchError(this.handleError));
     }
 
     getUsers(): Observable<User[]> {
@@ -46,11 +59,24 @@ export class CommunicationService {
     }
 
     private handleError(error: HttpErrorResponse) {
-        if (error.status === HttpStatusCode.Unauthorized) {
-            return throwError(() => new Error('wrong password or email'));
-        } else if (error.status === HttpStatusCode.Conflict) {
-            return throwError(() => new Error('already exists'));
-        }
-        return throwError(() => new Error('Error Communicating with the server'));
+        return throwError(() => JSON.parse(error.error).error);
+    }
+
+    private getHeadersToken() {
+        const headers = new HttpHeaders({
+            token: this.tokenService.getUserToken(),
+        });
+        return {
+            headers,
+            observe: 'response' as const,
+            responseType: 'text' as 'json',
+        };
+    }
+
+    private getHeaders() {
+        return {
+            observe: 'response' as const,
+            responseType: 'text' as 'json',
+        };
     }
 }

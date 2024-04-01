@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+from corsheaders.defaults import default_headers
 
 # commandes
 #python manage.py createsuperuser
@@ -19,10 +20,16 @@ ALLOWED_HOSTS = [ 'localhost', "localhost:4200", "poly-games-9283.vercel.app", "
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
     "https://poly-games-9283.vercel.app",
+    "https://www.poly-games.online",
 ]
 
-# Application definition
+CORS_ALLOW_HEADERS = (
+    "token",
+    "content-type",
+)
+
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_HEADERS = True
 
 LOGGING = {
     'version': 1,
@@ -60,7 +67,6 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

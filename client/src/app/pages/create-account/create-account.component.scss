@@ -69,3 +69,8 @@ form {
     bottom: 5px;
     cursor: pointer;
 }
+
+input.placeholder-error::-webkit-input-placeholder,
+input.placeholder-error::placeholder {
+    color: rgb(255, 46, 46) !important;
+}

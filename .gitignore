@@ -4,6 +4,7 @@
 
 package-lock.json
 .DS_Store
+.sqlite3
 
 # Code Coverage Folder
 coverage/

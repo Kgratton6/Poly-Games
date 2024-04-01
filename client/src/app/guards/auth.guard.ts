@@ -19,7 +19,6 @@ export class AuthGuard {
             tap((isLogged) => {
                 if (!isLogged) {
                     this.notification.notify('You need to login to see this page');
-                    this.authService.logout();
                     this.router.navigate(['/login']);
                 }
             }),

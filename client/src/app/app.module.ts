@@ -12,19 +12,19 @@ import { AppMaterialModule } from '@app/modules/material.module';
 import { AppComponent } from '@app/pages/app/app.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HeaderComponent } from './components/header/header.component';
+import { IconListComponent } from './components/icon-list/icon-list.component';
 import { MainAreaComponent } from './components/main-area/main-area.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { SocialAreaComponent } from './components/social-area/social-area.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { UserComponent } from './components/user/user.component';
+import { AccountComponent } from './pages/account/account.component';
+import { CreateAccountComponent } from './pages/create-account/create-account.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { CreateAccountComponent } from './pages/create-account/create-account.component';
-import { IconListComponent } from './components/icon-list/icon-list.component';
-import { AccountComponent } from './pages/account/account.component';
 
 /**
  * Main module that is used in main.ts.

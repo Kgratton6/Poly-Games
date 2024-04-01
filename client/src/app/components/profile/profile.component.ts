@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { DEFAULT_USER } from '@app/consts/profile.const';
 import { User } from '@app/interfaces/user';
 
 @Component({
@@ -7,12 +8,5 @@ import { User } from '@app/interfaces/user';
     styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent {
-    @Input() profile: User = {
-        firstName: 'null',
-        lastName: 'null',
-        username: 'null',
-        email: 'null',
-        icon: 'spade',
-        isOnline: false,
-    };
+    @Input() profile: User = DEFAULT_USER;
 }

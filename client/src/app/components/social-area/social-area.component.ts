@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { DEFAULT_USER } from '@app/consts/profile.const';
 import { User } from '@app/interfaces/user';
 import { NotificationService } from '@app/services/notification.service';
-import { ProfileService } from '@app/services/profile.service';
+import { UsersDataService } from '@app/services/users-data.service';
 
 @Component({
     selector: 'app-social-area',
@@ -9,40 +10,32 @@ import { ProfileService } from '@app/services/profile.service';
     styleUrls: ['./social-area.component.scss'],
 })
 export class SocialAreaComponent implements OnInit {
-    // TODO : get les informations du service
-    profile: User = {
-        firstName: 'null',
-        lastName: 'null',
-        username: 'null',
-        email: 'null',
-        icon: 'spade',
-        isOnline: false,
-    };
+    profile: User = DEFAULT_USER;
     users: User[] = [];
     filteredUsers: User[] = [];
 
     constructor(
-        private profileService: ProfileService,
+        private profileService: UsersDataService,
         private readonly notification: NotificationService,
     ) {}
 
     ngOnInit(): void {
-        this.profileService.fetchProfile().subscribe({
+        this.profileService.getProfile().subscribe({
             next: (profile) => {
                 this.profile = profile;
 
-                this.profileService.fetchUsers().subscribe({
+                this.profileService.getUsers().subscribe({
                     next: (users) => {
                         this.users = users.filter((user) => user.username !== this.profile.username);
                         this.filteredUsers = this.users;
                     },
                     error: (error) => {
-                        this.notification.notify('Fetching users failed: ' + error.message);
+                        this.notification.notify(error);
                     },
                 });
             },
             error: (error) => {
-                this.notification.notify('Fetching profile failed: ' + error.message);
+                this.notification.notify(error);
             },
         });
     }

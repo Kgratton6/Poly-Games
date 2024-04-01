@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DEFAULT_ICON } from '@app/consts/profile.const';
 import { AuthService } from '@app/services/auth.service';
-import { ProfileService } from '@app/services/profile.service';
+import { UsersDataService } from '@app/services/users-data.service';
 import { faBell, faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -20,14 +20,14 @@ export class HeaderComponent implements OnInit {
     constructor(
         private router: Router,
         private auth: AuthService,
-        private profileService: ProfileService,
+        private userDataService: UsersDataService,
     ) {}
 
     ngOnInit(): void {
-        this.isLightTheme = localStorage.getItem('theme') === 'light'; // Get theme from local storage
+        this.isLightTheme = localStorage.getItem('theme') === 'light';
         this.setTheme();
 
-        this.profileService.fetchProfile().subscribe({
+        this.userDataService.getProfile().subscribe({
             next: (profile) => {
                 this.profileIcon = profile.icon;
             },
@@ -38,14 +38,16 @@ export class HeaderComponent implements OnInit {
     }
 
     logout(): void {
-        this.auth.logout();
-        this.router.navigate(['/login']);
+        this.auth.logout().subscribe(() => {
+            this.userDataService.clearData();
+            this.router.navigate(['/login']);
+        });
     }
 
     toggleTheme(): void {
         this.isLightTheme = !this.isLightTheme;
         this.setTheme();
-        localStorage.setItem('theme', this.isLightTheme ? 'light' : 'dark'); // Set theme to local storage
+        localStorage.setItem('theme', this.isLightTheme ? 'light' : 'dark');
     }
 
     private setTheme(): void {

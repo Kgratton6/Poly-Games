@@ -4,8 +4,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { IconListComponent } from '@app/components/icon-list/icon-list.component';
 import { DEFAULT_ICON } from '@app/consts/profile.const';
-import { AuthService } from '@app/services/auth.service';
-import { CommunicationService } from '@app/services/communication.service';
+import { NewUserService } from '@app/services/new-user.service';
 import { NotificationService } from '@app/services/notification.service';
 import { faEye, faEyeSlash, faPen } from '@fortawesome/free-solid-svg-icons';
 import { lastValueFrom } from 'rxjs';
@@ -37,8 +36,7 @@ export class CreateAccountComponent {
 
     // eslint-disable-next-line max-params
     constructor(
-        private communicationService: CommunicationService,
-        private authService: AuthService,
+        private userService: NewUserService,
         private notification: NotificationService,
         private router: Router,
         private readonly dialog: MatDialog,
@@ -46,35 +44,26 @@ export class CreateAccountComponent {
 
     onSubmit(): void {
         if (this.createForm.valid) {
-            // eslint-disable-next-line no-unused-vars
-            const user = this.createForm.value;
-            this.communicationService
-                .createAccount(
-                    {
-                        firstName: user.firstName || '',
-                        lastName: user.lastName || '',
-                        username: user.username || '',
-                        email: user.email || '',
-                        isOnline: false,
-                        icon: this.chosenIcon || '',
-                    },
-                    user.password || '',
-                )
-                .subscribe({
-                    next: () => {
-                        this.notification.notify('Account succesfully created');
-                        this.authService.login(user.username || '', user.password || '').subscribe({
-                            next: () => {
-                                this.router.navigate(['/home']);
-                            },
-                        });
-                    },
-                    error: (error) => {
-                        this.notification.notify('Account creation failed : this username ' + error.message);
-                    },
-                });
+            const correctUser = this.userService.getUserFromForm(this.createForm, this.chosenIcon);
+            this.userService.createUser(correctUser, this.createForm.value.password || '').subscribe({
+                next: () => {
+                    this.notification.notify('Account succesfully created');
+                    this.router.navigate(['/login']);
+                },
+                error: (error) => {
+                    this.notification.notify(error);
+                },
+            });
         } else {
-            window.alert('Form is not valid');
+            if (this.createForm.controls['username'].errors?.['whitespace']) {
+                this.notification.notify('The username cannot contain spaces.');
+            } else if (this.createForm.controls['email'].errors) {
+                this.notification.notify('Please enter a valid email address.');
+            } else if (this.createForm.errors?.['passwordMismatch']) {
+                this.notification.notify('The passwords do not match.');
+            } else {
+                this.notification.notify('Please make sure all fields are filled out correctly.');
+            }
         }
     }
 
@@ -87,8 +76,8 @@ export class CreateAccountComponent {
     }
 
     private noWhitespaceValidator(control: FormControl): ValidationErrors | null {
-        const haveWhispace = (control.value || '').trim().length === 0;
-        return !haveWhispace ? null : { whitespace: true };
+        const isWhitespace = /\s/.test(control.value || '');
+        return !isWhitespace ? null : { whitespace: true };
     }
 
     private passwordMatchValidator(control: AbstractControl): ValidationErrors | null {

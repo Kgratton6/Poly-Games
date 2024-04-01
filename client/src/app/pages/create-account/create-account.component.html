@@ -19,6 +19,7 @@
                         placeholder="Enter first name"
                         formControlName="firstName"
                         name="firstName"
+                        [ngClass]="{ 'placeholder-error': createForm.get('firstName')?.touched && createForm.get('firstName')?.invalid }"
                     />
                 </div>
                 <div class="form-group">
@@ -30,16 +31,33 @@
                         placeholder="Enter last name"
                         formControlName="lastName"
                         name="lastName"
+                        [ngClass]="{ 'placeholder-error': createForm.get('lastName')?.touched && createForm.get('lastName')?.invalid }"
                     />
                 </div>
             </div>
             <div class="form-group">
                 <label class="form-label">Username</label>
-                <input matInput class="form-input" type="username" placeholder="Enter username" formControlName="username" name="username" />
+                <input
+                    matInput
+                    class="form-input"
+                    type="username"
+                    placeholder="Enter username"
+                    formControlName="username"
+                    name="username"
+                    [ngClass]="{ 'placeholder-error': createForm.get('username')?.touched && createForm.get('username')?.invalid }"
+                />
             </div>
             <div class="form-group">
                 <label class="form-label">Email</label>
-                <input matInput class="form-input" type="email" placeholder="Enter email" formControlName="email" name="email" />
+                <input
+                    matInput
+                    class="form-input"
+                    type="email"
+                    placeholder="Enter email"
+                    formControlName="email"
+                    name="email"
+                    [ngClass]="{ 'placeholder-error': createForm.get('email')?.touched && createForm.get('email')?.invalid }"
+                />
             </div>
             <div class="password-area">
                 <div class="form-group">
@@ -51,6 +69,7 @@
                             placeholder="Create password"
                             formControlName="password"
                             name="password"
+                            [ngClass]="{ 'placeholder-error': createForm.get('password')?.touched && createForm.get('password')?.invalid }"
                         />
                         <fa-icon
                             class="button-icon"
@@ -68,6 +87,10 @@
                             placeholder="Verify password"
                             formControlName="passwordVerification"
                             name="passwordVerification"
+                            [ngClass]="{
+                                'placeholder-error':
+                                    createForm.get('passwordVerification')?.touched && createForm.get('passwordVerification')?.invalid
+                            }"
                         />
                         <fa-icon
                             class="button-icon"

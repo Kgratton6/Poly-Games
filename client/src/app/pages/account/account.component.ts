@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '@app/interfaces/user';
 import { NotificationService } from '@app/services/notification.service';
-import { ProfileService } from '@app/services/profile.service';
+import { UsersDataService } from '@app/services/users-data.service';
 
 @Component({
     selector: 'app-account',
@@ -20,14 +20,14 @@ export class AccountComponent implements OnInit {
     };
 
     constructor(
-        private profileService: ProfileService,
-        private readonly notification: NotificationService,
+        private profileService: UsersDataService,
         private route: ActivatedRoute,
+        private notification: NotificationService,
     ) {}
 
     ngOnInit(): void {
         const username = this.route.snapshot.paramMap.get('username');
-        this.profileService.fetchUser(username || '').subscribe({
+        this.profileService.getUser(username || '').subscribe({
             next: (user) => {
                 this.user = user;
             },
