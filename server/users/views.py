@@ -30,13 +30,12 @@ def changeOnlineStatus(user, isOnline):
 
 
 @require_http_methods(["POST"])
-def login_user(request): # TODO : trop long à repondre ( moins long quand c'est le mauvais mot de passe)
+def login_user(request):
     data = json.loads(request.body)
     username = data.get('username')
     password = data.get('password')
     
-    return JsonResponse({"error": "Wrong email or password"}, status=401)
-    user = authenticate(request, username=username, password=password)
+    user = authenticate(request, username=username, password=password) # TODO : trop long à repondre ( moins long quand c'est le mauvais mot de passe)
     if user is None:
         return JsonResponse({"error": "Wrong email or password"}, status=401)
     
@@ -102,7 +101,7 @@ def user_offline(request):
 
 
 @require_http_methods(["POST"])
-def create_user(request):            # TODO : trop long à repondre
+def create_user(request):     
     data = json.loads(request.body)
     user_data = data.get('user')
     password = data.get('password')
@@ -125,15 +124,15 @@ def create_user(request):            # TODO : trop long à repondre
         return JsonResponse({"error": "This username already exists"}, status=409)
 
     try:
-        # secretPassword = make_password(password)
-        # User.objects.create(
-        #     username=user_data.get('username'),
-        #     email=user_data.get('email'),
-        #     first_name=user_data.get('firstName'),
-        #     last_name=user_data.get('lastName'),
-        #     icon=user_data.get('icon'),
-        #     password=secretPassword,
-        # )
+        secretPassword = make_password(password)   # TODO : trop long à repondre
+        User.objects.create(
+            username=user_data.get('username'),
+            email=user_data.get('email'),
+            first_name=user_data.get('firstName'),
+            last_name=user_data.get('lastName'),
+            icon=user_data.get('icon'),
+            password=secretPassword,
+        )
         return JsonResponse({}, status=201)
     except:
         return JsonResponse({"error": "Server error when creating the account"}, status=500)
