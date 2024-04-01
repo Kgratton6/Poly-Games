@@ -39,12 +39,10 @@ export class LoginComponent implements OnInit {
         if (this.loginForm.valid && username && password) {
             this.authService.login(username, password).subscribe({
                 next: () => {
-                    console.log('je suis dans login succesfull');
                     this.notification.notify('Login successful');
                     this.router.navigate(['/home']);
                 },
                 error: (error) => {
-                    console.log('je suis dans login error');
                     this.notification.notify(error);
                 },
             });

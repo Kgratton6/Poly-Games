@@ -27,12 +27,10 @@ export class AuthService {
     login(email: string, password: string) {
         return this.communicationService.login(email, password).pipe(
             map(() => {
-                console.log('je change le login state');
                 this.logedIn = true;
                 return true;
             }),
             catchError((error) => {
-                console.log("je trasnfere l'error");
                 return throwError(() => error);
             }),
         );

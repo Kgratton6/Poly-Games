@@ -18,10 +18,10 @@ export class CommunicationService {
 
     // user token needed methods
     login(username: string, password: string): Observable<HttpResponse<string>> {
-        console.log('je fais la demande http');
+        console.log('avant denvoiyer');
         return this.http.post<string>(`${this.baseUrl}/user/login_user`, { username, password }, this.getHeaders()).pipe(
             map((response: HttpResponse<string>) => {
-                console.log('je recoit le token');
+                console.log('recu la reponse');
                 const body = JSON.parse(response.body as string);
                 this.tokenService.setUserToken(body.token);
                 return response;
@@ -57,11 +57,11 @@ export class CommunicationService {
     }
 
     getUser(username: string): Observable<User> {
-        console.log('je suis dans error');
         return this.http.get<User>(`${this.baseUrl}/user/fetch_user/${username}`).pipe(catchError(this.handleError));
     }
 
     private handleError(error: HttpErrorResponse) {
+        console.log('dans error');
         return throwError(() => JSON.parse(error.error).error);
     }
 

@@ -34,6 +34,8 @@ def login_user(request): # TODO : trop long à repondre ( moins long quand c'est
     data = json.loads(request.body)
     username = data.get('username')
     password = data.get('password')
+    
+    return JsonResponse({"error": "Wrong email or password"}, status=401)
     user = authenticate(request, username=username, password=password)
     if user is None:
         return JsonResponse({"error": "Wrong email or password"}, status=401)
@@ -123,14 +125,15 @@ def create_user(request):            # TODO : trop long à repondre
         return JsonResponse({"error": "This username already exists"}, status=409)
 
     try:
-        User.objects.create(
-            username=user_data.get('username'),
-            email=user_data.get('email'),
-            first_name=user_data.get('firstName'),
-            last_name=user_data.get('lastName'),
-            icon=user_data.get('icon'),
-            password=make_password(password),
-        )
+        # secretPassword = make_password(password)
+        # User.objects.create(
+        #     username=user_data.get('username'),
+        #     email=user_data.get('email'),
+        #     first_name=user_data.get('firstName'),
+        #     last_name=user_data.get('lastName'),
+        #     icon=user_data.get('icon'),
+        #     password=secretPassword,
+        # )
         return JsonResponse({}, status=201)
     except:
         return JsonResponse({"error": "Server error when creating the account"}, status=500)

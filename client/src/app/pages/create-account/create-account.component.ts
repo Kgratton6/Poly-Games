@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+// import { Router } from '@angular/router';
 import { IconListComponent } from '@app/components/icon-list/icon-list.component';
 import { DEFAULT_ICON } from '@app/consts/profile.const';
 import { NewUserService } from '@app/services/new-user.service';
@@ -38,7 +38,7 @@ export class CreateAccountComponent {
     constructor(
         private userService: NewUserService,
         private notification: NotificationService,
-        private router: Router,
+        // private router: Router,
         private readonly dialog: MatDialog,
     ) {}
 
@@ -48,7 +48,7 @@ export class CreateAccountComponent {
             this.userService.createUser(correctUser, this.createForm.value.password || '').subscribe({
                 next: () => {
                     this.notification.notify('Account succesfully created');
-                    this.router.navigate(['/login']);
+                    // this.router.navigate(['/login']);
                 },
                 error: (error) => {
                     this.notification.notify(error);
