@@ -28,8 +28,9 @@ def changeOnlineStatus(user, isOnline):
     user.is_online = isOnline
     user.save()
 
+
 @require_http_methods(["POST"])
-def login_user(request):
+def login_user(request): # TODO : trop long à repondre ( moins long quand c'est le mauvais mot de passe)
     data = json.loads(request.body)
     username = data.get('username')
     password = data.get('password')
@@ -99,7 +100,7 @@ def user_offline(request):
 
 
 @require_http_methods(["POST"])
-def create_user(request):
+def create_user(request):            # TODO : trop long à repondre
     data = json.loads(request.body)
     user_data = data.get('user')
     password = data.get('password')
