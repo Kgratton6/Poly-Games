@@ -8,10 +8,10 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import get_user_model
 from .decorators import require_token_auth
 from django.core.validators import validate_email
-import logging
 import json
 User = get_user_model()
 
+import logging
 logger = logging.getLogger(__name__) # use logger.debug()
 
 def getUserToSend(user):

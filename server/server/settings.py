@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-cq59z=c%3)sczjqu#=iw5q-r59wo@+xfai7_den2mcmvp3p+cs
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ 'localhost', "localhost:4200", "poly-games-9283.vercel.app", "127.0.0.1", 'kgratton6.pythonanywhere.com']
+ALLOWED_HOSTS = [ '*', 'localhost', "localhost:4200", "poly-games-9283.vercel.app", "127.0.0.1", 'kgratton6.pythonanywhere.com']
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
@@ -49,6 +49,8 @@ LOGGING = {
 }
 
 INSTALLED_APPS = [
+    'channels',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,8 +59,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework.authtoken',
     'corsheaders',
+
     'users',
+    'thirtyone',
 ]
+
+ASGI_APPLICATION = "server.asgi.application"
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND':'channels.layers.InMemoryChannelLayer'
+    }
+}
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -90,7 +102,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'server.wsgi.app'
+WSGI_APPLICATION = 'server.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
