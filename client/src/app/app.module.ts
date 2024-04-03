@@ -25,6 +25,7 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { LiveGameComponent } from './pages/live-game/live-game.component';
 
 /**
  * Main module that is used in main.ts.
@@ -50,6 +51,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
         CreateAccountComponent,
         IconListComponent,
         AccountComponent,
+        LiveGameComponent,
     ],
     imports: [
         AppMaterialModule,

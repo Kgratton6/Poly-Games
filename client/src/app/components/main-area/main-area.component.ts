@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DEFAULT_PAGE } from '@app/consts/game.const';
 
 @Component({
     selector: 'app-main-area',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
     styleUrls: ['./main-area.component.scss'],
 })
 export class MainAreaComponent {
-    selectedComponent: string = 'games';
+    selectedComponent: string = DEFAULT_PAGE;
 }

@@ -1,4 +1,5 @@
 export const AUTH_TOKEN = 'auth_token';
+export const TABLE_TOKEN = 'table_token';
 export const DEFAULT_ICON = 'user';
 export const DEFAULT_USER = {
     firstName: '',
