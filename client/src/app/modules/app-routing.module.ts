@@ -19,7 +19,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         children: [
             { path: 'home', component: HomeComponent },
-            { path: 'live-game', component: LiveGameComponent },
+            { path: 'live-game/:tableId', component: LiveGameComponent },
             { path: 'user/:username', component: AccountComponent },
         ],
     },

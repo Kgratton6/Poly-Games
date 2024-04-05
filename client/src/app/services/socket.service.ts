@@ -26,9 +26,8 @@ export class SocketService {
         return this.socket && this.socket.readyState === WebSocket.OPEN;
     }
 
-    connect(tableId: string) {
-        if (!this.isSocketAlive()) {
-            // this.token.setTableToken('abc');
+    connect(tableId?: string) {
+        if (!this.isSocketAlive() && tableId) {
             this.socket = new WebSocket(`${this.socketUrl}/${tableId}/${this.token.getUserToken()}`);
             this.socket.onmessage = (event) => {
                 const message: Message = JSON.parse(event.data);

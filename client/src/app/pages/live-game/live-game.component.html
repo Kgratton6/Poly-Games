@@ -1,11 +1,41 @@
 <app-header></app-header>
 <div class="page-container">
     <div class="flex-page">
-        <button (click)="sendMessage()">Send hello</button>
-        <button (click)="sedbye()">send bye</button>
-        <button (click)="sendMessageExept()">Send hello exept self</button>
-        <button (click)="connect1()">Connect Room1</button>
-        <button (click)="connect2()">Connect Room2</button>
-        <button (click)="disconnect()">disconnect</button>
+        <h2 *ngIf="table31.players[table31.turn]">Its {{ table31.players[table31.turn].username }} to play!</h2>
+
+        <button (click)="play()">Play</button>
+
+        <div class="card-container">
+            <div *ngFor="let card of cards; let i = index">
+                <img src="./assets/img/cards/{{ card.color }} {{ card.value }}.png" (click)="dumpCard(i)" />
+            </div>
+        </div>
+
+        <div>
+            Dump : <br />
+            <img
+                *ngIf="returnedCard && returnedCard.value !== 0"
+                src="./assets/img/cards/{{ returnedCard.color }} {{ returnedCard.value }}.png"
+                (click)="drawDump()"
+            />
+            <div *ngIf="returnedCard && returnedCard.value === 0" (click)="drawDump()">Empty Dump</div>
+        </div>
+
+        <div>
+            Deck : <br />
+            <img src="./assets/img/cards/returned-blue.png" (click)="drawDeck()" />
+        </div>
+
+        <div *ngFor="let player of table31.players">
+            <mat-expansion-panel [disabled]="true">
+                <mat-expansion-panel-header>
+                    <img src="./assets/img/profile-icons/{{ player.icon }}.png" class="user-icon" />
+                    <div class="info">
+                        <span class="name">{{ player.username }}</span>
+                        <span class="info">Number of cards: {{ player.nCards }}</span>
+                    </div>
+                </mat-expansion-panel-header>
+            </mat-expansion-panel>
+        </div>
     </div>
 </div>
