@@ -4,8 +4,10 @@
 
 export const environment = {
     production: false,
-    serverUrl: 'http://127.0.0.1:8000',
-    socketUrl: 'ws://127.0.0.1:8000',
+    // serverUrl: 'http://127.0.0.1:8000',
+    serverUrl: 'http://192.168.145.1:8000',
+    // socketUrl: 'ws://127.0.0.1:8000',
+    socketUrl: 'ws://192.168.145.1:8000',
 };
 
 /*
