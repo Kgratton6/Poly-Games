@@ -4,8 +4,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
     path('user/', include('django.contrib.auth.urls')),
     path('user/', include("users.urls")),
-    path('thirtyone/', include("thirtyone.urls")),
+    path('thirtyone/', include("thirtyone.urls")), # TODO : faire les demandes http pour get les id des rooms
 ]

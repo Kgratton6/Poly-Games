@@ -2,10 +2,6 @@ from pathlib import Path
 import os
 from corsheaders.defaults import default_headers
 
-# commandes
-#python manage.py createsuperuser
-#python manage.py runserver
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -16,41 +12,26 @@ SECRET_KEY = 'django-insecure-cq59z=c%3)sczjqu#=iw5q-r59wo@+xfai7_den2mcmvp3p+cs
 DEBUG = True
 
 ALLOWED_HOSTS = [ '*', 'localhost', "localhost:4200", "poly-games-9283.vercel.app", "127.0.0.1", 'kgratton6.pythonanywhere.com']
-# https://www.poly-games.online
-# CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4200",
-    "https://poly-games-9283.vercel.app",
-    "https://www.poly-games.online",
-]
-
-CORS_ALLOW_HEADERS = (
-    "token",
-    "content-type",
-)
+CORS_ALLOWED_ORIGINS = [ "http://localhost:4200", "https://poly-games-9283.vercel.app", "https://www.poly-games.online"]
+CORS_ALLOW_HEADERS = ("token", "content-type")
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_HEADERS = True
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        '': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
+ASGI_APPLICATION = "server.routing.application"
+WSGI_APPLICATION = 'server.wsgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND':'channels.layers.InMemoryChannelLayer'
+    }
 }
 
 INSTALLED_APPS = [
     'channels',
+    'corsheaders',
+    'users',
+    'thirtyone',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -59,21 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework.authtoken',
-    'corsheaders',
-
-    'users',
-    'thirtyone',
 ]
-
-ASGI_APPLICATION = "server.asgi.application"
-
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND':'channels.layers.InMemoryChannelLayer'
-    }
-}
-
-AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -103,11 +70,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'server.wsgi.application'
-
 # Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -115,10 +78,9 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = 'users.User'
 
 # Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -134,30 +96,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
-
 STATIC_URL = 'static/'
 STATIC_ROOT=os.path.join(BASE_DIR,'static')
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 MEDIA_URL='/media/'
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
@@ -169,3 +120,21 @@ REST_FRAMEWORK = {
        'rest_framework.authentication.TokenAuthentication',
    )
 }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
