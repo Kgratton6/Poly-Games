@@ -18,7 +18,8 @@ CORS_ALLOW_HEADERS = ("token", "content-type")
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_HEADERS = True
 
-ASGI_APPLICATION = "server.routing.application"
+#ASGI_APPLICATION = "server.routing.application"
+ASGI_APPLICATION = "server.asgi.application"
 WSGI_APPLICATION = 'server.wsgi.application'
 
 # CHANNEL_LAYERS = { # in memory

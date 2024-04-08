@@ -1,22 +1,24 @@
 # import os
+# from channels.routing import get_default_application
+# from server.routing import *
 
-# from django.core.asgi import get_asgi_application
-# from channels.routing import ProtocolTypeRouter, URLRouter
-# from thirtyone.consumers import ThirtyOneConsumer
-# from django.urls import re_path
-
-# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
-
-# application = ProtocolTypeRouter({
-#     #'http':get_asgi_application(),
-#     'websocket': URLRouter(re_path('', ThirtyOneConsumer.as_asgi()))
-# })
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "server.settings")
+# application = get_default_application()
 
 
+# peut etre ca mieux
 import os
-import django
-from channels.routing import get_default_application
-from server.routing import *
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
+from django.core.asgi import get_asgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "server.settings")
-application = get_default_application()
+django_asgi_app = get_asgi_application()
+from channels.routing import ProtocolTypeRouter, URLRouter
+from django.core.asgi import get_asgi_application
+from channels.routing import ProtocolTypeRouter, URLRouter
+from thirtyone.consumers import ThirtyOneConsumer
+from django.urls import re_path
+
+application = ProtocolTypeRouter({
+    'http':django_asgi_app,
+    'websocket': URLRouter([re_path('', ThirtyOneConsumer.as_asgi())])
+})
