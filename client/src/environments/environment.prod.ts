@@ -1,5 +1,5 @@
 export const environment = {
     production: true,
-    serverUrl: 'https://165.22.235.5:8080',
-    socketUrl: 'wss://165.22.235.5:8080',
+    serverUrl: 'http://165.22.235.5:8080', // http://165.22.235.5:8080/
+    socketUrl: 'ws://165.22.235.5:8080',
 };
