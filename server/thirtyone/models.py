@@ -40,9 +40,15 @@ class BaseSocketConsumer(WebsocketConsumer):
             'data': data,
         }))
 
+
+    # TODO : à la créeation d'un group, assigner une table31
     def add_to_group(self, roomId, token):
         self.roomId = roomId
         self.token = token
+        # await self.channel_layer.group_add(
+        #     self.roomId,
+        #     self.channel_name
+        # )
         async_to_sync(self.channel_layer.group_add)(
             self.roomId,
             self.channel_name
@@ -50,7 +56,7 @@ class BaseSocketConsumer(WebsocketConsumer):
 
 # TODO : only temporaty, switch to Redis after : group_channels = async_to_sync(channel_layer.group_channels)(self.roomId)
 def getPlayerToSend(player):
-    return {
+    return { 
         "username": player.user.username,
         "icon": player.user.icon,
         "nCards": player.nCards,
@@ -75,11 +81,6 @@ class TableManager():
 
     def get_table(self, table_id):
         table = self.tables.get(table_id)
-        logger.debug('je get une table')
-        logger.debug(table.table_id)
-        for card in table.deck.deck:
-            logger.debug(card.value)
-            logger.debug(card.color)
         return table
 
     def create_table(self, table_id):
@@ -249,9 +250,6 @@ class Table31():
         player = self.players[self.turn]
         card = self.deck.draw_card()
         if card:
-            logger.debug('je draw une card')
-            logger.debug(card.value)
-            logger.debug(card.color)
             player.cards.append(card)
             return getCardToSend(card)
         return None

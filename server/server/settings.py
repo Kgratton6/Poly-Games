@@ -21,15 +21,24 @@ CORS_ALLOW_ALL_HEADERS = True
 ASGI_APPLICATION = "server.routing.application"
 WSGI_APPLICATION = 'server.wsgi.application'
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND':'channels.layers.InMemoryChannelLayer',
-        # "CONFIG": {
-        #     "hosts": [os.environ.get('REDIS_URL')]
-        # }
-    }
-}
+# CHANNEL_LAYERS = { # in memory
+#     'default': {
+#         'BACKEND':'channels.layers.InMemoryChannelLayer',
+#     },
+# }
 
+# import redis
+# config = redis.Redis(host="redis-10563.c15.us-east-1-2.ec2.cloud.redislabs.com", 
+#                      port=10563, db=0, username="default", password='OhZph2whxwuBkC41uvZ5dcGVUsu4EZAU')
+CHANNEL_LAYERS = {
+    "default": {
+        "CONFIG": {
+            "hosts": ['redis://default:OhZph2whxwuBkC41uvZ5dcGVUsu4EZAU@redis-10563.c15.us-east-1-2.ec2.cloud.redislabs.com:10563'],
+        },
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+    },
+}
+ 
 INSTALLED_APPS = [
     'channels',
     'corsheaders',
