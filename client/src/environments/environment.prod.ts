@@ -1,5 +1,5 @@
 export const environment = {
     production: true,
-    serverUrl: 'https://kgratton6.pythonanywhere.com',
-    socketUrl: 'wss://kgratton6.pythonanywhere.com',
+    serverUrl: 'https://165.22.235.5:8080',
+    socketUrl: 'wss://165.22.235.5:8080',
 };
