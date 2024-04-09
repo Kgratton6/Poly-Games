@@ -2,45 +2,23 @@ from pathlib import Path
 import os
 from corsheaders.defaults import default_headers
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-cq59z=c%3)sczjqu#=iw5q-r59wo@+xfai7_den2mcmvp3p+cs'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = [ '*', 'localhost', "localhost:4200", "poly-games-9283.vercel.app", "127.0.0.1", 'kgratton6.pythonanywhere.com']
-CORS_ALLOWED_ORIGINS = [ "http://localhost:4200", "https://poly-games-9283.vercel.app", "https://www.poly-games.online"]
+ALLOWED_HOSTS = ['*']
+CORS_ALLOWED_ORIGINS = [ "http://localhost:4200", "https://www.poly-games.online"]
 CORS_ALLOW_HEADERS = ("token", "content-type")
-
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_HEADERS = True
 
-#ASGI_APPLICATION = "server.routing.application"
 ASGI_APPLICATION = "server.asgi.application"
 WSGI_APPLICATION = 'server.wsgi.application'
-
-# CHANNEL_LAYERS = { # in memory
-#     'default': {
-#         'BACKEND':'channels.layers.InMemoryChannelLayer',
-#     },
-# }
-
-# import redis
-# config = redis.Redis(host="redis-10563.c15.us-east-1-2.ec2.cloud.redislabs.com", 
-#                      port=10563, db=0, username="default", password='OhZph2whxwuBkC41uvZ5dcGVUsu4EZAU')
-CHANNEL_LAYERS = {
-    "default": {
-        "CONFIG": {
-            "hosts": ['redis://default:OhZph2whxwuBkC41uvZ5dcGVUsu4EZAU@redis-10563.c15.us-east-1-2.ec2.cloud.redislabs.com:10563'],
-        },
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-    },
-}
  
 INSTALLED_APPS = [
+    'daphne',
     'channels',
     'corsheaders',
     'users',
@@ -87,12 +65,24 @@ TEMPLATES = [
     },
 ]
 
-# Database
+# Databases 
+
+# users :
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+
+# tables :
+CHANNEL_LAYERS = {
+    "default": {
+        "CONFIG": {
+            "hosts": ['redis://default:OhZph2whxwuBkC41uvZ5dcGVUsu4EZAU@redis-10563.c15.us-east-1-2.ec2.cloud.redislabs.com:10563'],
+        },
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+    },
 }
 
 AUTH_USER_MODEL = 'users.User'
@@ -121,7 +111,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATIC_ROOT=os.path.join(BASE_DIR,'static')
+STATIC_ROOT=os.path.join(BASE_DIR,'static/')
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 MEDIA_URL='/media/'
 
