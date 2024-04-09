@@ -18,7 +18,9 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from thirtyone.consumers import ThirtyOneConsumer
 from django.urls import re_path
 
+from django.core.wsgi import get_wsgi_application
+
 application = ProtocolTypeRouter({
-    'http':django_asgi_app,
+    'http':get_wsgi_application(),
     'websocket': URLRouter([re_path('', ThirtyOneConsumer.as_asgi())])
 })

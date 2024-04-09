@@ -11,6 +11,6 @@ urlpatterns = [
     path('thirtyone/', include("thirtyone.urls")), # TODO : faire les demandes http pour get les id des rooms
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_URL)
+# if settings.DEBUG:
+#     urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+#     urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_URL)
