@@ -58,7 +58,7 @@ class ThirtyOneConsumer(BaseSocketConsumer):
     # TODO : verifier la token si il est dans une room, si oui : ajouter dans la room
     # TODO : verifier si c'est : new player, refresh, si la room est complete ou commencé
     def verify_connection(self):
-        tableId, user_token = self.scope['path_remaining'].split('/')
+        ws, tableId, user_token = self.scope['path_remaining'].split('/')
         token = Token.objects.get(key=user_token)
         self.token = token
         self.add_to_group(tableId, token)
