@@ -7,9 +7,9 @@ export const environment = {
     // serverUrl: 'http://127.0.0.1:8000',
     // socketUrl: 'ws://127.0.0.1:8000/ws',
     // serverUrl: 'http://142.93.148.99:8000', // works
-    // socketUrl: 'ws://142.93.148.99/ws:8000', // works
-    serverUrl: 'http://poly-games-server.site:8000', // works
-    socketUrl: 'ws://poly-games-server.site:8000/ws', // woent work
+    // socketUrl: 'ws://142.93.148.99:8000/ws', // works
+    serverUrl: 'http://poly-games-server.site', // works
+    socketUrl: 'ws://poly-games-server.site/ws', // works
 };
 
 /*
