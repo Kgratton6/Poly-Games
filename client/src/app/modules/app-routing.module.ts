@@ -8,6 +8,7 @@ import { HomeComponent } from '@app/pages/home/home.component';
 import { LiveGameComponent } from '@app/pages/live-game/live-game.component';
 import { LoginComponent } from '@app/pages/login/login.component';
 import { NotFoundComponent } from '@app/pages/not-found/not-found.component';
+import { ThirtyOneComponent } from '@app/pages/thirty-one/thirty-one.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -19,8 +20,9 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         children: [
             { path: 'home', component: HomeComponent },
-            { path: 'live-game/:tableId', component: LiveGameComponent },
+            { path: 'live-game', component: LiveGameComponent },
             { path: 'user/:username', component: AccountComponent },
+            { path: 'thirty-one/:tableId', component: ThirtyOneComponent },
         ],
     },
     { path: '**', component: NotFoundComponent },

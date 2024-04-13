@@ -1,0 +1,11 @@
+<app-header></app-header>
+<div class="page-container">
+    <div class="grid-page">
+        <div>
+            <app-thirty-one-waiting *ngIf="gameState === 'waiting'"></app-thirty-one-waiting>
+            <app-thirty-one-game *ngIf="gameState === 'game'"></app-thirty-one-game>
+            <app-thirty-one-results *ngIf="gameState === 'results'"></app-thirty-one-results>
+        </div>
+        <div>chat!</div>
+    </div>
+</div>

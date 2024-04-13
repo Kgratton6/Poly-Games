@@ -46,7 +46,8 @@ export class SocialAreaComponent implements OnInit {
                 (user) =>
                     user.firstName.toLowerCase().includes(searchValue.toLowerCase()) ||
                     user.lastName.toLowerCase().includes(searchValue.toLowerCase()) ||
-                    user.username.toLowerCase().includes(searchValue.toLowerCase()),
+                    user.username.toLowerCase().includes(searchValue.toLowerCase()) ||
+                    `${user.firstName.toLowerCase()} ${user.lastName.toLowerCase()}`.includes(searchValue.toLowerCase()),
             );
         } else {
             this.filteredUsers = this.users;

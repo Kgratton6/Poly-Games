@@ -102,6 +102,10 @@ class TableManager():
             if len(table.player) == 0:
                 self.delete_table(table_id)
 
+    def is_new_player(self, table_id, player_token):
+        table = self.tables.get(table_id)
+        return table.is_new_player(player_token)
+
     def add_player(self, table_id, player_token):
         table = self.tables.get(table_id)
         if table:
@@ -183,6 +187,7 @@ class Table31():
         self.players = []
         self.deck = Deck()
         self.turn = 0
+        self.gameState = 'waiting'
 
     def add_player(self, player_token): # token contains the user
         if player_token not in self.players:
@@ -192,20 +197,34 @@ class Table31():
             return True
         return False
     
+        
+    def is_new_player(self, player_token):
+        if player_token not in self.players:
+            return True
+        return False
+    
     def remove_player(self, player_token):
         if player_token in self.players:
             self.players.remove(player_token)
             return True
         return False
     
-    def get_all_players(self):
+    def get_Game_Info(self):
         return { "turn": self.turn, "players": [getPlayerToSend(player_token) for player_token in self.players] }
+    
+    def get_Players(self):
+        return [getPlayerToSend(player_token) for player_token in self.players]
     
     def get_player(self, player_token):
         for player in self.players:
             if player.user == player_token.user:
                 return getPlayerToSend(player)
         return None
+    
+    def is_host(self, player_token):
+        if self.players[0].user == player_token.user:
+            return True
+        return False
     
     # turn functions
     def is_turn(self, player_token):
@@ -274,9 +293,19 @@ class Table31():
             return getCardToSend(cardToSend)
         else:
             return None
-        
+         
     def getDeck(self):
         return [getCardToSend(card) for card in self.deck.deck]
+    
+    def give_cards(self):
+        for player in self.players:
+            drawn_cards = self.deck.draw_cards(3)
+            if drawn_cards:
+                player.cards = drawn_cards
+            else:
+                return False
+        return True
+
 
         
 

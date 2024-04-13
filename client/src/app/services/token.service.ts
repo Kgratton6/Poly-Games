@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AUTH_TOKEN, TABLE_TOKEN } from '@app/consts/profile.const';
+import { GAME_TOKEN } from '@app/consts/game.const';
+import { AUTH_TOKEN } from '@app/consts/profile.const';
+import { LiveGame } from '@app/interfaces/live-game';
 
 @Injectable({
     providedIn: 'root',
@@ -19,17 +21,20 @@ export class TokenService {
         }
     }
 
-    getTableToken(): string {
-        return localStorage.getItem(TABLE_TOKEN) || '';
+    getGameToken(): LiveGame | void {
+        const game = localStorage.getItem(GAME_TOKEN);
+        if (game) {
+            return JSON.parse(game);
+        }
     }
 
-    deleteTableToken(): void {
-        localStorage.removeItem(TABLE_TOKEN);
+    deleteGameToken(): void {
+        localStorage.removeItem(GAME_TOKEN);
     }
 
-    setTableToken(token: string): void {
-        if (token) {
-            localStorage.setItem(TABLE_TOKEN, token);
+    setGameToken(liveGame: LiveGame): void {
+        if (liveGame) {
+            localStorage.setItem(GAME_TOKEN, JSON.stringify(liveGame));
         }
     }
 }
