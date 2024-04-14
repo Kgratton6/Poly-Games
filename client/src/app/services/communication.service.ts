@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Table31 } from '@app/interfaces/game31';
 import { User } from '@app/interfaces/user';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -56,6 +57,14 @@ export class CommunicationService {
 
     getUser(username: string): Observable<User> {
         return this.http.get<User>(`${this.baseUrl}/user/fetch_user/${username}`).pipe(catchError(this.handleError));
+    }
+
+    createTable(gameType: string): Observable<string> {
+        return this.http.get<string>(`${this.baseUrl}/${gameType}/create_table`).pipe(catchError(this.handleError));
+    }
+
+    getTables(gameType: string): Observable<Table31[]> {
+        return this.http.get<Table31[]>(`${this.baseUrl}/${gameType}/get_tables`).pipe(catchError(this.handleError));
     }
 
     private handleError(error: HttpErrorResponse) {

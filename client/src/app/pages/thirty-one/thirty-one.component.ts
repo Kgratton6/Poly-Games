@@ -1,8 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GameState, ReceveEvents, SendEvents } from '@app/consts/events.const';
+import { DEFAULT_USER } from '@app/consts/profile.const';
+import { User } from '@app/interfaces/user';
 import { NotificationService } from '@app/services/notification.service';
 import { SocketThirtyOneService } from '@app/services/socket-thirty-one.service';
+import { TokenService } from '@app/services/token.service';
+import { UsersDataService } from '@app/services/users-data.service';
 
 @Component({
     selector: 'app-thirty-one',
@@ -12,12 +16,15 @@ import { SocketThirtyOneService } from '@app/services/socket-thirty-one.service'
 export class ThirtyOneComponent implements OnInit, OnDestroy {
     tableId: string;
     gameState: GameState;
+    yourPlayer: User = DEFAULT_USER;
 
     constructor(
         protected socket: SocketThirtyOneService,
         protected notification: NotificationService,
         private route: ActivatedRoute,
         private router: Router,
+        private token: TokenService,
+        protected userDataService: UsersDataService,
     ) {}
 
     ngOnInit() {
@@ -35,15 +42,33 @@ export class ThirtyOneComponent implements OnInit, OnDestroy {
             this.gameState = gameState;
             this.socket.send(SendEvents.GetStateInfo);
         });
+        this.socket.on(ReceveEvents.PlayerLeft, (username: string) => {
+            this.notification.notify(`${username} has left.`);
+        });
+
+        this.userDataService.getProfile().subscribe({
+            next: (profile) => {
+                this.yourPlayer = profile;
+            },
+        });
 
         this.route.paramMap.subscribe((params) => {
             const tableId = params.get('tableId');
-            if (tableId) this.tableId = tableId;
+            if (tableId) {
+                this.tableId = tableId;
+                this.token.setGameToken(tableId, 'thirty-one');
+            }
         });
         this.socket.connect(this.tableId);
     }
 
     ngOnDestroy(): void {
         this.socket.disconnect();
+    }
+
+    quitGame() {
+        this.socket.send(SendEvents.QuitGame);
+        this.token.deleteGameToken();
+        this.router.navigate(['/home']);
     }
 }

@@ -8,9 +8,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('django.contrib.auth.urls')),
     path('user/', include("users.urls")),
-    path('thirtyone/', include("thirtyone.urls")), # TODO : faire les demandes http pour get les id des rooms
+    path('thirty-one/', include("thirtyone.urls")),
 ]
-
-# if settings.DEBUG:
-#     urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
-#     urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_URL)

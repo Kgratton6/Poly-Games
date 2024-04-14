@@ -32,9 +32,10 @@ export class TokenService {
         localStorage.removeItem(GAME_TOKEN);
     }
 
-    setGameToken(liveGame: LiveGame): void {
+    setGameToken(tableId: string, gameType: string): void {
+        const liveGame: LiveGame = { tableId, gameType };
         if (liveGame) {
-            localStorage.setItem(GAME_TOKEN, JSON.stringify(liveGame));
+            localStorage.setItem(GAME_TOKEN, JSON.stringify({ tableId, gameType }));
         }
     }
 }

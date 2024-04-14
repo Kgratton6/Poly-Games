@@ -16,7 +16,7 @@ export class LiveGameComponent implements OnInit {
     ngOnInit() {
         const game = this.token.getGameToken();
         if (game) {
-            this.router.navigate([`${game.gameType}`, game.tableId]);
+            this.router.navigate([`live-game/${game.gameType}`, game.tableId]);
         }
     }
 }

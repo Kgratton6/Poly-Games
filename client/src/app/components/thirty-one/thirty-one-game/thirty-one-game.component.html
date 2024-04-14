@@ -1,9 +1,7 @@
 <div class="page-container">
     <div class="flex-page">
-        <button (click)="finishGame()">Finish game</button>
+        <!-- <button *ngIf="isHost" (click)="finishGame()">Finish game</button> -->
         <h2>Its {{ table31.players[table31.turn].username }} to play!</h2>
-
-        <button (click)="play()">Play</button>
 
         <div class="card-container">
             <div *ngFor="let card of cards; let i = index">

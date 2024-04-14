@@ -30,6 +30,7 @@ import { LiveGameComponent } from './pages/live-game/live-game.component';
 import { LoginComponent } from './pages/login/login.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ThirtyOneComponent } from './pages/thirty-one/thirty-one.component';
+import { TablesListComponent } from './components/tables-list/tables-list.component';
 
 /**
  * Main module that is used in main.ts.
@@ -60,6 +61,7 @@ import { ThirtyOneComponent } from './pages/thirty-one/thirty-one.component';
         ThirtyOneGameComponent,
         ThirtyOneResultsComponent,
         ThirtyOneComponent,
+        TablesListComponent,
     ],
     imports: [
         AppMaterialModule,

@@ -18,7 +18,7 @@
             <div class="game-title">Thirty One</div>
             <div class="game-description">Play a card game when you have to get 31 points</div>
             <div>
-                <button mat-button mat-button class="accent-button-1">Play Now</button>
+                <button mat-button mat-button class="accent-button-1" (click)="createTable('thirty-one')">Play Now</button>
                 <button mat-button class="accent-button-1">Joind a table</button>
                 <button mat-button class="accent-button-1">Create a table</button>
             </div>
@@ -42,5 +42,7 @@
             </div>
         </div>
     </div>
-    <div *ngIf="selectedComponent === 'tables'" class="main-tables-container">Tables</div>
+    <div *ngIf="selectedComponent === 'tables'" class="main-tables-container">
+        <app-tables-list></app-tables-list>
+    </div>
 </div>

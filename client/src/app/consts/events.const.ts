@@ -4,6 +4,8 @@ export enum ReceveEvents {
     Error = 'error',
     NewGameState = 'gameState',
     QuickedOut = 'quickedOut',
+    PlayerLeft = 'playerLeft',
+    Players = 'players',
 
     // waiting events
     WaitingInformation = 'waitingInformation',
@@ -19,19 +21,23 @@ export enum ReceveEvents {
 
     // results events
     ResultsInformation = 'resultsInformation',
+    WinnerName = 'winnerName',
+    WinnerCards = 'winnerCards',
 }
 
 export enum SendEvents {
     StartGame = 'startGame',
     GetStateInfo = 'getStateInfo',
-    Play = 'play',
     GetCards = 'getCards',
     DrawDeck = 'drawDeck',
     DrawDump = 'drawDump',
     DumpCard = 'dumpCard',
+    QuitGame = 'quitGame',
+    ThirtyOne = 'thirtyOne',
 
     // temporaire
     FinishGame = 'finishGame',
+    Play = 'play',
 }
 
 export enum GameState {

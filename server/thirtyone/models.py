@@ -1,73 +1,158 @@
-from django.db import models
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
-import random
-import copy
+from .classes import *
+from .enums import GameState
 import json
-
-import logging
-logger = logging.getLogger(__name__) # use logger.debug()
 
 class BaseSocketConsumer(WebsocketConsumer):
 
-    def emit_event(self, event):
-        self.send(text_data=json.dumps({
-            'event': event['event'],
-            'data': event['data']
-        }))
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def emit(self, event, data):
+        self.send(text_data=json.dumps({'event': event, 'data': data}))
 
     def broadcast(self, event, data):
-        async_to_sync(self.channel_layer.group_send)(
-            self.roomId, {'type': 'emit_event', 'event': event, 'data': data}
-        )
+        async_to_sync(self.channel_layer.group_send)(self.table.tableId, {'type': 'emitBroad', 'event': event, 'data': data})
 
-    def broadcast_exept(self, event, data):
-        async_to_sync(self.channel_layer.group_send)(
-            self.roomId, 
-            {'type': 'emit_event_exept', 'sender_name': self.channel_name, 'event': event, 'data': data}
-        )
+    def emitBroad(self, event):
+        self.emit(event['event'], event['data'])
 
-    def emit_event_exept(self, event):
-        if self.channel_name != event['sender_name']:
-            self.send(text_data=json.dumps({
-                'event': event['event'],
-                'data': event['data'],
-            }))
+    def multicast(self, event, data):
+        async_to_sync(self.channel_layer.group_send)(self.table.tableId, {'type': 'emitMulti', 'sender': self.channel_name, 'event': event, 'data': data})
+
+    def emitMulti(self, event):
+        if self.channel_name != event['sender']:
+            self.emit(event['event'], event['data'])
+
+    def addToChannel(self):
+        async_to_sync(self.channel_layer.group_add)(self.table.tableId,self.channel_name)
+
+    def removeFromChannel(self):
+        if self.table.tableId:
+            async_to_sync(self.channel_layer.group_discard)(self.table.tableId, self.channel_name)
+
+class Player():
+    def __init__(self, token):
+        self.user = token
+        self.nCards = 0   
+        self.cards = []
+
+class Table31():
+
+    def __init__(self, tableId):
+        self.tableId = tableId
+        self.players = []
+        self.deck = Deck()
+        self.turn = 0
+        self.alreadyDrawn = False
+        self.gameState = GameState.Waiting.value
+        self.winnerCards = None
+        self.winnerName = None
+
+    def addPlayer(self, user):
+        self.players.append(Player(user))
+        
+    def isNewPlayer(self, user):
+        return not any(player.user == user for player in self.players)
     
-    def emit(self, event, data):
-        self.send(text_data=json.dumps({
-            'event': event, 
-            'data': data,
-        }))
+    def removePlayer(self, user):
+        for index, player in enumerate(self.players):
+            if player.user == user:
+                self.players.remove(player)
+                if index < self.turn:
+                    self.turn -= 1
+                return index == 0
+        return False
 
+    def getPlayer(self, user):
+        for player in self.players:
+            if player.user == user:
+                return getPlayerToSend(player)
+        return None
 
-    # TODO : à la créeation d'un group, assigner une table31
-    def add_to_group(self, roomId, token):
-        self.roomId = roomId
-        self.token = token
-        # await self.channel_layer.group_add(
-        #     self.roomId,
-        #     self.channel_name
-        # )
-        async_to_sync(self.channel_layer.group_add)(
-            self.roomId,
-            self.channel_name
-        )
+    def getPlayers(self):
+        return [getPlayerToSend(player) for player in self.players]
+    
+    def getGameInfo(self):
+        return { "tableId": self.tableId, "turn": self.turn, "players": self.getPlayers() }
+    
+    def isHost(self, user):
+        return self.players[0].user == user
+    
+    def isTurn(self, user):
+        return self.players[self.turn].user == user
+    
+    def nextTurn(self):
+        self.turn = (self.turn + 1) % len(self.players)
+        return self.turn
+        
+    def distributeCards(self):
+        for player in self.players:
+            player.cards = self.deck.drawCards(3)
 
-# TODO : only temporaty, switch to Redis after : group_channels = async_to_sync(channel_layer.group_channels)(self.roomId)
-def getPlayerToSend(player):
-    return { 
-        "username": player.user.username,
-        "icon": player.user.icon,
-        "nCards": player.nCards,
-    }
+    def getCards(self, user):
+        for player in self.players:
+            if player.user == user:
+                return getCardsToSend(player.cards)
+        return None
 
-def getCardToSend(card):
-    return {
-        "value": card.value,
-        "color": card.color,
-    }
+    def drawDeck(self):
+        player = self.players[self.turn]
+        card = self.deck.drawCard()
+        if card and player:
+            player.cards.append(card)
+            return getCardToSend(card)
+        return None
+    
+    def drawDump(self):
+        player = self.players[self.turn]
+        card = self.deck.drawDump()
+        if card:  
+            player.cards.append(card)
+            return getCardToSend(card)
+        return None
+    
+    def dumpCard(self, index):
+        player = self.players[self.turn]
+        card = player.cards.pop(index)
+        self.deck.dumpCard(card)
+        return getCardToSend(card)
+    
+    def getReturnedCard(self):
+        card = self.deck.getReturnedCard()
+        if card:
+            return getCardToSend(card)
+        else:
+            return None
+        
+    def getCards(self, user):
+        for player in self.players:
+            if player.user == user:
+                return getCardsToSend(player.cards)
+        return None
+    
+    def calculateScore(self, user):
+        for player in self.players:
+            currentColor = player.cards[0].color
+            if player.user == user:
+                total_score = 0
+                for card in player.cards:
+                    if card.color != currentColor:
+                        return False
+                    total_score += self.get_card_value(card)
+                if total_score == 31:
+                    return True
+        return False
 
+    def get_card_value(self, card):
+        if 1 < card.value < 10:
+            return card.value
+        elif card.value == 1:
+            return 11
+        else:
+            return 10
+    
 class TableManager():
     _instance = None
 
@@ -78,233 +163,31 @@ class TableManager():
 
     def __init__(self):
         self.tables = {}
+        self.tableIdCount = 0
 
-    def get_table(self, table_id):
-        table = self.tables.get(table_id)
-        return table
+    def getTable(self, tableId):
+        return self.tables.get(tableId)
 
-    def create_table(self, table_id):
-        if table_id not in self.tables:
-            self.tables[table_id] = Table31(table_id)
-            return True
-        return False
+    def createTable(self):
+        count = str(self.tableIdCount)
+        if not self.tables.get(count):
+            self.tables[count] = Table31(count)
+            self.tableIdCount += 1
+        return self.tables[count]
     
-    def delete_table(self, table_id):
-        if table_id in self.tables:
-            del self.tables[table_id]
-            return True
-        return False
+    def deleteTable(self, tableId):
+        if tableId in self.tables:
+            del self.tables[tableId]
 
-    def remove_player(self, table_id, player_token):
-        table = self.tables.get(table_id)
+    def removePlayer(self, tableId, user):
+        table = self.getTable(tableId)
         if table:
-            table.remove_player(player_token)
-            if len(table.player) == 0:
-                self.delete_table(table_id)
+            needNewHost = table.removePlayer(user)
+            if len(table.players) == 0:
+                self.deleteTable(tableId)
+            return needNewHost
 
-    def is_new_player(self, table_id, player_token):
-        table = self.tables.get(table_id)
-        return table.is_new_player(player_token)
-
-    def add_player(self, table_id, player_token):
-        table = self.tables.get(table_id)
-        if table:
-            return table.add_player(player_token)
-        return False
-
-    def get_table_all_players(self, table_id):
-        return self.get_table(table_id).get_all_players()
-    
-class Card:
-    def __init__(self, value, color):
-        self.value = value
-        self.color = color
-
-CARD_COLORS = ['Hearts', 'Diamond', 'Spades', 'Clubs']
-CARD_VALUES = range(1, 14)
-ORGANISED_DECK = [Card(value, color) for value in CARD_VALUES for color in CARD_COLORS]
-
-class Deck:
-    def __init__(self):
-        self.deck = copy.deepcopy(ORGANISED_DECK)
-        self.dump = []
-        self.shuffle()
-        self.return_card()
-
-    def shuffle(self):
-        random.shuffle(self.deck)
-
-    def verify_deck_size(self):
-        if 1 > len(self.deck):
-            random.shuffle(self.dump)
-            self.deck.extend(self.dump)
-            self.dump = []
-
-    def draw_card(self):
-        try:
-            self.verify_deck_size()
-            card_to_return = self.deck.pop(0)
-            return card_to_return
-        except:
-            return None
-    
-    def draw_cards(self, number):
-        drawn_cards = []
-        for _ in range(number):
-            card = self.draw_card()
-            if card == None:
-                return None
-            drawn_cards.append(card)
-        return drawn_cards
-    
-    def return_card(self):
-        returned_card = self.draw_card()
-        self.dump.append(returned_card)
-        return returned_card
-    
-    def get_returned_card(self):
-        try:
-            returned_card = self.dump.pop()
-            return returned_card
-        except:
-            return None
-    
-    def dump_card(self, card):
-        self.dump.append(card)
-
-    def get_dump_top(self):
-        try:
-            return self.dump[-1]
-        except:
-            return None
-
-
-
-class Table31():
-
-    def __init__(self, table_id):
-        self.table_id = table_id
-        self.players = []
-        self.deck = Deck()
-        self.turn = 0
-        self.gameState = 'waiting'
-
-    def add_player(self, player_token): # token contains the user
-        if player_token not in self.players:
-            player_token.nCards = 0     # add the attributes
-            player_token.cards = []
-            self.players.append(player_token)
-            return True
-        return False
-    
-        
-    def is_new_player(self, player_token):
-        if player_token not in self.players:
-            return True
-        return False
-    
-    def remove_player(self, player_token):
-        if player_token in self.players:
-            self.players.remove(player_token)
-            return True
-        return False
-    
-    def get_Game_Info(self):
-        return { "turn": self.turn, "players": [getPlayerToSend(player_token) for player_token in self.players] }
-    
-    def get_Players(self):
-        return [getPlayerToSend(player_token) for player_token in self.players]
-    
-    def get_player(self, player_token):
-        for player in self.players:
-            if player.user == player_token.user:
-                return getPlayerToSend(player)
-        return None
-    
-    def is_host(self, player_token):
-        if self.players[0].user == player_token.user:
-            return True
-        return False
-    
-    # turn functions
-    def is_turn(self, player_token):
-        if len(self.players) > 0 and self.players[self.turn].user == player_token.user:
-            return True
-        return False
-    
-    def next_turn(self):
-        self.turn = (self.turn + 1) % len(self.players)
-        return self.turn
-    
-    # card functions
-    def get_cards(self):
-        player = self.players[self.turn]
-        drawn_cards = self.deck.draw_cards(3)
-        if drawn_cards:
-            player.cards = drawn_cards
-            return [getCardToSend(card) for card in player.cards]
-        return None
-    
-    def get_cards_player(self, player_token):
-        for player in self.players:
-            if player.user == player_token.user:
-                drawn_cards = self.deck.draw_cards(3)
-                if drawn_cards:
-                    player.cards = drawn_cards
-                    return [getCardToSend(card) for card in player.cards]
-                return None
-        return None
-    
-    def get_current_cards_player(self, player_token):
-        for player in self.players:
-            if player.user == player_token.user:
-                return [getCardToSend(card) for card in player.cards]
-        return None
-    
-    def get_current_cards(self):
-        player = self.players[self.turn]
-        return [getCardToSend(card) for card in player.cards]
-    
-    def draw_card(self):
-        player = self.players[self.turn]
-        card = self.deck.draw_card()
-        if card:
-            player.cards.append(card)
-            return getCardToSend(card)
-        return None
-    
-    def draw_dump(self):
-        player = self.players[self.turn]
-        card = self.deck.get_returned_card()
-        if card:  
-            player.cards.append(card)
-            return getCardToSend(card)
-        return None
-    
-    def dump_card(self, index):
-        player = self.players[self.turn]
-        dumped_card = player.cards.pop(index)
-        self.deck.dump_card(dumped_card)
-        return getCardToSend(dumped_card)
-    
-    def get_start_dump(self):
-        cardToSend = self.deck.get_dump_top()
-        if cardToSend:
-            return getCardToSend(cardToSend)
-        else:
-            return None
-         
-    def getDeck(self):
-        return [getCardToSend(card) for card in self.deck.deck]
-    
-    def give_cards(self):
-        for player in self.players:
-            drawn_cards = self.deck.draw_cards(3)
-            if drawn_cards:
-                player.cards = drawn_cards
-            else:
-                return False
-        return True
+# TODO : get tous les channels : group_channels = async_to_sync(channel_layer.group_channels)(self.tableId)
 
 
         

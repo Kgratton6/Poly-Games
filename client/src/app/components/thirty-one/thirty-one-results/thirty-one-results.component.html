@@ -1,1 +1,7 @@
-<p>Results page works!</p>
+<div>{{ winnerName }} won !</div>
+
+<div class="card-container">
+    <div *ngFor="let card of winnerCards; let i = index">
+        <img src="./assets/img/cards/{{ card.color }} {{ card.value }}.png" />
+    </div>
+</div>

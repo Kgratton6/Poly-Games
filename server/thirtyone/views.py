@@ -1,5 +1,12 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from thirtyone.models import TableManager
+from django.http import JsonResponse
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+tableManager = TableManager()
+
+def create_table(request):
+    table = tableManager.createTable()
+    return JsonResponse(table.tableId, safe=False, status=200)
+
+def get_tables(request):
+    tables = [table.getGameInfo() for key, table in tableManager.tables.items()]
+    return JsonResponse(tables, safe=False, status=200)

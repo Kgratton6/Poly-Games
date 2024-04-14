@@ -2,8 +2,9 @@
 <div class="page-container">
     <div class="grid-page">
         <div>
-            <app-thirty-one-waiting *ngIf="gameState === 'waiting'"></app-thirty-one-waiting>
-            <app-thirty-one-game *ngIf="gameState === 'game'"></app-thirty-one-game>
+            <button (click)="quitGame()">Quit</button>
+            <app-thirty-one-waiting [yourPlayer]="yourPlayer" *ngIf="gameState === 'waiting'"></app-thirty-one-waiting>
+            <app-thirty-one-game [yourPlayer]="yourPlayer" *ngIf="gameState === 'game'"></app-thirty-one-game>
             <app-thirty-one-results *ngIf="gameState === 'results'"></app-thirty-one-results>
         </div>
         <div>chat!</div>

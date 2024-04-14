@@ -1,0 +1,10 @@
+<div *ngFor="let table of tables">
+    <mat-expansion-panel [disabled]="true" (click)="joindGame('thirty-one', table.tableId)">
+        <mat-expansion-panel-header>
+            <div>Game # {{ table.tableId }}</div>
+            <div *ngFor="let player of table.players">
+                <img src="./assets/img/profile-icons/{{ player.icon }}.png" class="user-icon" />
+            </div>
+        </mat-expansion-panel-header>
+    </mat-expansion-panel>
+</div>

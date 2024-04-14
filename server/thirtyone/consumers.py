@@ -2,47 +2,37 @@ import json
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 from functools import wraps
-from .models import BaseSocketConsumer, TableManager
+from .enums import *
+from .models import BaseSocketConsumer, TableManager, NO_CARD
 import json
-import time
 User = get_user_model()
 
-import logging
-logger = logging.getLogger(__name__) # use logger.debug()
-
-def is_turn(func):
+def isTurn(func):
     @wraps(func)
     def wrapper(self, *args, **kwargs):
-        table = self.table_manager.get_table(self.roomId)
-        if table and table.is_turn(self.token):
-            self.table = table # get the table 
+        if self.table.isTurn(self.user):
             return func(self, *args, **kwargs)
         else:
-            self.emit('error', 'It\'s not your turn to play!')
+            self.emit(SendEvents.Error.value, 'It\'s not your turn to play!')
     return wrapper
 
-class ThirtyOneConsumer(BaseSocketConsumer): 
+def isHost(func):
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        if self.table.isHost(self.user):
+            return func(self, *args, **kwargs)
+        else:
+            self.emit(SendEvents.Error.value, 'You are not the table host!')
+    return wrapper
 
-    table_manager = TableManager() # shaded instance  # ! problem : works dont have the same instance
+class ThirtyOneConsumer(BaseSocketConsumer):
 
-    # Needs to match SendEvents in the consts of client
-    eventHandlers = {
-        'play': 'play',
-        'getCards': 'get_cards',
-        'drawDeck': 'draw_card',
-        'drawDump': 'draw_dump',
-        'dumpCard': 'dump_card',
-        'startGame': 'start_game',
-        'getStateInfo': 'get_state_info',
-        'finishGame': 'finish_game',
-    }
+    tableManager = TableManager() 
+    table = None
+    user = None
 
     def connect(self):
-        if(self.verify_connection()):
-            self.accept()
-            self.send_table_data()
-        else:
-            self.connection_error()
+        self.verifyConnection()
     
     def disconnect(self, code):
         return super().disconnect(code)
@@ -52,125 +42,139 @@ class ThirtyOneConsumer(BaseSocketConsumer):
         event = message.get('event')
         data = message.get('data') or 'No data'
 
-        handler_name = self.eventHandlers.get(event)
-        if handler_name:
-            getattr(self, handler_name)(data)
+        handlerName = getattr(self, event, None)
+        if handlerName:
+            handlerName(data)
         else:
-            self.emit('error', 'Server receved an unexpected event')
+            self.emit(SendEvents.Error.value, 'Server received an unexpected event.')
 
-    def verify_connection(self):
-        ws, tableId, user_token = self.scope['path_remaining'].split('/')
-        token = Token.objects.get(key=user_token)
-        self.token = token
-        self.add_to_group(tableId, token)
-        self.table_manager.create_table(tableId) # ne fais pas de repetititon
-        table = self.table_manager.get_table(self.roomId)
-        self.isNewPlayer = self.table_manager.is_new_player(tableId, token)
-        if table.gameState != 'waiting' and self.isNewPlayer:
-            self.connectionErrorMessage = 'Sorry, the game has already started.'
-            return False
-        self.isNewPlayer = self.table_manager.add_player(tableId, token) # ne fais pas de repetititon
-        return True 
-    
-    def connection_error(self):
+    def verifyConnection(self):
+        ws, tableId, gameToken = self.scope['path_remaining'].split('/')
+        token = Token.objects.get(key=gameToken)
+
+        table = self.tableManager.getTable(tableId)
+
         self.accept()
-        self.emit('quickedOut', 'Game has already started!')
-        #self.close()
-
-    def send_table_data(self):
-
-        table = self.table_manager.get_table(self.roomId)
-        self.table = table
-        self.emit('gameState', table.gameState)
-
-        # if table.gameState == 'waiting':
-        #     self.get_waiting_information(table)
-        # elif table.gameState == 'game':
-        #     self.get_game_information(table)
-        # elif table.gameState == 'results':
-        #     self.get_results_information(table)
-
-    def get_waiting_information(self, table):
-
-        if self.isNewPlayer:
-            self.broadcast_exept('newPlayer', table.get_player(self.token))
-            self.emit('connectionConfirmation', 'Welcome to the table : ' + self.roomId) 
-
-        self.emit('waitingInformation', table.get_Players())
-        if table.is_host(self.token):
-            self.emit('host', 'You are the game host.')
-
-        self.isNewPlayer = False
-
-    def get_game_information(self, table):
-        self.emit('gameInformation',  table.get_Game_Info())
-        self.emit('cards', table.get_current_cards_player(self.token))
-        self.emit('newReturnedCard', table.get_start_dump())
-
-        if self.isNewPlayer:
-            cards_to_send = table.get_cards_player(self.token) # au debut on donne des cartes
-            if cards_to_send:
-                self.emit('cards', cards_to_send)
-            else:
-                self.emit('error', 'The Deck is empty')
-
-    def get_results_information(self, table):
-        None
-
-    @is_turn
-    def start_game(self, data):
-        if self.table.is_host(self.token):
-            self.table.gameState = 'game'
-            self.broadcast('gameState', 'game')
-            self.table.give_cards()
-
-    def finish_game(self, data):
-        if self.table.is_host(self.token):
-            self.table.gameState = 'results'
-            self.broadcast('gameState', 'results')
-
-    def get_state_info(self, data):
-        if self.table.gameState == 'waiting':
-            self.get_waiting_information(self.table)
-        elif self.table.gameState == 'game':
-            self.get_game_information(self.table)
-        elif self.table.gameState == 'results':
-            self.get_results_information(self.table)
-
-    @is_turn
-    def play(self, data):
-        self.broadcast('newTurn', self.table.next_turn())
-
-    @is_turn
-    def draw_card(self, data):
-        card = self.table.draw_card()
-        if card:
-            self.emit('newCard', card)
-            #self.emit('deck', self.table.getDeck())
-        else:
-            self.emit('error', 'The Deck is empty')
-
-    @is_turn
-    def draw_dump(self, data):
-        top_dump = self.table.draw_dump()  # card on top of the dump
-        if top_dump:
-            self.emit('newCard', top_dump)
-        else:
-            self.emit('error', 'The dump is empty, cant draw a card')
+        if not table:
+            self.emit(SendEvents.QuickedOut.value, 'This table doesn\'t exist.')
             return
 
-        under_top_dump = self.table.get_start_dump() # card under the card we just took
-        if under_top_dump:
-            self.broadcast('newReturnedCard', self.table.get_start_dump())
+        isNewPlayer = table.isNewPlayer(token.user)
+        if table.gameState != GameState.Waiting.value and isNewPlayer:
+            self.emit(SendEvents.QuickedOut.value, 'Game has already started.')
+            return
+
+        self.user = token.user
+        self.table = table
+        self.addToChannel()
+
+        if isNewPlayer:
+            self.newPlayer()
         else:
-            self.emit('error', 'The dump is now empty, you took the last card!')
-            self.broadcast('newReturnedCard', { "value": 0,"color": 'null', })
+            self.reconnection()
+
+    def newPlayer(self):
+        self.table.addPlayer(self.user)
+        self.multicast(SendEvents.NewPlayer.value, self.table.getPlayer(self.user))
+        self.emit(SendEvents.NewGameState.value, self.table.gameState)
+        self.emit(SendEvents.ConnectionConfirmation.value, 'Welcome to the game.')
+
+    def reconnection(self):
+        self.emit(SendEvents.NewGameState.value, self.table.gameState)
+
+    def getStateInfo(self, data):
+        if self.table.gameState == GameState.Waiting.value:
+            self.getWaitingInformation()
+        elif self.table.gameState == GameState.Game.value:
+            self.getGameInformation()
+        elif self.table.gameState == GameState.Results.value:
+            self.getResultsInformation()
+
+    def getWaitingInformation(self):
+        self.emit(SendEvents.WaitingInformation.value, self.table.getPlayers())
+        if self.table.isHost(self.user):
+            self.emit(SendEvents.Host.value, 'You are the game host.')
+
+    def getGameInformation(self):
+        self.emit(SendEvents.GameInformation.value,  self.table.getGameInfo())
+        self.emit(SendEvents.Cards.value, self.table.getCards(self.user))
+        self.emit(SendEvents.NewReturnedCard.value, self.table.getReturnedCard())
+
+    def getResultsInformation(self):
+        self.emit(SendEvents.WinnerName.value, self.table.winnerName)
+        self.emit(SendEvents.WinnerCards.value, self.table.winnerCards)
+
+    def quitGame(self, data):
+        needNewHost = self.tableManager.removePlayer(self.table.tableId, self.user)
+        self.multicast(SendEvents.NewTurn.value, self.table.turn)
+        self.multicast(SendEvents.Players.value,  self.table.getPlayers())
+        self.multicast(SendEvents.PlayerLeft.value, self.user.username)
+
+    @isHost
+    def startGame(self, data):
+        self.table.distributeCards()
+        self.table.gameState = GameState.Game.value
+        self.broadcast(SendEvents.NewGameState.value, GameState.Game.value)
+
+    # @isHost
+    # def finishGame(self, data):
+    #     self.table.gameState = GameState.Results.value
+    #     self.broadcast(SendEvents.NewGameState.value, GameState.Results.value)
+
+    # @isTurn
+    # def play(self, data):
+    #     self.broadcast(SendEvents.NewTurn.value, self.table.nextTurn())
+
+    @isTurn
+    def drawDeck(self, data):
+        if not self.table.alreadyDrawn:
+            self.table.alreadyDrawn = True
+            card = self.table.drawDeck()
+            if card:
+                self.emit(SendEvents.NewCard.value, card)
+            else:
+                self.emit(SendEvents.Error.value, 'The Deck is empty.')
+                self.broadcast(SendEvents.NewReturnedCard.value, NO_CARD)
+        else:
+            self.emit(SendEvents.Error.value, 'You already took a card, now dump one')
+
+    @isTurn
+    def drawDump(self, data):
+        if not self.table.alreadyDrawn:
+            self.table.alreadyDrawn = True
+
+            cardDump = self.table.drawDump() 
+            underTopDump = self.table.getReturnedCard()
+            if not cardDump:
+                self.emit(SendEvents.Error.value, 'The dump is empty.')
+                return
+            if underTopDump:
+                self.broadcast(SendEvents.NewReturnedCard.value, underTopDump)
+            else:
+                self.emit(SendEvents.Error.value, 'The dump is now empty, you took the last card.')
+                self.broadcast(SendEvents.NewReturnedCard.value, NO_CARD)
+            self.emit(SendEvents.NewCard.value, cardDump)
+        else:
+            self.emit(SendEvents.Error.value, 'You already took a card, now dump one')
     
-    @is_turn
-    def dump_card(self, data):
-        dumpted_card = self.table.dump_card(int(data))
-        self.broadcast('newReturnedCard', dumpted_card)
-        self.emit('cards', self.table.get_current_cards())
+    @isTurn
+    def dumpCard(self, data):
+        if self.table.alreadyDrawn:
+            self.table.alreadyDrawn = False
+            dumpedCard = self.table.dumpCard(int(data))
+            self.broadcast(SendEvents.NewReturnedCard.value, dumpedCard)
+            self.emit(SendEvents.Cards.value, self.table.getCards(self.user))
+
+            wonGame = self.table.calculateScore(self.user)
+            if wonGame:
+                self.table.gameState = GameState.Results.value
+                self.table.winnerCards = self.table.getCards(self.user)
+                self.table.winnerName = self.user.username
+                self.broadcast(SendEvents.NewGameState.value, GameState.Results.value)
+            else: 
+                self.broadcast(SendEvents.NewTurn.value, self.table.nextTurn())
+        else:
+            self.emit(SendEvents.Error.value, 'You need to draw a card first')
 
 
 
