@@ -35,6 +35,30 @@ To set up the project on your local machine, follow these steps:
 1. **Clone the repository**:
    ```sh
    git clone https://github.com/yourusername/online-card-game.git
+2. **Navigate to the server directory**:
+   ```sh
+   cd server
+3. **Install the required packages**:
+   ```sh
+   pip install -r requirements.txt
+4. **Apply the migrations to set up the database**:
+   ```sh
+   python manage.py makemigrations
+   python manage.py migrate
+5. **Run the server**:
+   ```sh
+   python manage.py runserver
+6. **Navigate to the client directory**:
+   ```sh
+   cd client
+7. **Install the required packages**:
+   ```sh
+   npm ci
+8. **Run the client**:
+   ```sh
+   npm start
+
+
 
 ## 🛠️Technologies Used
 
