@@ -33,8 +33,7 @@ Below are a few screenshots showcasing different aspects of the project:
 To set up the project on your local machine, follow these steps:
 
 1. **Clone the repository**:
-   ```sh
-   git clone https://github.com/yourusername/online-card-game.git
+
 2. **Navigate to the server directory**:
    ```sh
    cd server
@@ -57,8 +56,6 @@ To set up the project on your local machine, follow these steps:
 8. **Run the client**:
    ```sh
    npm start
-
-
-
+   
 ## 🛠️Technologies Used
 
