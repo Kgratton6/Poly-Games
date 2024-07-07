@@ -1,6 +1,6 @@
-# 🃏 Online Card Game Project
+# Poly Games
 
-## Visite the website here!
+## Visit the website here
 
 https://www.poly-games.online
 
@@ -10,7 +10,7 @@ This is an ongoing personal project aimed at developing a full-stack application
 
 ## Creation
 
-The purpose of this project is to dive deeper into full-stack development and web development on my own. It offers an opportunity to learn and implement new technologies and practices that are not typically covered in a formal educational setting. Through this project, I aim to enhance my skills in both front-end and back-end development.
+The purpose of this project is to delve deeper into full-stack and web development independently, offering an opportunity to learn and implement new technologies and practices not typically covered in educational settings.
 
 ## 🌟 Features
 
@@ -28,11 +28,13 @@ Below are a few screenshots showcasing different aspects of the project:
 ![Screenshot 2](path/to/screenshot2.png)
 ![Screenshot 3](path/to/screenshot3.png)
 
-## 🛠️ Installation and Setup
+## 🚀 Installation and Setup
 
 To set up the project on your local machine, follow these steps:
 
 1. **Clone the repository**:
    ```sh
    git clone https://github.com/yourusername/online-card-game.git
+
+## 🛠️Technologies Used
 
