@@ -20,13 +20,16 @@ The purpose of this project is to delve deeper into full-stack and web developme
 - **SQLite Database**: Manages user account data efficiently with a lightweight yet powerful database solution.
 - **Redis Database**: Facilitates rapid interaction and real-time updates for in-progress games, ensuring a smooth and responsive experience.
 
-## 📸 Screenshots
+## 📸 Project Screenshots
 
-Below are a few screenshots showcasing different aspects of the project:
+### Home Page
+![Home Page](img/screenshot1.png)
 
-![Screenshot 1](path/to/screenshot1.png)
-![Screenshot 2](path/to/screenshot2.png)
-![Screenshot 3](path/to/screenshot3.png)
+### Connection Page
+![Connection Page](img/screenshot2.png)
+
+### Creating an account Page
+![Creating an Account Page](img/screenshot3.png)
 
 ## 🚀 Installation and Setup
 
