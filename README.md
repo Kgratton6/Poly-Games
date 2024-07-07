@@ -1,24 +1,19 @@
 # Poly Games
 
-## Visit the website here
+## Visit the Website
 
-https://www.poly-games.online
+Visit the live version of the project [here](https://www.poly-games.online).
 
 ## Overview
 
-This is an ongoing personal project aimed at developing a full-stack application where users can enjoy playing card games online. The project integrates both front-end and back-end technologies to create a seamless gaming experience. It allows multiple players to connect, play, and interact in real-time.
-
-## Creation
-
-The purpose of this project is to delve deeper into full-stack and web development independently, offering an opportunity to learn and implement new technologies and practices not typically covered in educational settings.
+Poly Games is an ongoing personal project aimed at developing a full-stack application where users can enjoy playing card games online. The project integrates both front-end and back-end technologies to create a seamless gaming experience, allowing multiple players to connect, play, and interact in real-time.
 
 ## 🌟 Features
 
 - **Token-based Authentication**: Ensures secure login and session management for users, enhancing the overall security of the application.
-- **Django and Angular**: Utilizes Django for the server-side logic and Angular for the client-side interface, providing a robust, responsive and scalable website.
+- **Django and Angular**: Utilizes Django for the server-side logic and Angular for the client-side interface, providing a robust, responsive, and scalable website.
 - **Deployment**: The client side is deployed on Vercel, and the server side is hosted on DigitalOcean.
-- **SQLite Database**: Manages user account data efficiently with a lightweight yet powerful database solution.
-- **Redis Database**: Facilitates rapid interaction and real-time updates for in-progress games, ensuring a smooth and responsive experience.
+- **Database**: Uses SQL databases (SQLite for development and possibly another in production), Redis for rapid interaction and real-time updates in in-progress games, Ensuring a smooth and?The correctness in
 
 ## 📸 Project Screenshots
 
