@@ -14,11 +14,11 @@ The purpose of this project is to delve deeper into full-stack and web developme
 
 ## 🌟 Features
 
-- 🔑 **Token-based Authentication**: Ensures secure login and session management for users, enhancing the overall security of the application.
-- 🖥️ **Django and Angular**: Utilizes Django for the server-side logic and Angular for the client-side interface, providing a robust, responsive and scalable website.
-- 🌐 **Deployment**: The client side is deployed on Vercel, and the server side is hosted on DigitalOcean.
-- 📂 **SQLite Database**: Manages user account data efficiently with a lightweight yet powerful database solution.
-- ⚡ **Redis Database**: Facilitates rapid interaction and real-time updates for in-progress games, ensuring a smooth and responsive experience.
+- **Token-based Authentication**: Ensures secure login and session management for users, enhancing the overall security of the application.
+- **Django and Angular**: Utilizes Django for the server-side logic and Angular for the client-side interface, providing a robust, responsive and scalable website.
+- **Deployment**: The client side is deployed on Vercel, and the server side is hosted on DigitalOcean.
+- **SQLite Database**: Manages user account data efficiently with a lightweight yet powerful database solution.
+- **Redis Database**: Facilitates rapid interaction and real-time updates for in-progress games, ensuring a smooth and responsive experience.
 
 ## 📸 Screenshots
 
@@ -32,7 +32,7 @@ Below are a few screenshots showcasing different aspects of the project:
 
 To set up the project on your local machine, follow these steps:
 
-1. **Clone the repository**:
+1. **Clone the repository**
 
 2. **Navigate to the server directory**:
    ```sh
@@ -59,3 +59,12 @@ To set up the project on your local machine, follow these steps:
    
 ## 🛠️Technologies Used
 
+<img  align="left" width="50" src="https://user-images.githubusercontent.com/25181517/183890595-779a7e64-3f43-4634-bad2-eceef4e80268.png" alt="Angular" title="Angular"/>
+<img  align="left" width="50" src="https://user-images.githubusercontent.com/25181517/192158954-f88b5814-d510-4564-b285-dff7d6400dad.png" alt="HTML" title="HTML"/>
+<img align="left"  width="50" src="https://user-images.githubusercontent.com/25181517/183898674-75a4a1b1-f960-4ea9-abcb-637170a00a75.png" alt="CSS" title="CSS"/>
+<img  align="left" width="50" src="https://user-images.githubusercontent.com/25181517/183890598-19a0ac2d-e88a-4005-a8df-1ee36782fde1.png" alt="TypeScript" title="TypeScript"/>
+<img align="left"  width="50" src="https://user-images.githubusercontent.com/25181517/183423507-c056a6f9-1ba8-4312-a350-19bcbc5a8697.png" alt="Python" title="Python"/>
+<img align="left"  width="50" src="https://github.com/marwin1991/profile-technology-icons/assets/62091613/9bf5650b-e534-4eae-8a26-8379d076f3b4" alt="Django" title="Django"/>
+<img align="left"  width="50" src="https://user-images.githubusercontent.com/25181517/182884894-d3fa6ee0-f2b4-4960-9961-64740f533f2a.png" alt="redis" title="redis"/>
+<img align="left"  width="50" src="https://github.com/marwin1991/profile-technology-icons/assets/136815194/82df4543-236b-4e45-9604-5434e3faab17" alt="SQLite" title="SQLite"/>
+<img  align="left" width="50" src="https://user-images.githubusercontent.com/25181517/183345125-9a7cd2e6-6ad6-436f-8490-44c903bef84c.png" alt="Nginx" title="Nginx"/>
