@@ -13,7 +13,7 @@ Poly Games is an ongoing personal project aimed at developing a full-stack appli
 - **Token-based Authentication**: Ensures secure login and session management for users, enhancing the overall security of the application.
 - **Django and Angular**: Utilizes Django for the server-side logic and Angular for the client-side interface, providing a robust, responsive, and scalable website.
 - **Deployment**: The client side is deployed on Vercel, and the server side is hosted on DigitalOcean.
-- **Database**: Uses SQL databases (SQLite for development and possibly another in production), Redis for rapid interaction and real-time updates in in-progress games, Ensuring a smooth and?The correctness in
+- **Database**: SQL lite for users information and Redis for rapid interaction and real-time updates in games in process.
 
 ## 📸 Project Screenshots
 
