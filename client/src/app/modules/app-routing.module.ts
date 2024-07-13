@@ -3,17 +3,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@app/guards/auth.guard';
 import { AccountComponent } from '@app/pages/account/account.component';
 import { CreateAccountComponent } from '@app/pages/create-account/create-account.component';
-import { ForgotPasswordComponent } from '@app/pages/forgot-password/forgot-password.component';
 import { HomeComponent } from '@app/pages/home/home.component';
 import { LiveGameComponent } from '@app/pages/live-game/live-game.component';
 import { LoginComponent } from '@app/pages/login/login.component';
 import { NotFoundComponent } from '@app/pages/not-found/not-found.component';
+import { TestPageComponent } from '@app/pages/test-page/test-page.component';
 import { ThirtyOneComponent } from '@app/pages/thirty-one/thirty-one.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: 'test', component: TestPageComponent },
     { path: 'login', component: LoginComponent },
-    { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'create-account', component: CreateAccountComponent },
     {
         path: '',

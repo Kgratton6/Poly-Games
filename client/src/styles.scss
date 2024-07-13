@@ -168,6 +168,7 @@ h2 {
     // doit etre un div qui contien un bouton et un icon
     position: relative;
 }
+.button-icon-send,
 .button-icon {
     position: absolute;
     top: 50%;
@@ -183,8 +184,7 @@ h2 {
 //     overflow: auto;
 // }
 .scrollable {
-    flex-grow: 1; // ou definir une height en px
-    overflow-y: auto !important;
+    flex-grow: 1;
     &::-webkit-scrollbar {
         width: 10px;
     }
@@ -264,11 +264,230 @@ input {
     outline: none;
 }
 
-// TODO : not working
-// ::ng-deep .custom-dialog-container {
-//     width: 100px;
-//     border-radius: 50% !important;
-//     mat-dialog-container {
-//         border-radius: 50% !important;
-//     }
-// }
+/// Game css
+///
+.grid-main-area {
+    width: 100%;
+    height: calc(100vh - 60px);
+    display: grid;
+    grid-template-rows: 50px 1fr 150px;
+}
+
+// Actions
+.actions-area {
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+.growing-button {
+    transition:
+        transform 0.3s ease,
+        background-color 0.3s ease;
+}
+.growing-button:hover {
+    transform: scale(1.05);
+    background-color: #333 !important;
+    color: white;
+}
+#quit-button {
+    background-color: rgb(203, 0, 0) !important;
+}
+.deactivate-button {
+    background-color: #333 !important;
+    opacity: 0.1;
+}
+
+// Table
+.table-area {
+    background-image: url('./assets/img/table.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+}
+
+.player-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 250px;
+    height: 100%;
+    box-sizing: border-box;
+}
+.player-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    //border: solid 3px green;
+}
+.placeholder-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 2px dashed #ccc;
+}
+.game-user-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin-bottom: 5px;
+}
+.name {
+    color: var(--accent-color-2) !important;
+}
+
+#start {
+    justify-content: start !important;
+}
+
+#end {
+    justify-content: end !important;
+}
+
+// Cards
+.cards-area {
+    height: 150px;
+    position: relative;
+}
+.cards-container {
+    position: absolute;
+    margin-top: 20px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: max-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cards-container .card {
+    width: 71px;
+    height: 93px;
+    cursor: pointer;
+    transition: 0.5s;
+    position: absolute;
+    top: 0;
+}
+.cards-container:hover .card {
+    transform: rotate(calc(var(--i) * 5deg)) translate(calc(var(--i) * 50px), -15px);
+}
+.cards-container .card:active {
+    translate: calc(var(--i) * 5px) -15px;
+    z-index: 100;
+}
+
+.cards-active .card {
+    transform: rotate(calc(var(--i) * 5deg)) translate(calc(var(--i) * 50px), -15px);
+}
+.cards-active .card:hover {
+    translate: calc(var(--i) * 5px) -15px !important;
+    z-index: 100;
+}
+
+// Chat CSS
+.chat-main-area {
+    width: 100%;
+    height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-container {
+    width: 90%;
+    height: 80%;
+    border-radius: 30px;
+    padding: 10px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+
+    background-color: var(--regular-button) !important;
+}
+.chat-message {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+}
+
+.message-content {
+    background-color: #ffffff;
+    color: black;
+    border-radius: 20px;
+    padding: 10px;
+    max-width: 80%;
+}
+
+.message-sender {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    font-size: 12px;
+    color: #747474;
+    margin-left: 7px;
+}
+
+.yourPlayer > .message-content {
+    background-color: var(--main-button) !important;
+    color: var(--main-button-text-color) !important;
+    display: flex;
+    flex-direction: column;
+    align-self: flex-end;
+}
+
+.yourPlayer > .message-sender,
+.yourPlayer {
+    align-self: flex-end;
+}
+
+.yourPlayer > .message-sender {
+    margin-left: 0px;
+    margin-right: 7px;
+}
+
+// chat input
+.chat-input-area {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.message-input {
+    width: 100%;
+    flex: 1;
+    display: flex;
+}
+
+.message-input > .form-input {
+    width: calc(100% - 10px);
+    border-radius: 30px;
+    text-indent: 10px;
+}
+.button-icon-send {
+    border: none;
+    width: auto;
+    height: auto;
+    background: none;
+    color: var(--input-text-color);
+    right: 15px;
+    display: flex;
+    align-items: center;
+}
+
+#send-icon {
+    transform: scale(1.8);
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(2);
+        transition: transform 0.3s ease;
+    }
+}

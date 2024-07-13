@@ -1,42 +1,64 @@
-<div class="page-container">
-    <div class="flex-page">
-        <!-- <button *ngIf="isHost" (click)="finishGame()">Finish game</button> -->
-        <h2>Its {{ table31.players[table31.turn].username }} to play!</h2>
+<div class="grid-main-area">
+    <div class="actions-area">
+        <button mat-button class="accent-button-1 growing-button" id="quit-button" (click)="quitGame()">Quit game</button>
+        <h2>Its {{ table31.players[table31.turn].username }}'s turn to play</h2>
+        <button mat-button class="accent-button-1 deactivate-button">Start game</button>
+    </div>
+    <div class="table-area">
+        <div class="player-grid">
+            <div *ngFor="let slot of slots; let i = index" class="player-slot" [attr.id]="i === 1 || i === 3 || i === 5 ? 'start' : 'end'">
+                <ng-container *ngIf="slot.player; else placeholder">
+                    <img
+                        src="./assets/img/profile-icons/{{ slot.player.icon }}.png"
+                        class="user-icon game-user-icon"
+                        [ngClass]="{ isTurn: slot.player.username === table31.players[table31.turn].username }"
+                    />
+                    <div class="info">
+                        <span class="name">{{ slot.player.username }}</span>
+                        <span class="name" *ngIf="slot.isHost">(host)</span>
+                    </div>
+                </ng-container>
+                <ng-template #placeholder>
+                    <div class="placeholder-icon"></div>
+                </ng-template>
+            </div>
+        </div>
+        <div class="cards-grid">
+            <div *ngFor="let slot of slots; let i = index" [ngClass]="'player-' + i + '-cards cards-grid-cell player-cards-container'">
+                <ng-container *ngIf="slot.player && i !== 4; else placeholder">
+                    <img class="small-card" style="--i: -1" src="./assets/img/cards/returned-blue.png" />
+                    <img class="small-card" style="--i: -0" src="./assets/img/cards/returned-blue.png" />
+                    <img class="small-card" style="--i: 1" src="./assets/img/cards/returned-blue.png" />
+                </ng-container>
+                <ng-template #placeholder> </ng-template>
+            </div>
+        </div>
+        <div class="center-images">
+            <div class="dump-stack">
+                <img
+                    *ngIf="dump && dump.length > 0"
+                    [style.--f]="animationOffset"
+                    src="./assets/img/cards/{{ dump[dump.length - 1].color }} {{ dump[dump.length - 1].value }}.png"
+                    class="center-image dump-stack-card current-returned"
+                    (click)="drawDump()"
+                />
+                <img
+                    *ngIf="dump && dump.length > 1"
+                    src="./assets/img/cards/{{ dump[dump.length - 2].color }} {{ dump[dump.length - 2].value }}.png"
+                    class="center-image dump-stack-card previously-returned"
+                />
+                <div *ngIf="!dump || dump.length <= 1" class="center-placeholder center-image">
+                    <span>Empty</span>
+                </div>
+            </div>
+            <img src="./assets/img/cards/returned-blue.png" class="center-image deck-image" (click)="drawDeck()" />
+        </div>
+    </div>
 
-        <div class="card-container">
-            <div *ngFor="let card of cards; let i = index">
+    <div class="cards-area">
+        <div class="cards-container" [ngClass]="{ 'cards-active': yourPlayer.username === table31.players[table31.turn].username }">
+            <div *ngFor="let card of cards; let i = index" class="card" [style.--i]="i - (cards.length - 1) / 2">
                 <img src="./assets/img/cards/{{ card.color }} {{ card.value }}.png" (click)="dumpCard(i)" />
-            </div>
-        </div>
-
-        <div>
-            Dump : <br />
-            <img
-                *ngIf="returnedCard && returnedCard.value !== 0"
-                src="./assets/img/cards/{{ returnedCard.color }} {{ returnedCard.value }}.png"
-                (click)="drawDump()"
-            />
-            <div *ngIf="returnedCard && returnedCard.value === 0" (click)="drawDump()">
-                <img id="null-image" src="./assets/img/cards/null 0.png" />
-            </div>
-        </div>
-
-        <div>
-            Deck : <br />
-            <img src="./assets/img/cards/returned-blue.png" (click)="drawDeck()" />
-        </div>
-
-        <div *ngIf="table31.players">
-            <div *ngFor="let player of table31.players">
-                <mat-expansion-panel [disabled]="true">
-                    <mat-expansion-panel-header>
-                        <img src="./assets/img/profile-icons/{{ player.icon }}.png" class="user-icon" />
-                        <div class="info">
-                            <span class="name">{{ player.username }}</span>
-                            <span class="info">Number of cards: {{ player.nCards }}</span>
-                        </div>
-                    </mat-expansion-panel-header>
-                </mat-expansion-panel>
             </div>
         </div>
     </div>
