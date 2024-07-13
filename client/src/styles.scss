@@ -185,6 +185,7 @@ h2 {
 // }
 .scrollable {
     flex-grow: 1;
+    overflow-y: auto !important;
     &::-webkit-scrollbar {
         width: 10px;
     }
