@@ -31,6 +31,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ThirtyOneComponent } from './pages/thirty-one/thirty-one.component';
 import { TablesListComponent } from './components/tables-list/tables-list.component';
+import { TestPageComponent } from './pages/test-page/test-page.component';
 
 /**
  * Main module that is used in main.ts.
@@ -62,6 +63,7 @@ import { TablesListComponent } from './components/tables-list/tables-list.compon
         ThirtyOneResultsComponent,
         ThirtyOneComponent,
         TablesListComponent,
+        TestPageComponent,
     ],
     imports: [
         AppMaterialModule,

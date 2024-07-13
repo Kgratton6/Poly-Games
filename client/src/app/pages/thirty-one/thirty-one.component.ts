@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GameState, ReceveEvents, SendEvents } from '@app/consts/events.const';
 import { DEFAULT_USER } from '@app/consts/profile.const';
@@ -7,6 +8,7 @@ import { NotificationService } from '@app/services/notification.service';
 import { SocketThirtyOneService } from '@app/services/socket-thirty-one.service';
 import { TokenService } from '@app/services/token.service';
 import { UsersDataService } from '@app/services/users-data.service';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'app-thirty-one',
@@ -17,6 +19,10 @@ export class ThirtyOneComponent implements OnInit, OnDestroy {
     tableId: string;
     gameState: GameState;
     yourPlayer: User = DEFAULT_USER;
+    messageForm = new FormGroup({
+        message: new FormControl(''),
+    });
+    sendIcon = faPaperPlane;
 
     constructor(
         protected socket: SocketThirtyOneService,
@@ -36,6 +42,7 @@ export class ThirtyOneComponent implements OnInit, OnDestroy {
         });
         this.socket.on(ReceveEvents.QuickedOut, (message: string) => {
             this.notification.notify(message);
+            this.token.deleteGameToken();
             this.router.navigate(['/home']);
         });
         this.socket.on(ReceveEvents.NewGameState, (gameState: GameState) => {
@@ -66,9 +73,7 @@ export class ThirtyOneComponent implements OnInit, OnDestroy {
         this.socket.disconnect();
     }
 
-    quitGame() {
-        this.socket.send(SendEvents.QuitGame);
-        this.token.deleteGameToken();
-        this.router.navigate(['/home']);
+    sendMessage() {
+        console.log(this.messageForm.value.message);
     }
 }

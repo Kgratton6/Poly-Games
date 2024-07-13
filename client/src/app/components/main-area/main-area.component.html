@@ -1,6 +1,6 @@
 <div id="main-container">
     <h1>Welcome to Poly Games</h1>
-    <div class="description">Play classic games like chess, poker and blackjack with other Polytechnique students!</div>
+    <div class="description">Play classic games like Thirty One, Uno and blackjack with friends!</div>
 
     <ul id="main-navigation">
         <li class="nav-item" [ngClass]="{ active: selectedComponent === 'games' }">
@@ -16,29 +16,26 @@
     <div *ngIf="selectedComponent === 'games'" class="scrollable games-container">
         <div class="chess-container game-container">
             <div class="game-title">Thirty One</div>
-            <div class="game-description">Play a card game when you have to get 31 points</div>
+            <div class="game-description">Play a card game where you have to get 31 points</div>
             <div>
-                <button mat-button mat-button class="accent-button-1" (click)="createTable('thirty-one')">Play Now</button>
-                <button mat-button class="accent-button-1">Joind a table</button>
-                <button mat-button class="accent-button-1">Create a table</button>
+                <button mat-button class="accent-button-1" (click)="createTable('thirty-one')">Create a table</button>
+                <button mat-button class="accent-button-1">Rules</button>
             </div>
         </div>
-        <div class="poker-container game-container">
-            <div class="game-title">Poker</div>
-            <div class="game-description">Join a table and play texas Hold'em up to 8 players</div>
+        <div class="uno-container game-container">
+            <div class="game-title">Uno</div>
+            <div class="game-description">Join a table and play the classic card game Uno with friends</div>
             <div>
-                <button mat-button mat-button class="accent-button-1">Play Now</button>
-                <button mat-button class="accent-button-1">Joind a table</button>
                 <button mat-button class="accent-button-1">Create a table</button>
+                <button mat-button class="accent-button-1">Rules</button>
             </div>
         </div>
         <div class="blackjack-container game-container">
-            <div class="game-title">Black Jack</div>
-            <div class="game-description">Test your luck in a fast-paces game of 21 agaist a dealder</div>
+            <div class="game-title">Blackjack</div>
+            <div class="game-description">Test your luck in a fast-paced game of 21 against a dealer</div>
             <div>
-                <button mat-button mat-button class="accent-button-1">Play Now</button>
-                <button mat-button class="accent-button-1">Joind a table</button>
                 <button mat-button class="accent-button-1">Create a table</button>
+                <button mat-button class="accent-button-1">Rules</button>
             </div>
         </div>
     </div>

@@ -1,0 +1,194 @@
+// .all-cards {
+//     display: grid;
+//     grid-template-columns: repeat(5, 71px); /* 5 columns with each column being 71px wide */
+//     grid-template-rows: repeat(1, 93px); /* 5 rows with each row being 93px tall */
+//     gap: 10px; /* Optional: add some space between cards */
+//     border: solid 3px green;
+// }
+// .card-container {
+//     width: 71px;
+//     height: 93px;
+//     position: relative;
+//     border: solid 2px red;
+//     //transition: transform 1s;
+// }
+
+// .card-container.moving {
+//     transform: translate(336px, 416px); /* Move the card to the (4,4) position */
+// }
+
+// .card {
+//     position: absolute;
+//     width: 71px;
+//     height: 93px;
+
+//     perspective: 1000px;
+//     cursor: pointer;
+// }
+
+// .card-inner {
+//     position: relative;
+//     text-align: center;
+//     //transition: transform 0.6s;
+//     transition:
+//         transform 0.6s,
+//         left 0.6s,
+//         top 0.6s;
+//     transform-style: preserve-3d;
+// }
+
+// .card-front,
+// .card-back {
+//     position: absolute;
+
+//     -webkit-backface-visibility: hidden;
+//     backface-visibility: hidden;
+// }
+
+// .card-back {
+//     transform: rotateY(180deg);
+// }
+
+// .card.is-flipped .card-inner {
+//     transform: rotateY(180deg);
+// }
+
+// .transitioning {
+//     transition:
+//         transform 0.6s,
+//         left 0.6s,
+//         top 0.6s; /* Include left and top transitions for movement */
+// }
+
+// .wrapper {
+//     display: flex;
+//     flex-direction: column;
+//     position: relative;
+//     justify-content: space-around;
+//     align-items: center;
+//     width: 100%;
+//     height: 100vh;
+// }
+
+// .cards {
+//     /*   position: absolute; */
+//     /*   bottom: 4em; */
+//     display: flex;
+//     justify-content: center;
+//     gap: 8px;
+// }
+
+// .card {
+//     display: block;
+//     width: 75px;
+//     height: 100px;
+//     border: 1px solid #df93b8;
+//     cursor: pointer;
+//     transition: all 0.25s ease-in;
+//     background-color: #000;
+//     border-radius: 4px;
+//     color: #fff;
+// }
+
+// .card:hover {
+//     transform: translateY(-8px);
+// }
+
+// .card.show {
+//     animation-name: displayCard;
+//     //animation-duration: 0.2s;
+//     animation-duration: 0.2s;
+//     animation-iteration-count: 1;
+//     animation-timing-function: linear;
+//     animation-fill-mode: forwards;
+// }
+
+// @keyframes displayCard {
+//     0% {
+//         transform: translateY(0) scale(1) rotate(0);
+//     }
+
+//     100% {
+//         transform: translate(-25%, calc(-15vh)) scale(1.4);
+//         //transform: translate(-0%, calc(-50vh)) scale(2) rotate(-360deg);
+//     }
+// }
+
+// .card.dismiss {
+//     animation: 0.6s dismissCard 1;
+// }
+
+// // @keyframes dismissCard {
+// //     0% {
+// //         transform: translate(-25%, calc(-15vh)) scale(1.4);
+// //     }
+
+// //     100% {
+// //         transform: translateY(0) scale(1) rotate(0);
+// //     }
+// // }
+
+// .cards:has(.card:hover) .card:not(:hover) {
+//     filter: grayscale(25%) blur(1px);
+//     opacity: 0.6;
+// }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.big-parent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container .card {
+    position: absolute;
+    width: 71px;
+    height: 93px;
+    border-radius: 3px;
+    background: #5e5cfc;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: rgba(0, 0, 0, 1);
+    cursor: pointer;
+
+    transition: 0.5s;
+    transform-origin: 50% 100%;
+
+    //filter: hue-rotate(calc(var(--i) * 50deg));
+    box-shadow: 0;
+}
+
+.container:active .card {
+    background: #333; // mettre foncé
+    //filter: grayscale(25%);
+}
+
+.container:hover .card {
+    transform: rotate(calc(var(--i) * 5deg)) translate(calc(var(--i) * 50px), -15px);
+    color: rgba(0, 0, 0, 0.25);
+}
+
+.container .card:active {
+    translate: calc(var(--i) * 5px) -15px;
+    z-index: 100;
+    background: #5e5cfc;
+    //border: solid 3px green;
+}

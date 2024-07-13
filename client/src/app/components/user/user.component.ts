@@ -8,8 +8,4 @@ import { User } from '@app/interfaces/user';
 })
 export class UserComponent {
     @Input() user: User;
-
-    removeFriend() {
-        console.log('removed : ' + this.user.username);
-    }
 }
