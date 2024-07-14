@@ -16,6 +16,7 @@ export class HeaderComponent implements OnInit {
     signOut = faSignOutAlt;
     isLightTheme: boolean = false;
     profileIcon = DEFAULT_ICON;
+    profileName = '';
 
     constructor(
         private router: Router,
@@ -30,9 +31,11 @@ export class HeaderComponent implements OnInit {
         this.userDataService.getProfile().subscribe({
             next: (profile) => {
                 this.profileIcon = profile.icon;
+                this.profileName = profile.username;
             },
             error: () => {
                 this.profileIcon = DEFAULT_ICON;
+                this.profileName = '';
             },
         });
     }

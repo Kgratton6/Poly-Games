@@ -1,0 +1,34 @@
+.user-info {
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.user-details {
+    text-align: left;
+}
+
+.name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.id {
+    margin-bottom: 5px;
+}
+
+.email {
+    margin-bottom: 10px;
+}

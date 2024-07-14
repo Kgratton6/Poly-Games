@@ -1,11 +1,13 @@
 <app-header></app-header>
 <div class="page-container">
     <div class="flex-page">
-        <div>
+        <div class="user-info">
             <img src="./assets/img/profile-icons/{{ user.icon }}.png" class="profile-icon" />
-            <div class="name">{{ user.firstName }} {{ user.lastName }}</div>
-            <div class="id">&#64;{{ user.username }}</div>
-            <div>{{ user.email }}</div>
+            <div class="user-details">
+                <div class="name">{{ user.firstName }} {{ user.lastName }}</div>
+                <div class="id">&#64;{{ user.username }}</div>
+                <div class="email">{{ user.email }}</div>
+            </div>
         </div>
     </div>
 </div>

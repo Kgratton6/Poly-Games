@@ -1,10 +1,24 @@
-<div *ngFor="let table of tables">
-    <mat-expansion-panel [disabled]="true" (click)="joindGame('thirty-one', table.tableId)">
-        <mat-expansion-panel-header>
-            <div>Game # {{ table.tableId }}</div>
-            <div *ngFor="let player of table.players">
-                <img src="./assets/img/profile-icons/{{ player.icon }}.png" class="user-icon" />
+<div class="scrollable tables-container">
+    <div *ngFor="let table of tables31" class="table-container">
+        <div class="text-elements">
+            <div class="game-title">Thirty One</div>
+            <div class="table-number"># {{ table.tableId }}</div>
+            <div>
+                <button mat-button class="accent-button-1" (click)="join31(table.tableId)">Join table</button>
+                <button mat-button class="accent-button-1">Rules</button>
             </div>
-        </mat-expansion-panel-header>
-    </mat-expansion-panel>
+        </div>
+        <div class="all-players">
+            <div class="empty-players">
+                <div *ngFor="let i of [0, 1, 2, 3, 4, 5]">
+                    <div class="empty-player-icon"></div>
+                </div>
+            </div>
+            <div class="players">
+                <div *ngFor="let player of table.players">
+                    <img src="./assets/img/profile-icons/{{ player.icon }}.png" class="empty-player-icon" />
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

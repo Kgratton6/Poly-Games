@@ -11,7 +11,7 @@ import { TokenService } from '@app/services/token.service';
     styleUrls: ['./tables-list.component.scss'],
 })
 export class TablesListComponent implements OnInit {
-    tables: Table31[] = [];
+    tables31: Table31[] = [];
 
     constructor(
         private gameService: GameService,
@@ -22,18 +22,18 @@ export class TablesListComponent implements OnInit {
 
     ngOnInit(): void {
         this.gameService.getTables('thirty-one').subscribe((tables: Table31[]) => {
-            this.tables = tables;
+            this.tables31 = tables;
         });
     }
 
-    joindGame(gameType: string, tableId: string) {
+    join31(tableId: string) {
         const game = this.token.getGameToken();
         if (game) {
-            const gameExists = this.tables.find((table) => table.tableId === game.tableId);
+            const gameExists = this.tables31.find((table) => table.tableId === game.tableId);
             if (gameExists) this.notification.notify('you are already in game.');
-            else this.router.navigate([`live-game/${gameType}`, tableId]);
+            else this.router.navigate(['live-game/thirty-one', tableId]);
         } else {
-            this.router.navigate([`live-game/${gameType}`, tableId]);
+            this.router.navigate(['live-game/thirty-one', tableId]);
         }
     }
 }
