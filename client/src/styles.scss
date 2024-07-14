@@ -28,8 +28,6 @@ body {
     color: var(--secondary-text-color);
 }
 
-/* You can add global styles to this file, and also import other style files */
-
 // Containers
 .page-container {
     background-color: var(--background-color);
@@ -42,7 +40,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: hidden; // à changer peut etre
+    overflow: hidden;
 }
 
 .grid-page {
@@ -174,7 +172,7 @@ h2 {
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    //right: 20px; // à changer par left par exemple
+    //right: 20px;
 }
 
 // il faut que l'element soit :
@@ -265,8 +263,7 @@ input {
     outline: none;
 }
 
-/// Game css
-///
+/// Games CSS ----------------------------------------------------------------------------
 .grid-main-area {
     width: 100%;
     height: calc(100vh - 60px);
@@ -324,7 +321,6 @@ input {
     display: flex;
     flex-direction: column;
     align-items: center;
-    //border: solid 3px green;
 }
 .placeholder-icon {
     width: 70px;
@@ -380,7 +376,6 @@ input {
     translate: calc(var(--i) * 5px) -15px;
     z-index: 100;
 }
-
 .cards-active .card {
     transform: rotate(calc(var(--i) * 5deg)) translate(calc(var(--i) * 50px), -15px);
 }
@@ -389,107 +384,177 @@ input {
     z-index: 100;
 }
 
-// Chat CSS
-.chat-main-area {
-    width: 100%;
-    height: calc(100vh - 60px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.chat-container {
-    width: 90%;
-    height: 80%;
-    border-radius: 30px;
-    padding: 10px;
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-
-    background-color: var(--regular-button) !important;
-}
-.chat-message {
-    display: flex;
-    flex-direction: column;
-    align-self: flex-start;
-}
-
-.message-content {
-    background-color: #ffffff;
-    color: black;
-    border-radius: 20px;
-    padding: 10px;
-    max-width: 80%;
-}
-
-.message-sender {
-    display: flex;
-    flex-direction: column;
-    align-self: flex-start;
-    font-size: 12px;
-    color: #747474;
-    margin-left: 7px;
-}
-
-.yourPlayer > .message-content {
-    background-color: var(--main-button) !important;
-    color: var(--main-button-text-color) !important;
-    display: flex;
-    flex-direction: column;
-    align-self: flex-end;
-}
-
-.yourPlayer > .message-sender,
-.yourPlayer {
-    align-self: flex-end;
-}
-
-.yourPlayer > .message-sender {
-    margin-left: 0px;
-    margin-right: 7px;
-}
-
-// chat input
-.chat-input-area {
-    width: 90%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-.message-input {
-    width: 100%;
-    flex: 1;
-    display: flex;
-}
-
-.message-input > .form-input {
-    width: calc(100% - 10px);
-    border-radius: 30px;
-    text-indent: 10px;
-}
-.button-icon-send {
-    border: none;
-    width: auto;
-    height: auto;
-    background: none;
-    color: var(--input-text-color);
-    right: 15px;
-    display: flex;
-    align-items: center;
-}
-
-#send-icon {
-    transform: scale(1.8);
-    cursor: pointer;
-
-    &:hover {
-        transform: scale(2);
-        transition: transform 0.3s ease;
+// In Game CSS and animations
+@keyframes borderBlink {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 128, 0, 0.7);
     }
+    50% {
+        box-shadow: 0 0 0 8px rgba(0, 128, 0, 0.8);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 128, 0, 0.8);
+    }
+}
+.user-icon.isTurn {
+    box-shadow: 0 0 0 0 transparent;
+    animation: borderBlink 2s infinite;
+}
+
+@keyframes draw-card {
+    0% {
+        transform: translateY(-300px) scale(0.5);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+.new-card {
+    animation: draw-card 1s ease-out;
+}
+
+@keyframes dump-card {
+    0% {
+        transform: rotate(calc(var(--f) * 60deg)) translateY(400px) scale(0.3);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    100% {
+        transform: rotate(0deg) translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+.dumping-card {
+    animation: dump-card 1s ease-out;
+}
+
+@keyframes drawing-dump-animation {
+    0% {
+        transform: rotate(0deg) translateY(0) scale(1);
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: rotate(calc(var(--f) * 60deg)) translateY(400px) scale(0.3);
+        opacity: 0;
+    }
+}
+.drawing-dump {
+    animation: drawing-dump-animation 1s ease-out;
+}
+
+.center-images {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 20px;
+}
+.center-images .center-image {
+    width: 71px;
+    height: 93px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+.center-images .center-image:hover {
+    transform: scale(1.1);
+}
+.center-images .center-placeholder {
+    width: 71px;
+    height: 93px;
+    border: 2px dotted gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: gray;
+    font-size: 14px;
+}
+
+.dump-stack,
+.deck-stack {
+    position: relative;
+    width: 71px;
+    height: 93px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.dump-stack .center-image,
+.deck-stack .center-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.current-returned,
+.over-deck {
+    z-index: 2;
+}
+
+.previously-returned,
+.under-deck {
+    z-index: 1;
+}
+
+// Players cards
+.player-cards-container {
+    position: relative;
+}
+.cards-grid {
+    top: 0;
+    left: 0;
+    position: absolute;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 0px;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+.cards-grid-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.small-card {
+    z-index: 0;
+    width: 30px;
+    height: 40px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.player-0-cards {
+    transform: rotate(120deg) translate(40px);
+}
+.player-1-cards {
+    transform: rotate(180deg) translate(0px, 30px);
+}
+.player-2-cards {
+    transform: rotate(-120deg) translate(-40px, -10px);
+}
+.player-3-cards {
+    transform: rotate(60deg) translate(-20px, -10px);
+}
+.player-4-cards {
+    transform: rotate(0deg) translate(0, 30px);
+}
+.player-5-cards {
+    transform: rotate(-60deg) translate(40px, -10px);
 }

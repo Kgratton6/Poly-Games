@@ -35,7 +35,7 @@ export class ThirtyOneResultsComponent implements OnInit {
 
     quitGame() {
         this.socket.send(SendEvents.QuitGame);
-        this.token.deleteGameToken(); // TODO : doent delete the token
+        this.token.deleteGameToken();
         this.router.navigate(['/home']);
     }
 }

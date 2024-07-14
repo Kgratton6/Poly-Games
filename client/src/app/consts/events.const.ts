@@ -34,10 +34,6 @@ export enum SendEvents {
     DumpCard = 'dumpCard',
     QuitGame = 'quitGame',
     ThirtyOne = 'thirtyOne',
-
-    // temporaire
-    FinishGame = 'finishGame',
-    Play = 'play',
 }
 
 export enum GameState {

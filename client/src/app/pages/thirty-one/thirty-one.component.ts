@@ -1,14 +1,32 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GameState, ReceveEvents, SendEvents } from '@app/consts/events.const';
 import { DEFAULT_USER } from '@app/consts/profile.const';
+import { Text } from '@app/interfaces/text';
 import { User } from '@app/interfaces/user';
 import { NotificationService } from '@app/services/notification.service';
 import { SocketThirtyOneService } from '@app/services/socket-thirty-one.service';
 import { TokenService } from '@app/services/token.service';
 import { UsersDataService } from '@app/services/users-data.service';
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+
+const CHATS_EXAMPLE: Text[] = [
+    {
+        sender: 'nadoudaa',
+        message: 'Hi there!',
+    },
+    {
+        sender: 'kgratton6',
+        message: 'message vraiment long parceque il faut quand meme tester',
+    },
+    {
+        sender: 'kgratton6',
+        message: 'Hi there!',
+    },
+    {
+        sender: 'kgratton6',
+        message: 'Hi there!',
+    },
+];
 
 @Component({
     selector: 'app-thirty-one',
@@ -19,10 +37,7 @@ export class ThirtyOneComponent implements OnInit, OnDestroy {
     tableId: string;
     gameState: GameState;
     yourPlayer: User = DEFAULT_USER;
-    messageForm = new FormGroup({
-        message: new FormControl(''),
-    });
-    sendIcon = faPaperPlane;
+    chats: Text[] = CHATS_EXAMPLE;
 
     constructor(
         protected socket: SocketThirtyOneService,
@@ -58,7 +73,6 @@ export class ThirtyOneComponent implements OnInit, OnDestroy {
                 this.yourPlayer = profile;
             },
         });
-
         this.route.paramMap.subscribe((params) => {
             const tableId = params.get('tableId');
             if (tableId) {
@@ -73,7 +87,7 @@ export class ThirtyOneComponent implements OnInit, OnDestroy {
         this.socket.disconnect();
     }
 
-    sendMessage() {
-        console.log(this.messageForm.value.message);
+    newText(message: Text) {
+        console.log(message);
     }
 }
