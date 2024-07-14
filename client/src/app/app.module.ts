@@ -17,6 +17,7 @@ import { MainAreaComponent } from './components/main-area/main-area.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { SocialAreaComponent } from './components/social-area/social-area.component';
+import { TablesListComponent } from './components/tables-list/tables-list.component';
 import { ThirtyOneGameComponent } from './components/thirty-one/thirty-one-game/thirty-one-game.component';
 import { ThirtyOneResultsComponent } from './components/thirty-one/thirty-one-results/thirty-one-results.component';
 import { ThirtyOneWaitingComponent } from './components/thirty-one/thirty-one-waiting/thirty-one-waiting.component';
@@ -24,14 +25,12 @@ import { UserListComponent } from './components/user-list/user-list.component';
 import { UserComponent } from './components/user/user.component';
 import { AccountComponent } from './pages/account/account.component';
 import { CreateAccountComponent } from './pages/create-account/create-account.component';
-import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LiveGameComponent } from './pages/live-game/live-game.component';
 import { LoginComponent } from './pages/login/login.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ThirtyOneComponent } from './pages/thirty-one/thirty-one.component';
-import { TablesListComponent } from './components/tables-list/tables-list.component';
-import { TestPageComponent } from './pages/test-page/test-page.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 /**
  * Main module that is used in main.ts.
@@ -45,7 +44,6 @@ import { TestPageComponent } from './pages/test-page/test-page.component';
         HomeComponent,
         NotFoundComponent,
         LoginComponent,
-        ForgotPasswordComponent,
         HeaderComponent,
         HomeComponent,
         UserComponent,
@@ -63,7 +61,7 @@ import { TestPageComponent } from './pages/test-page/test-page.component';
         ThirtyOneResultsComponent,
         ThirtyOneComponent,
         TablesListComponent,
-        TestPageComponent,
+        ChatComponent,
     ],
     imports: [
         AppMaterialModule,

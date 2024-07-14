@@ -1,13 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReceveEvents, SendEvents } from '@app/consts/events.const';
-import { ANIMATION_DELAY, MAX_N_PLAYERS, MY_PLAYER_POSITION } from '@app/consts/game.const';
+import { MY_PLAYER_POSITION } from '@app/consts/game.const';
 import { DEFAULT_TABLE31 } from '@app/consts/player.const';
 import { DEFAULT_USER } from '@app/consts/profile.const';
 import { Card } from '@app/interfaces/card';
 import { Table31 } from '@app/interfaces/game31';
 import { Player31 } from '@app/interfaces/player';
 import { User } from '@app/interfaces/user';
+import { GameVisualsService } from '@app/services/game-visuals.service';
 import { NotificationService } from '@app/services/notification.service';
 import { SocketThirtyOneService } from '@app/services/socket-thirty-one.service';
 import { TokenService } from '@app/services/token.service';
@@ -25,13 +26,13 @@ export class ThirtyOneGameComponent implements OnInit {
     dump: Card[] = [];
     isHost = false;
     animationOffset = 0;
-    movementNeeded = 0;
 
     constructor(
         private socket: SocketThirtyOneService,
         protected notification: NotificationService,
         protected token: TokenService,
         private router: Router,
+        private gameVisuals: GameVisualsService,
     ) {}
 
     ngOnInit() {
@@ -41,7 +42,15 @@ export class ThirtyOneGameComponent implements OnInit {
                 this.notification.notify('you are the Host');
                 this.isHost = true;
             }
-            this.updateSlots();
+            this.slots = this.gameVisuals.updateSlots(this.table31.players, this.yourPlayer);
+        });
+        this.socket.on(ReceveEvents.Players, (players: Player31[]) => {
+            this.table31.players = players;
+            if (this.table31.players[0].username === this.yourPlayer.username) {
+                this.notification.notify('you are the host.');
+                this.isHost = true;
+            }
+            this.slots = this.gameVisuals.updateSlots(this.table31.players, this.yourPlayer);
         });
         this.socket.on(ReceveEvents.NewTurn, (newTurn: number) => {
             this.table31.turn = newTurn;
@@ -51,8 +60,10 @@ export class ThirtyOneGameComponent implements OnInit {
         });
         this.socket.on(ReceveEvents.NewCard, (newCard: Card) => {
             this.cards.push(newCard);
-            this.drawCardAnimation();
+            this.gameVisuals.drawCardAnimation();
         });
+
+        // TODO : simplifier avec : qui a draw quoi
         this.socket.on(ReceveEvents.NewReturnedCard, (returnedCard: Card) => {
             if (returnedCard.color !== 'null') {
                 if (
@@ -60,27 +71,17 @@ export class ThirtyOneGameComponent implements OnInit {
                     returnedCard.value === this.dump[this.dump.length - 2].value &&
                     returnedCard.color === this.dump[this.dump.length - 2].color
                 ) {
-                    this.drawDumpAnimation();
+                    this.updateAnimationOffset();
+                    this.gameVisuals.drawDumpAnimation(this.dump, this.table31.turn);
                 } else {
-                    this.dumpCardAnimation();
+                    this.updateAnimationOffset();
+                    this.gameVisuals.dumpCardAnimation();
                     this.dump.push(returnedCard);
                 }
             } else {
                 this.dump = [];
             }
         });
-        this.socket.on(ReceveEvents.Players, (players: Player31[]) => {
-            this.table31.players = players;
-            if (this.table31.players[0].username === this.yourPlayer.username) {
-                this.notification.notify('you are the new host.');
-                this.isHost = true;
-            }
-            this.updateSlots();
-        });
-    }
-
-    play() {
-        this.socket.send(SendEvents.Play);
     }
 
     drawDeck() {
@@ -95,73 +96,17 @@ export class ThirtyOneGameComponent implements OnInit {
         this.socket.send(SendEvents.DumpCard, cardToDump.toString());
     }
 
-    finishGame() {
-        this.socket.send(SendEvents.FinishGame);
-    }
-
     quitGame() {
         this.socket.send(SendEvents.QuitGame);
-        this.token.deleteGameToken(); // TODO : doent delete the token
+        this.token.deleteGameToken();
         this.router.navigate(['/home']);
     }
 
-    updateSlots() {
-        const tempArray: { player: Player31 | null; isHost: boolean }[] = Array.from({ length: MAX_N_PLAYERS }, (_, i) => ({
-            player: this.table31.players[i] || null,
-            isHost: i === 0 && this.table31.players[0]?.username === this.yourPlayer.username,
-        }));
-
-        const yourPlayerIndex = tempArray.findIndex((slot) => slot.player?.username === this.yourPlayer.username);
-        this.movementNeeded = MY_PLAYER_POSITION - (yourPlayerIndex % MAX_N_PLAYERS);
-
-        for (let i = 0; i < tempArray.length; i++) {
-            const newIndex = (i + this.movementNeeded) % tempArray.length;
-            this.slots[newIndex] = tempArray[i];
-        }
-        [this.slots[0], this.slots[2]] = [this.slots[2], this.slots[0]];
+    updateAnimationOffset() {
+        this.animationOffset = -(this.gameVisuals.getPlayerMovement() - MY_PLAYER_POSITION + this.table31.turn);
     }
 
-    dumpCardAnimation() {
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        this.animationOffset = -(this.movementNeeded - 4 + this.table31.turn);
-        setTimeout(() => {
-            const returnedCardElement = document.querySelector('.center-image.dump-stack-card.current-returned');
-            if (returnedCardElement) {
-                returnedCardElement.classList.add('dumping-card');
-                setTimeout(() => {
-                    returnedCardElement.classList.remove('dumping-card');
-                }, ANIMATION_DELAY);
-            }
-        }, 0);
-    }
-
-    drawDumpAnimation() {
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        this.animationOffset = -(this.movementNeeded - 4 + this.table31.turn);
-        if (this.animationOffset !== 0) {
-            setTimeout(() => {
-                const returnedCardElement = document.querySelector('.center-image.dump-stack-card.current-returned');
-                if (returnedCardElement) {
-                    returnedCardElement.classList.add('drawing-dump');
-                    setTimeout(() => {
-                        returnedCardElement.classList.remove('drawing-dump');
-                        this.dump.pop();
-                    }, ANIMATION_DELAY);
-                }
-            }, 0);
-        } else {
-            this.dump.pop();
-        }
-    }
-
-    drawCardAnimation() {
-        setTimeout(() => {
-            const cardElements = document.querySelectorAll('.card');
-            const newCardElement = cardElements[cardElements.length - 1];
-            newCardElement.classList.add('new-card');
-            setTimeout(() => {
-                newCardElement.classList.remove('new-card');
-            }, ANIMATION_DELAY);
-        }, 0);
+    getCardIndices(nCards: number): number[] {
+        return Array.from({ length: nCards }, (_, index) => index - (nCards - 1) / 2);
     }
 }

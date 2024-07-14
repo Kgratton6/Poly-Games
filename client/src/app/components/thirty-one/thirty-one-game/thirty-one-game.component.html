@@ -26,11 +26,15 @@
         <div class="cards-grid">
             <div *ngFor="let slot of slots; let i = index" [ngClass]="'player-' + i + '-cards cards-grid-cell player-cards-container'">
                 <ng-container *ngIf="slot.player && i !== 4; else placeholder">
-                    <img class="small-card" style="--i: -1" src="./assets/img/cards/returned-blue.png" />
-                    <img class="small-card" style="--i: -0" src="./assets/img/cards/returned-blue.png" />
-                    <img class="small-card" style="--i: 1" src="./assets/img/cards/returned-blue.png" />
+                    <ng-container *ngFor="let cardIndex of getCardIndices(slot.player.nCards)">
+                        <img
+                            class="small-card"
+                            src="./assets/img/cards/returned-blue.png"
+                            [style.transform]="'rotate(' + cardIndex * 7 + 'deg) translateX(' + cardIndex * 10 + 'px)'"
+                        />
+                    </ng-container>
                 </ng-container>
-                <ng-template #placeholder> </ng-template>
+                <ng-template #placeholder></ng-template>
             </div>
         </div>
         <div class="center-images">
@@ -51,7 +55,10 @@
                     <span>Empty</span>
                 </div>
             </div>
-            <img src="./assets/img/cards/returned-blue.png" class="center-image deck-image" (click)="drawDeck()" />
+            <div class="deck-stack">
+                <img src="./assets/img/cards/returned-blue.png" class="center-image over-deck" (click)="drawDeck()" />
+                <img src="./assets/img/cards/returned-blue.png" class="center-image under-deck" />
+            </div>
         </div>
     </div>
 

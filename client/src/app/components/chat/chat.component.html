@@ -1,0 +1,17 @@
+<div class="chat-main-area">
+    <div class="chat-container scrollable">
+        <div *ngIf="!chats || chats.length === 0" class="no-chats-message">No messages yet.</div>
+        <div class="chat-message" *ngFor="let chat of chats" [ngClass]="{ yourPlayer: chat.sender === yourUsername }">
+            <div class="message-sender">{{ chat.sender }}</div>
+            <div class="message-content">{{ chat.message }}</div>
+        </div>
+    </div>
+    <div class="chat-input-area button-icon-parent">
+        <form class="message-input" [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+            <input matInput class="form-input" type="text" placeholder="Type your message..." formControlName="message" />
+            <button type="submit" class="button-icon-send">
+                <fa-icon [icon]="sendIcon" id="send-icon"></fa-icon>
+            </button>
+        </form>
+    </div>
+</div>

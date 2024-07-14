@@ -11,7 +11,9 @@ export class NotificationService {
     constructor(private snackBar: MatSnackBar) {}
 
     notify(text: string) {
-        this.notificationQueue.push(text);
+        if (!this.notificationQueue.includes(text)) {
+            this.notificationQueue.push(text);
+        }
         if (!this.isNotifying) {
             this.showNextNotification();
         }
@@ -27,7 +29,7 @@ export class NotificationService {
         this.isNotifying = true;
 
         const snackBarRef = this.snackBar.open(text || '', 'Close', {
-            duration: 1500,
+            duration: 1000,
             verticalPosition: 'top',
             horizontalPosition: 'center',
         });

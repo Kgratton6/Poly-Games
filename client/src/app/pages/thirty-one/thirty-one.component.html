@@ -6,33 +6,6 @@
             <app-thirty-one-game [yourPlayer]="yourPlayer" *ngIf="gameState === 'game'"></app-thirty-one-game>
             <app-thirty-one-results *ngIf="gameState === 'results'"></app-thirty-one-results>
         </div>
-        <div class="chat-main-area">
-            <div class="chat-container scrollable">
-                <div class="chat-message">
-                    <div class="message-sender">Nadoudaa</div>
-                    <div class="message-content">Hello!</div>
-                </div>
-                <div class="chat-message yourPlayer">
-                    <div class="message-sender">kgratton6</div>
-                    <div class="message-content">Hi there time 2!</div>
-                </div>
-                <div class="chat-message">
-                    <div class="message-sender">Nadoudaa</div>
-                    <div class="message-content">Hello breuhhhhhh!</div>
-                </div>
-                <div class="chat-message yourPlayer">
-                    <div class="message-sender">kgratton6</div>
-                    <div class="message-content">Hi very long message to test the lenght test test testtttttttt oui oui baguette</div>
-                </div>
-            </div>
-            <div class="chat-input-area button-icon-parent">
-                <form class="message-input" [formGroup]="messageForm" (ngSubmit)="sendMessage()">
-                    <input matInput class="form-input" type="text" placeholder="Type your message..." formControlName="message" />
-                    <button type="submit" class="button-icon-send">
-                        <fa-icon [icon]="sendIcon" id="send-icon"></fa-icon>
-                    </button>
-                </form>
-            </div>
-        </div>
+        <app-chat [chats]="chats" [yourUsername]="yourPlayer.username" (messageSent)="newText($event)"></app-chat>
     </div>
 </div>
