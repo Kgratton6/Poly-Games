@@ -26,6 +26,15 @@ Poly Games is an ongoing personal project aimed at developing a full-stack appli
 ### Creating an account Page
 ![Creating an Account Page](img/screenshot3.png)
 
+### Dark mode
+![Dark mode demo](img/screenshot4.png)
+
+### In Game visuals and chat
+![In Game](img/screenshot5.png)
+
+### Active tables page
+![Active tables](img/screenshot6.png)
+
 ## 🚀 Installation and Setup
 
 To set up the project on your local machine, follow these steps:
