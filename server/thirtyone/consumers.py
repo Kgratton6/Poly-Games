@@ -78,9 +78,11 @@ class ThirtyOneConsumer(BaseSocketConsumer):
         self.multicast(SendEvents.NewPlayer.value, self.table.getPlayer(self.user))
         self.emit(SendEvents.NewGameState.value, self.table.gameState)
         self.emit(SendEvents.ConnectionConfirmation.value, 'Welcome to the game.')
+        self.broadcast(SendEvents.NewChat.value, self.table.chats.getChats())
 
     def reconnection(self):
         self.emit(SendEvents.NewGameState.value, self.table.gameState)
+        self.broadcast(SendEvents.NewChat.value, self.table.chats.getChats())
 
     def getStateInfo(self, data):
         if self.table.gameState == GameState.Waiting.value:
@@ -98,14 +100,15 @@ class ThirtyOneConsumer(BaseSocketConsumer):
     def getGameInformation(self):
         self.emit(SendEvents.GameInformation.value,  self.table.getGameInfo())
         self.emit(SendEvents.Cards.value, self.table.getCards(self.user))
-        self.emit(SendEvents.NewReturnedCard.value, self.table.getReturnedCard())
+        self.emit(SendEvents.Dump.value, self.table.getDump())
 
     def getResultsInformation(self):
         self.emit(SendEvents.WinnerName.value, self.table.winnerName)
+        self.emit(SendEvents.Cards.value, self.table.getCards(self.user))
         self.emit(SendEvents.WinnerCards.value, self.table.winnerCards)
 
     def quitGame(self, data):
-        needNewHost = self.tableManager.removePlayer(self.table.tableId, self.user)
+        self.tableManager.removePlayer(self.table.tableId, self.user)
         self.multicast(SendEvents.NewTurn.value, self.table.turn)
         self.multicast(SendEvents.Players.value,  self.table.getPlayers())
         self.multicast(SendEvents.PlayerLeft.value, self.user.username)
@@ -116,25 +119,16 @@ class ThirtyOneConsumer(BaseSocketConsumer):
         self.table.gameState = GameState.Game.value
         self.broadcast(SendEvents.NewGameState.value, GameState.Game.value)
 
-    # @isHost
-    # def finishGame(self, data):
-    #     self.table.gameState = GameState.Results.value
-    #     self.broadcast(SendEvents.NewGameState.value, GameState.Results.value)
-
-    # @isTurn
-    # def play(self, data):
-    #     self.broadcast(SendEvents.NewTurn.value, self.table.nextTurn())
-
     @isTurn
     def drawDeck(self, data):
         if not self.table.alreadyDrawn:
             self.table.alreadyDrawn = True
             card = self.table.drawDeck()
             if card:
+                self.broadcast(SendEvents.DrawDeck.value, 'Draw from the deck')
                 self.emit(SendEvents.NewCard.value, card)
             else:
                 self.emit(SendEvents.Error.value, 'The Deck is empty.')
-                self.broadcast(SendEvents.NewReturnedCard.value, NO_CARD)
         else:
             self.emit(SendEvents.Error.value, 'You already took a card, now dump one')
 
@@ -149,10 +143,10 @@ class ThirtyOneConsumer(BaseSocketConsumer):
                 self.emit(SendEvents.Error.value, 'The dump is empty.')
                 return
             if underTopDump:
-                self.broadcast(SendEvents.NewReturnedCard.value, underTopDump)
+                self.broadcast(SendEvents.DrawDump.value, 'Draw From the dump')
             else:
                 self.emit(SendEvents.Error.value, 'The dump is now empty, you took the last card.')
-                self.broadcast(SendEvents.NewReturnedCard.value, NO_CARD)
+                self.broadcast(SendEvents.DrawDump.value, 'Draw From the dump')
             self.emit(SendEvents.NewCard.value, cardDump)
         else:
             self.emit(SendEvents.Error.value, 'You already took a card, now dump one')
@@ -162,8 +156,13 @@ class ThirtyOneConsumer(BaseSocketConsumer):
         if self.table.alreadyDrawn:
             self.table.alreadyDrawn = False
             dumpedCard = self.table.dumpCard(int(data))
-            self.broadcast(SendEvents.NewReturnedCard.value, dumpedCard)
+            self.broadcast(SendEvents.DumpCard.value, dumpedCard)
             self.emit(SendEvents.Cards.value, self.table.getCards(self.user))
+
+            if (self.table.isLastTurnFinished()):
+                self.table.calculateWinner()
+                self.table.gameState = GameState.Results.value
+                self.broadcast(SendEvents.NewGameState.value, GameState.Results.value)
 
             wonGame = self.table.calculateScore(self.user)
             if wonGame:
@@ -175,6 +174,21 @@ class ThirtyOneConsumer(BaseSocketConsumer):
                 self.broadcast(SendEvents.NewTurn.value, self.table.nextTurn())
         else:
             self.emit(SendEvents.Error.value, 'You need to draw a card first')
+
+    
+    @isTurn
+    def finishGame(self, data):
+        if self.table.alreadyDrawn:
+            self.emit(SendEvents.Error.value, 'You already started your turn.')
+        else:
+            self.broadcast(SendEvents.Error.value, 'This is the last turn.')
+            self.broadcast(SendEvents.LastTurn.value, 'This is the last turn.')
+            self.table.isLastTurnIndex = self.table.turn
+            self.broadcast(SendEvents.NewTurn.value, self.table.nextTurn())
+
+    def sendChat(self, data):
+        self.table.chats.add_message(self.user.username, data)
+        self.broadcast(SendEvents.NewChat.value, self.table.chats.getChats())
 
 
 

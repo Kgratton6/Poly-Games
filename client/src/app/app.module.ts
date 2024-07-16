@@ -31,6 +31,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ThirtyOneComponent } from './pages/thirty-one/thirty-one.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { ThirtyOneRulesComponent } from './components/thirty-one/thirty-one-rules/thirty-one-rules.component';
 
 /**
  * Main module that is used in main.ts.
@@ -62,6 +63,7 @@ import { ChatComponent } from './components/chat/chat.component';
         ThirtyOneComponent,
         TablesListComponent,
         ChatComponent,
+        ThirtyOneRulesComponent,
     ],
     imports: [
         AppMaterialModule,

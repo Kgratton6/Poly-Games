@@ -35,11 +35,11 @@ def login_user(request):
     username = data.get('username')
     password = data.get('password')
     
-    user = authenticate(request, username=username, password=password) # TODO : trop long à repondre ( moins long quand c'est le mauvais mot de passe)
+    user = authenticate(request, username=username, password=password)
     if user is None:
         return JsonResponse({"error": "Wrong email or password"}, status=401)
     
-    changeOnlineStatus(user, True) # TODO : juste faire pour isOnline 1 fois
+    changeOnlineStatus(user, True)
     token, created = Token.objects.get_or_create(user=user) 
     return JsonResponse({"token": token.key }, status=200)
 
@@ -47,7 +47,7 @@ def login_user(request):
 @require_token_auth
 @require_http_methods(["POST"])
 def logout_user(request):
-    changeOnlineStatus(request.user, False) # TODO : juste faire pour isOFfline 1 fois
+    changeOnlineStatus(request.user, False)
     token_key = request.headers['token']
     Token.objects.get(key=token_key).delete()
     return JsonResponse({}, status=200)
@@ -106,7 +106,6 @@ def create_user(request):
     user_data = data.get('user')
     password = data.get('password')
 
-    # double verification after the client verification
     required_fields = ['username', 'email', 'firstName', 'lastName', 'icon']
     missing_fields = [field for field in required_fields if not user_data.get(field)]
     if missing_fields:
@@ -124,7 +123,7 @@ def create_user(request):
         return JsonResponse({"error": "This username already exists"}, status=409)
 
     try:
-        secretPassword = make_password(password)   # TODO : trop long à repondre
+        secretPassword = make_password(password)
         User.objects.create(
             username=user_data.get('username'),
             email=user_data.get('email'),

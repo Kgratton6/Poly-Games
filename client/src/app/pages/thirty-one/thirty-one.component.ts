@@ -9,25 +9,6 @@ import { SocketThirtyOneService } from '@app/services/socket-thirty-one.service'
 import { TokenService } from '@app/services/token.service';
 import { UsersDataService } from '@app/services/users-data.service';
 
-const CHATS_EXAMPLE: Text[] = [
-    {
-        sender: 'nadoudaa',
-        message: 'Hi there!',
-    },
-    {
-        sender: 'kgratton6',
-        message: 'message vraiment long parceque il faut quand meme tester',
-    },
-    {
-        sender: 'kgratton6',
-        message: 'Hi there!',
-    },
-    {
-        sender: 'kgratton6',
-        message: 'Hi there!',
-    },
-];
-
 @Component({
     selector: 'app-thirty-one',
     templateUrl: './thirty-one.component.html',
@@ -37,7 +18,7 @@ export class ThirtyOneComponent implements OnInit, OnDestroy {
     tableId: string;
     gameState: GameState;
     yourPlayer: User = DEFAULT_USER;
-    chats: Text[] = CHATS_EXAMPLE;
+    chats: Text[] = [];
 
     constructor(
         protected socket: SocketThirtyOneService,
@@ -67,6 +48,9 @@ export class ThirtyOneComponent implements OnInit, OnDestroy {
         this.socket.on(ReceveEvents.PlayerLeft, (username: string) => {
             this.notification.notify(`${username} has left.`);
         });
+        this.socket.on(ReceveEvents.NewChat, (chats: Text[]) => {
+            this.chats = chats;
+        });
 
         this.userDataService.getProfile().subscribe({
             next: (profile) => {
@@ -88,6 +72,6 @@ export class ThirtyOneComponent implements OnInit, OnDestroy {
     }
 
     newText(message: Text) {
-        console.log(message);
+        if (message?.message) this.socket.send(SendEvents.SendChat, message?.message.toString());
     }
 }

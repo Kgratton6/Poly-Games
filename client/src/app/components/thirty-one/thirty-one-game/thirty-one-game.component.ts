@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ThirtyOneRulesComponent } from '@app/components/thirty-one/thirty-one-rules/thirty-one-rules.component';
 import { ReceveEvents, SendEvents } from '@app/consts/events.const';
 import { MY_PLAYER_POSITION } from '@app/consts/game.const';
 import { DEFAULT_TABLE31 } from '@app/consts/player.const';
@@ -12,6 +14,8 @@ import { GameVisualsService } from '@app/services/game-visuals.service';
 import { NotificationService } from '@app/services/notification.service';
 import { SocketThirtyOneService } from '@app/services/socket-thirty-one.service';
 import { TokenService } from '@app/services/token.service';
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-thirty-one-game',
@@ -26,6 +30,9 @@ export class ThirtyOneGameComponent implements OnInit {
     dump: Card[] = [];
     isHost = false;
     animationOffset = 0;
+    questionIcon = faQuestionCircle;
+    didAlreadyDraw = true;
+    lastTurnPlayer: string | undefined = undefined;
 
     constructor(
         private socket: SocketThirtyOneService,
@@ -33,6 +40,7 @@ export class ThirtyOneGameComponent implements OnInit {
         protected token: TokenService,
         private router: Router,
         private gameVisuals: GameVisualsService,
+        private readonly dialog: MatDialog,
     ) {}
 
     ngOnInit() {
@@ -58,29 +66,42 @@ export class ThirtyOneGameComponent implements OnInit {
         this.socket.on(ReceveEvents.Cards, (newCards: Card[]) => {
             this.cards = newCards;
         });
+        this.socket.on(ReceveEvents.Dump, (newDump: Card[]) => {
+            this.dump = newDump;
+        });
         this.socket.on(ReceveEvents.NewCard, (newCard: Card) => {
+            this.didAlreadyDraw = true;
             this.cards.push(newCard);
             this.gameVisuals.drawCardAnimation();
         });
 
-        // TODO : simplifier avec : qui a draw quoi
-        this.socket.on(ReceveEvents.NewReturnedCard, (returnedCard: Card) => {
-            if (returnedCard.color !== 'null') {
-                if (
-                    this.dump.length > 1 &&
-                    returnedCard.value === this.dump[this.dump.length - 2].value &&
-                    returnedCard.color === this.dump[this.dump.length - 2].color
-                ) {
-                    this.updateAnimationOffset();
-                    this.gameVisuals.drawDumpAnimation(this.dump, this.table31.turn);
-                } else {
-                    this.updateAnimationOffset();
-                    this.gameVisuals.dumpCardAnimation();
-                    this.dump.push(returnedCard);
-                }
-            } else {
-                this.dump = [];
+        this.socket.on(ReceveEvents.DrawDeck, () => {
+            if (this.table31.players[this.table31.turn].username !== this.yourPlayer.username) {
+                this.updateAnimationOffset();
+                this.gameVisuals.drawDeckAnimation();
+                this.table31.players[this.table31.turn].nCards++;
             }
+        });
+        this.socket.on(ReceveEvents.DrawDump, () => {
+            if (this.table31.players[this.table31.turn].username !== this.yourPlayer.username) {
+                this.updateAnimationOffset();
+                this.gameVisuals.drawDumpAnimation().then(() => {
+                    this.dump.pop();
+                    this.table31.players[this.table31.turn].nCards++;
+                });
+            } else {
+                this.dump.pop();
+            }
+        });
+        this.socket.on(ReceveEvents.DumpCard, (dumpedCard: Card) => {
+            this.didAlreadyDraw = false;
+            this.updateAnimationOffset();
+            this.gameVisuals.dumpCardAnimation();
+            this.dump.push(dumpedCard);
+            this.table31.players[this.table31.turn].nCards--;
+        });
+        this.socket.on(ReceveEvents.LastTurn, () => {
+            this.lastTurnPlayer = this.table31.players[this.table31.turn].username;
         });
     }
 
@@ -102,11 +123,20 @@ export class ThirtyOneGameComponent implements OnInit {
         this.router.navigate(['/home']);
     }
 
+    finishGame() {
+        this.socket.send(SendEvents.FinishGame);
+    }
+
     updateAnimationOffset() {
         this.animationOffset = -(this.gameVisuals.getPlayerMovement() - MY_PLAYER_POSITION + this.table31.turn);
     }
 
     getCardIndices(nCards: number): number[] {
         return Array.from({ length: nCards }, (_, index) => index - (nCards - 1) / 2);
+    }
+
+    async thirtyOneRules() {
+        const dialogRef: MatDialogRef<ThirtyOneRulesComponent> = this.dialog.open(ThirtyOneRulesComponent, { panelClass: 'custom-dialog-container' });
+        await lastValueFrom(dialogRef.afterClosed());
     }
 }

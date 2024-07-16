@@ -17,12 +17,11 @@
         </div>
     </div>
     <div class="cards-area">
-        <div class="cards-container">
-            <img class="card" style="--i: -2" src="./assets/img/cards/Spades 10.png" />
-            <img class="card" style="--i: -1" src="./assets/img/cards/Spades 11.png" />
-            <img class="card" style="--i: -0" src="./assets/img/cards/Spades 12.png" />
-            <img class="card" style="--i: 1" src="./assets/img/cards/Spades 13.png" />
-            <img class="card" style="--i: 2" src="./assets/img/cards/Spades 1.png" />
+        <div class="cards-container cards-active">
+            <div *ngFor="let card of cards; let i = index" class="card" [style.--i]="i - (cards.length - 1) / 2">
+                <img src="./assets/img/cards/{{ card.color }} {{ card.value }}.png" />
+            </div>
         </div>
+        <button mat-button class="rules-button secondary-button" (click)="thirtyOneRules()"><fa-icon [icon]="questionIcon"></fa-icon></button>
     </div>
 </div>

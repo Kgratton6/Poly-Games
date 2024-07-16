@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ThirtyOneRulesComponent } from '@app/components/thirty-one/thirty-one-rules/thirty-one-rules.component';
 import { ReceveEvents, SendEvents } from '@app/consts/events.const';
 import { DEFAULT_USER } from '@app/consts/profile.const';
 import { Player31 } from '@app/interfaces/player';
@@ -9,6 +11,8 @@ import { GameService } from '@app/services/game.service';
 import { NotificationService } from '@app/services/notification.service';
 import { SocketThirtyOneService } from '@app/services/socket-thirty-one.service';
 import { TokenService } from '@app/services/token.service';
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-thirty-one-waiting',
@@ -21,6 +25,7 @@ export class ThirtyOneWaitingComponent implements OnInit {
     players: Player31[] = [];
     slots: { player: Player31 | null; isHost: boolean }[] = [];
     isHost = false;
+    questionIcon = faQuestionCircle;
 
     constructor(
         protected socket: SocketThirtyOneService,
@@ -29,6 +34,7 @@ export class ThirtyOneWaitingComponent implements OnInit {
         protected token: TokenService,
         private router: Router,
         private gameVisuals: GameVisualsService,
+        private readonly dialog: MatDialog,
     ) {}
 
     ngOnInit() {
@@ -61,5 +67,10 @@ export class ThirtyOneWaitingComponent implements OnInit {
         this.socket.send(SendEvents.QuitGame);
         this.token.deleteGameToken();
         this.router.navigate(['/home']);
+    }
+
+    async thirtyOneRules() {
+        const dialogRef: MatDialogRef<ThirtyOneRulesComponent> = this.dialog.open(ThirtyOneRulesComponent, { panelClass: 'custom-dialog-container' });
+        await lastValueFrom(dialogRef.afterClosed());
     }
 }

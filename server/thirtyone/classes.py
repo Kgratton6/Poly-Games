@@ -72,3 +72,9 @@ def getCardToSend(card):
 
 def getCardsToSend(cards):
     return [getCardToSend(card) for card in cards]
+
+def getTextToSend(text):
+    return { 
+        "sender": text.sender,
+        "message": text.message,
+    }

@@ -2,6 +2,7 @@
     <div class="actions-area">
         <button mat-button class="accent-button-1 growing-button" id="quit-button" (click)="quitGame()">Quit game</button>
         <h2>Its {{ table31.players[table31.turn].username }}'s turn to play</h2>
+        <div class="last-turn-message" *ngIf="lastTurnPlayer">{{ lastTurnPlayer }} Decided to finish the game</div>
         <button mat-button class="accent-button-1 deactivate-button">Start game</button>
     </div>
     <div class="table-area">
@@ -56,7 +57,12 @@
                 </div>
             </div>
             <div class="deck-stack">
-                <img src="./assets/img/cards/returned-blue.png" class="center-image over-deck" (click)="drawDeck()" />
+                <img
+                    src="./assets/img/cards/returned-blue.png"
+                    [style.--f]="animationOffset"
+                    class="center-image dump-stack-card over-deck"
+                    (click)="drawDeck()"
+                />
                 <img src="./assets/img/cards/returned-blue.png" class="center-image under-deck" />
             </div>
         </div>
@@ -68,5 +74,7 @@
                 <img src="./assets/img/cards/{{ card.color }} {{ card.value }}.png" (click)="dumpCard(i)" />
             </div>
         </div>
+        <button mat-button class="rules-button secondary-button" (click)="thirtyOneRules()"><fa-icon [icon]="questionIcon"></fa-icon></button>
+        <button mat-button class="accent-button-1 in-game-button-1 growing-button" (click)="finishGame()">Finish Game</button>
     </div>
 </div>

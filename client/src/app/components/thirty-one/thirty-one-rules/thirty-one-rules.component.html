@@ -1,0 +1,37 @@
+<h2>Rules of Thirty-One</h2>
+
+<div class="intro">
+    <div class="card-images">
+        <img class="card" src="./assets/img/cards/Spades 12.png" alt="Spades 12" />
+        <img class="card" src="./assets/img/cards/Spades 13.png" alt="Spades 13" />
+        <img class="card" src="./assets/img/cards/Spades 1.png" alt="Spades 1" />
+    </div>
+
+    <p>The purpose of the game is to collect cards that total 31 points with cards of the same color.</p>
+</div>
+
+<p>Card Values:</p>
+<ul>
+    <li>Aces: 11 points</li>
+    <li>Ten, Jack, Queen, King: 10 points each</li>
+    <li>Numbered cards: Face value (e.g., 2 = 2 points, 3 = 3 points, etc.)</li>
+</ul>
+
+<p>Gameplay:</p>
+<ul>
+    <li>Each round, you draw a card from the deck or from the discard pile.</li>
+    <li>You must discard one of your cards after drawing.</li>
+    <li>You can only hold up to 3 cards in your hand at any time.</li>
+</ul>
+
+<p>Winning :</p>
+<ul>
+    <li>If a player finishes their turn and reaches 31 points, they instantly win.</li>
+    <li>
+        Before starting your turn, you can choose to end the game if you believe you are close enough to 31 points. If you do, skip your turn, and
+        other players get one final round. Once it returns to you and you choose to end the game, all players reveal their cards, and the player with
+        the highest point total wins.
+    </li>
+</ul>
+
+<button mat-button (click)="closeDialog()">Close</button>

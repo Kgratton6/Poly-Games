@@ -3,6 +3,9 @@ from asgiref.sync import async_to_sync
 from .classes import *
 from .enums import GameState
 import json
+import threading
+import time
+from datetime import datetime, timedelta
 
 class BaseSocketConsumer(WebsocketConsumer):
 
@@ -38,7 +41,26 @@ class Player():
         self.nCards = 0   
         self.cards = []
 
+class Text:
+    def __init__(self, sender, message):
+        self.sender = sender
+        self.message = message
+
+class Chats:
+    def __init__(self):
+        self.messages = []
+
+    def add_message(self, sender, message):
+        text = Text(sender, message)
+        self.messages.append(text)
+
+    def getChats(self):
+        return [getTextToSend(message) for message in self.messages]
+
+
 class Table31():
+    max_score = 0
+    winner = None
 
     def __init__(self, tableId):
         self.tableId = tableId
@@ -49,6 +71,9 @@ class Table31():
         self.gameState = GameState.Waiting.value
         self.winnerCards = None
         self.winnerName = None
+        self.created_at = datetime.now()
+        self.isLastTurnIndex = -100
+        self.chats = Chats()
 
     def addPlayer(self, user):
         self.players.append(Player(user))
@@ -86,7 +111,10 @@ class Table31():
     def nextTurn(self):
         self.turn = (self.turn + 1) % len(self.players)
         return self.turn
-        
+    
+    def isLastTurnFinished(self):
+        return (self.isLastTurnIndex == ((self.turn + 1) % len(self.players)))
+    
     def distributeCards(self):
         for player in self.players:
             player.cards = self.deck.drawCards(3)
@@ -96,6 +124,9 @@ class Table31():
             if player.user == user:
                 return getCardsToSend(player.cards)
         return None
+    
+    def getDump(self):
+        return getCardsToSend(self.deck.dump)
 
     def drawDeck(self):
         player = self.players[self.turn]
@@ -144,6 +175,21 @@ class Table31():
                 if total_score == 31:
                     return True
         return False
+    
+    def calculateWinner(self):
+        for player in self.players:
+
+            color_count = {'Hearts': 0, 'Diamond': 0, 'Spades': 0, 'Clubs': 0}
+            for card in player.cards:
+                color_count[card.color] += self.get_card_value(card)
+            winning_color = max(color_count, key=color_count.get)
+            total_score = color_count[winning_color]
+
+            if total_score > self.max_score:
+                self.max_score = total_score
+                self.winnerCards = self.getCards(player.user)
+                self.winnerName = player.user.username
+            
 
     def get_card_value(self, card):
         if 1 < card.value < 10:
@@ -164,6 +210,12 @@ class TableManager():
     def __init__(self):
         self.tables = {}
         self.tableIdCount = 0
+        self.cleanup_interval = 3600
+        self.start_cleanup_thread()
+
+    def start_cleanup_thread(self):
+        thread = threading.Thread(target=self.cleanup_tables, daemon=True)
+        thread.start()
 
     def getTable(self, tableId):
         return self.tables.get(tableId)
@@ -186,11 +238,19 @@ class TableManager():
             if len(table.players) == 0:
                 self.deleteTable(tableId)
             return needNewHost
-
-# TODO : get tous les channels : group_channels = async_to_sync(channel_layer.group_channels)(self.tableId)
-
-
         
+
+    def cleanup_tables(self):
+        while True:
+            now = datetime.now()
+            tables_to_delete = [
+                tableId for tableId, table in self.tables.items()
+                if now - table.created_at > timedelta(hours=12)
+            ]
+            print('Deleting aniactive tables')
+            for tableId in tables_to_delete:
+                self.deleteTable(tableId)
+            time.sleep(self.cleanup_interval)
 
 
             

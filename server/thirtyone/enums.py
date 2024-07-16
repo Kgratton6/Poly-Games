@@ -18,11 +18,18 @@ class SendEvents(Enum):
     Host = 'host'
 
     GameInformation = 'gameInformation'
-    Cards = 'cards'
-    NewCard = 'newCard'
-    NewReturnedCard = 'newReturnedCard'
     NewTurn = 'newTurn'
+    Cards = 'cards'
+    Dump = 'dump'
+    NewCard = 'newCard'
+    DrawDeck = 'drawDeck',
+    DrawDump = 'drawDump',
+    DumpCard = 'dumpCard',
+
+    LastTurn = 'lastTurn',
 
     ResultsInformation = 'resultsInformation'
     WinnerName = 'winnerName'
     WinnerCards = 'winnerCards'
+
+    NewChat = 'newChat'

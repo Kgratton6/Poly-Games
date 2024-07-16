@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ThirtyOneRulesComponent } from '@app/components/thirty-one/thirty-one-rules/thirty-one-rules.component';
 import { Table31 } from '@app/interfaces/game31';
 import { GameService } from '@app/services/game.service';
 import { NotificationService } from '@app/services/notification.service';
-import { TokenService } from '@app/services/token.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-tables-list',
@@ -16,8 +18,8 @@ export class TablesListComponent implements OnInit {
     constructor(
         private gameService: GameService,
         private router: Router,
-        private token: TokenService,
         protected notification: NotificationService,
+        private readonly dialog: MatDialog,
     ) {}
 
     ngOnInit(): void {
@@ -27,13 +29,10 @@ export class TablesListComponent implements OnInit {
     }
 
     join31(tableId: string) {
-        const game = this.token.getGameToken();
-        if (game) {
-            const gameExists = this.tables31.find((table) => table.tableId === game.tableId);
-            if (gameExists) this.notification.notify('you are already in game.');
-            else this.router.navigate(['live-game/thirty-one', tableId]);
-        } else {
-            this.router.navigate(['live-game/thirty-one', tableId]);
-        }
+        this.router.navigate(['live-game/thirty-one', tableId]);
+    }
+    async thirtyOneRules() {
+        const dialogRef: MatDialogRef<ThirtyOneRulesComponent> = this.dialog.open(ThirtyOneRulesComponent, { panelClass: 'custom-dialog-container' });
+        await lastValueFrom(dialogRef.afterClosed());
     }
 }

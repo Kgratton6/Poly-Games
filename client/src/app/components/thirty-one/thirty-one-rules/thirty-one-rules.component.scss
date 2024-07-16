@@ -1,0 +1,53 @@
+:host {
+    display: block;
+    max-width: 600px; /* Adjust width as needed */
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading styles */
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+/* Intro section styles */
+.intro {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-images {
+    display: flex;
+}
+
+.card {
+    width: 50px; /* Adjust width as needed */
+    margin-right: 10px;
+    border-radius: 4px;
+}
+
+/* List styles */
+ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+/* Winning section styles */
+.winning {
+    margin-top: 20px;
+}
+
+.winning h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+/* Button styles */
+button {
+    margin-top: 20px;
+}

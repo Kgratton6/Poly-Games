@@ -1,7 +1,6 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-// TODO : Avoir un fichier séparé pour les constantes!
 export const MATERIAL_PREBUILT_THEMES = [
     {
         value: 'indigo-pink-theme',

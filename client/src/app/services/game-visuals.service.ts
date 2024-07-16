@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { ANIMATION_DELAY, MAX_N_PLAYERS, MY_PLAYER_POSITION } from '@app/consts/game.const';
-import { Card } from '@app/interfaces/card';
 import { Player31 } from '@app/interfaces/player';
 import { User } from '@app/interfaces/user';
+import { SoundService } from './sound.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class GameVisualsService {
     movementNeeded = 0;
+
+    constructor(private DJ: SoundService) {}
 
     updateSlots(players: Player31[], yourPlayer: User): { player: Player31 | null; isHost: boolean }[] {
         const tempArray: { player: Player31 | null; isHost: boolean }[] = Array.from({ length: MAX_N_PLAYERS }, (_, i) => ({
@@ -33,6 +35,7 @@ export class GameVisualsService {
     }
 
     drawCardAnimation() {
+        this.DJ.playSound('drawCard');
         setTimeout(() => {
             const cardElements = document.querySelectorAll('.card');
             const newCardElement = cardElements[cardElements.length - 1];
@@ -43,7 +46,21 @@ export class GameVisualsService {
         }, 0);
     }
 
+    drawDeckAnimation() {
+        this.DJ.playSound('drawCard');
+        setTimeout(() => {
+            const deckCard = document.querySelector('.center-image.dump-stack-card.over-deck');
+            if (deckCard) {
+                deckCard.classList.add('drawing-deck');
+                setTimeout(() => {
+                    deckCard.classList.remove('drawing-deck');
+                }, ANIMATION_DELAY);
+            }
+        }, 0);
+    }
+
     dumpCardAnimation() {
+        this.DJ.playSound('dropCard');
         setTimeout(() => {
             const returnedCardElement = document.querySelector('.center-image.dump-stack-card.current-returned');
             if (returnedCardElement) {
@@ -55,21 +72,21 @@ export class GameVisualsService {
         }, 0);
     }
 
-    drawDumpAnimation(dump: Card[], turn: number) {
-        const animationOffset = -(this.movementNeeded - MY_PLAYER_POSITION + turn);
-        if (animationOffset !== 0) {
+    async drawDumpAnimation(): Promise<void> {
+        this.DJ.playSound('drawCard');
+        return new Promise((resolve) => {
             setTimeout(() => {
                 const returnedCardElement = document.querySelector('.center-image.dump-stack-card.current-returned');
                 if (returnedCardElement) {
                     returnedCardElement.classList.add('drawing-dump');
                     setTimeout(() => {
                         returnedCardElement.classList.remove('drawing-dump');
-                        dump.pop();
+                        resolve();
                     }, ANIMATION_DELAY);
+                } else {
+                    resolve();
                 }
             }, 0);
-        } else {
-            dump.pop();
-        }
+        });
     }
 }

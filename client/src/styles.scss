@@ -350,6 +350,8 @@ input {
 .cards-area {
     height: 150px;
     position: relative;
+    display: flex;
+    flex-direction: row;
 }
 .cards-container {
     position: absolute;
@@ -435,7 +437,7 @@ input {
     animation: dump-card 1s ease-out;
 }
 
-@keyframes drawing-dump-animation {
+@keyframes drawing-animation {
     0% {
         transform: rotate(0deg) translateY(0) scale(1);
         opacity: 1;
@@ -448,8 +450,10 @@ input {
         opacity: 0;
     }
 }
-.drawing-dump {
-    animation: drawing-dump-animation 1s ease-out;
+
+.drawing-dump,
+.drawing-deck {
+    animation: drawing-animation 1s ease-out;
 }
 
 .center-images {
@@ -557,4 +561,26 @@ input {
 }
 .player-5-cards {
     transform: rotate(-60deg) translate(40px, -10px);
+}
+
+// In game Buttons
+.rules-button {
+    align-self: flex-end;
+    margin-left: 30px;
+    margin-bottom: 30px;
+    width: 50px;
+    height: 50px;
+
+    text-align: center !important;
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 40px !important;
+    min-width: unset !important;
+}
+
+.in-game-button-1 {
+    background-color: rgb(203, 0, 0) !important;
+    align-self: flex-end;
+    margin-left: 30px;
+    margin-bottom: 30px;
 }

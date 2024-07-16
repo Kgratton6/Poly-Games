@@ -50,4 +50,16 @@ export class LoginComponent implements OnInit {
             this.notification.notify('Enter username and password in a valid format');
         }
     }
+
+    guestLoggin(): void {
+        this.authService.login('Guest', 'guest123').subscribe({
+            next: () => {
+                this.notification.notify('Login successful');
+                this.router.navigate(['/home']);
+            },
+            error: (error) => {
+                this.notification.notify(error);
+            },
+        });
+    }
 }
