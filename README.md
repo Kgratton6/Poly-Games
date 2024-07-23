@@ -17,6 +17,9 @@ Poly Games is an ongoing personal project aimed at developing a full-stack appli
 
 ## 📸 Project Screenshots
 
+### Uno game example
+![Uno game](img/screenshot7.png)
+
 ### Home Page
 ![Home Page](img/screenshot1.png)
 
