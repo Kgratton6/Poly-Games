@@ -10,6 +10,7 @@ Poly Games is an ongoing personal project aimed at developing a full-stack appli
 
 ## 🌟 Features
 
+- **Real-time Communication**: Implements WebSocket for real-time communication between players, ensuring instant updates and seamless interaction during gameplay.
 - **Token-based Authentication**: Ensures secure login and session management for users, enhancing the overall security of the application.
 - **Django and Angular**: Utilizes Django for the server-side logic and Angular for the client-side interface, providing a robust, responsive, and scalable website.
 - **Deployment**: The client side is deployed on Vercel, and the server side is hosted on DigitalOcean.
