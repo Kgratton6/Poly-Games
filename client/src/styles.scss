@@ -269,6 +269,7 @@ input {
     height: calc(100vh - 60px);
     display: grid;
     grid-template-rows: 50px 1fr 150px;
+    overflow-y: hidden;
 }
 
 // Actions
@@ -346,13 +347,14 @@ input {
     justify-content: end !important;
 }
 
-// Cards
+//Cards
 .cards-area {
     height: 150px;
     position: relative;
     display: flex;
     flex-direction: row;
 }
+
 .cards-container {
     position: absolute;
     margin-top: 20px;
@@ -363,29 +365,35 @@ input {
     justify-content: center;
     align-items: center;
 }
+
 .cards-container .card {
-    width: 71px;
+    width: 65px !important;
     height: 93px;
     cursor: pointer;
     transition: 0.5s;
     position: absolute;
     top: 0;
-}
-.cards-container:hover .card {
-    transform: rotate(calc(var(--i) * 5deg)) translate(calc(var(--i) * 50px), -15px);
-}
-.cards-container .card:active {
-    translate: calc(var(--i) * 5px) -15px;
-    z-index: 100;
-}
-.cards-active .card {
-    transform: rotate(calc(var(--i) * 5deg)) translate(calc(var(--i) * 50px), -15px);
-}
-.cards-active .card:hover {
-    translate: calc(var(--i) * 5px) -15px !important;
-    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
+.cards-container .card img {
+    width: 100%;
+    height: 100%;
+}
+
+.cards-container:hover .card,
+.cards-active .card {
+    transform: rotate(calc(var(--i) * 20deg / var(--d))) translate(calc(var(--i) * 50px), -15px);
+}
+
+.cards-container .card:active,
+.cards-active .card:hover {
+    translate: calc(var(--i) * 20px / var(--d)) -15px;
+    z-index: 100;
+}
 // In Game CSS and animations
 @keyframes borderBlink {
     0% {
@@ -465,7 +473,7 @@ input {
     gap: 20px;
 }
 .center-images .center-image {
-    width: 71px;
+    width: 65px !important;
     height: 93px;
     cursor: pointer;
     transition: transform 0.3s;
@@ -474,7 +482,7 @@ input {
     transform: scale(1.1);
 }
 .center-images .center-placeholder {
-    width: 71px;
+    width: 65px !important;
     height: 93px;
     border: 2px dotted gray;
     display: flex;
@@ -488,7 +496,7 @@ input {
 .dump-stack,
 .deck-stack {
     position: relative;
-    width: 71px;
+    width: 65px !important;
     height: 93px;
     display: flex;
     justify-content: center;

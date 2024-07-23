@@ -8,6 +8,7 @@ import { LiveGameComponent } from '@app/pages/live-game/live-game.component';
 import { LoginComponent } from '@app/pages/login/login.component';
 import { NotFoundComponent } from '@app/pages/not-found/not-found.component';
 import { ThirtyOneComponent } from '@app/pages/thirty-one/thirty-one.component';
+import { UnoComponent } from '@app/pages/uno/uno.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -21,6 +22,7 @@ const routes: Routes = [
             { path: 'user/:username', component: AccountComponent },
             { path: 'live-game', component: LiveGameComponent },
             { path: 'live-game/thirty-one/:tableId', component: ThirtyOneComponent },
+            { path: 'live-game/uno/:tableId', component: UnoComponent },
         ],
     },
     { path: '**', component: NotFoundComponent },

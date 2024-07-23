@@ -1,0 +1,36 @@
+.table-area {
+    position: relative;
+}
+.center-images {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 20px;
+}
+
+@keyframes bounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+.winner-card {
+    animation: bounce 1s infinite;
+}
+
+#winner-name {
+    transition: color 0.5s !important;
+    background-image: linear-gradient(to left, violet, blue, green, orange, red);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.winner-card {
+    font-size: 20px;
+    color: black;
+}

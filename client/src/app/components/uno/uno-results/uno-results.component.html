@@ -1,0 +1,29 @@
+<div class="grid-main-area">
+    <div class="actions-area">
+        <button mat-button class="accent-button-1 growing-button" id="quit-button" (click)="quitGame()">Quit game</button>
+        <h2 id="winner-name">{{ winnerName }} won!</h2>
+        <button mat-button class="accent-button-1 deactivate-button">Start game</button>
+    </div>
+    <div class="table-area">
+        <div class="player-grid">
+            <div *ngFor="let i of [0, 1, 2, 3, 4, 5]" class="player-slot" [attr.id]="i === 1 || i === 3 || i === 5 ? 'start' : 'end'">
+                <div class="placeholder-icon"></div>
+            </div>
+        </div>
+        <div class="center-images winners-list">
+            <ol>
+                <li *ngFor="let winner of winners" class="winner-card">{{ winner }}</li>
+            </ol>
+        </div>
+    </div>
+    <div class="cards-area">
+        <div class="cards-container">
+            <img class="card" style="--i: -2" [style.--d]="5" src="./assets/img/cardsUno/Yellow_11.png" />
+            <img class="card" style="--i: -1" [style.--d]="5" src="./assets/img/cardsUno/Red_11.png" />
+            <img class="card" style="--i: -0" [style.--d]="5" src="./assets/img/cardsUno/Green_11.png" />
+            <img class="card" style="--i: 1" [style.--d]="5" src="./assets/img/cardsUno/Blue_11.png" />
+            <img class="card" style="--i: 2" [style.--d]="5" src="./assets/img/cardsUno/Special_14.png" />
+        </div>
+        <button mat-button class="rules-button secondary-button" (click)="unoRules()"><fa-icon [icon]="questionIcon"></fa-icon></button>
+    </div>
+</div>

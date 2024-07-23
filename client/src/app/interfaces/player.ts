@@ -4,3 +4,8 @@ export interface Player31 {
     icon: string;
     nCards: number;
 }
+export interface PlayerUno {
+    username: string;
+    icon: string;
+    nCards: number;
+}

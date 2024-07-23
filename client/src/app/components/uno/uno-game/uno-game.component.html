@@ -1,0 +1,79 @@
+<div class="grid-main-area">
+    <div class="actions-area">
+        <button mat-button class="accent-button-1 growing-button" id="quit-button" (click)="quitGame()">Quit game</button>
+        <h2>Its {{ tableUno.players[tableUno.turn].username }}'s turn to play</h2>
+        <div class="last-turn-message" *ngIf="isPlayerUno">{{ unoPlayer }} has Uno!</div>
+        <button mat-button class="accent-button-1 deactivate-button">Start game</button>
+    </div>
+    <div class="table-area">
+        <div class="player-grid">
+            <div *ngFor="let slot of slots; let i = index" class="player-slot" [attr.id]="i === 1 || i === 3 || i === 5 ? 'start' : 'end'">
+                <ng-container *ngIf="slot.player; else placeholder">
+                    <img
+                        src="./assets/img/profile-icons/{{ slot.player.icon }}.png"
+                        class="user-icon game-user-icon"
+                        [ngClass]="{ isTurn: slot.player.username === tableUno.players[tableUno.turn].username }"
+                    />
+                    <div class="info">
+                        <span class="name">{{ slot.player.username }}</span>
+                        <span class="name" *ngIf="slot.isHost">(host)</span>
+                    </div>
+                </ng-container>
+                <ng-template #placeholder>
+                    <div class="placeholder-icon"></div>
+                </ng-template>
+            </div>
+        </div>
+        <div class="cards-grid">
+            <div *ngFor="let slot of slots; let i = index" [ngClass]="'player-' + i + '-cards cards-grid-cell player-cards-container'">
+                <ng-container *ngIf="slot.player && i !== 4; else placeholder">
+                    <ng-container *ngFor="let cardIndex of getCardIndices(slot.player.nCards)">
+                        <img
+                            class="small-card"
+                            src="./assets/img/cardsUno/Deck.png"
+                            [style.transform]="'rotate(' + cardIndex * 7 + 'deg) translateX(' + cardIndex * 10 + 'px)'"
+                        />
+                    </ng-container>
+                </ng-container>
+                <ng-template #placeholder></ng-template>
+            </div>
+        </div>
+        <div class="center-images">
+            <div class="dump-stack">
+                <img
+                    *ngIf="dump && dump.length > 0"
+                    [style.--f]="animationOffset"
+                    src="./assets/img/cardsUno/{{ dump[dump.length - 1].color }}_{{ dump[dump.length - 1].value }}.png"
+                    class="center-image dump-stack-card current-returned"
+                />
+                <img
+                    *ngIf="dump && dump.length > 1"
+                    src="./assets/img/cardsUno/{{ dump[dump.length - 2].color }}_{{ dump[dump.length - 2].value }}.png"
+                    class="center-image dump-stack-card previously-returned"
+                />
+                <div *ngIf="!dump || dump.length <= 1" class="center-placeholder center-image">
+                    <span>Empty</span>
+                </div>
+            </div>
+            <div class="deck-stack">
+                <img
+                    src="./assets/img/cardsUno/Deck.png"
+                    [style.--f]="animationOffset"
+                    class="center-image dump-stack-card over-deck"
+                    (click)="drawCard()"
+                />
+                <img src="./assets/img/cardsUno/Deck.png" class="center-image under-deck" />
+            </div>
+        </div>
+    </div>
+
+    <div class="cards-area">
+        <div class="cards-container" [ngClass]="{ 'cards-active': yourPlayer.username === tableUno.players[tableUno.turn].username }">
+            <div *ngFor="let card of cards; let i = index" class="card" [style.--i]="i - (cards.length - 1) / 2" [style.--d]="cards.length">
+                <img src="./assets/img/cardsUno/{{ card.color }}_{{ card.value }}.png" (click)="dumpCard(i)" />
+            </div>
+        </div>
+        <button mat-button class="rules-button secondary-button" (click)="unoRules()"><fa-icon [icon]="questionIcon"></fa-icon></button>
+        <button mat-button class="accent-button-1 in-game-button-1 growing-button" (click)="dontDump()">Don't discard</button>
+    </div>
+</div>

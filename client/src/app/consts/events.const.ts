@@ -13,14 +13,14 @@ export enum ReceveEvents {
     Host = 'host',
 
     // game events
-    GameInformation = 'gameInformation', // -> envoyer le dump
+    GameInformation = 'gameInformation',
     Cards = 'cards',
     Dump = 'dump',
     NewCard = 'newCard',
     NewTurn = 'newTurn',
     // à changer
     DrawDeck = 'drawDeck',
-    DrawDump = 'drawDump', // --> envoyer la carte à envleer
+    DrawDump = 'drawDump',
     DumpCard = 'dumpCard',
     NewReturnedCard = 'newReturnedCard',
 
@@ -33,6 +33,9 @@ export enum ReceveEvents {
 
     // other events
     NewChat = 'newChat',
+
+    Uno = 'uno',
+    Winners = 'winners',
 }
 
 export enum SendEvents {
@@ -46,6 +49,16 @@ export enum SendEvents {
     ThirtyOne = 'thirtyOne',
     FinishGame = 'finishGame',
     SendChat = 'sendChat',
+
+    // Uno only events
+    DrawCard = 'drawCard',
+    DontDump = 'dontDump',
+
+    SkipTurn = 'skipTurn',
+    Draw2 = 'draw2',
+    ChangeTurn = 'changeTurn',
+    Draw4 = 'draw4',
+    ChangeColor = 'changeColor',
 }
 
 export enum GameState {
