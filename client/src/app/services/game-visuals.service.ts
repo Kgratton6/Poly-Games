@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ANIMATION_DELAY, MAX_N_PLAYERS, MY_PLAYER_POSITION } from '@app/consts/game.const';
-import { Player31 } from '@app/interfaces/player';
+import { Player31, PlayerUno } from '@app/interfaces/player';
 import { User } from '@app/interfaces/user';
 import { SoundService } from './sound.service';
 
@@ -10,7 +10,7 @@ import { SoundService } from './sound.service';
 export class GameVisualsService {
     movementNeeded = 0;
 
-    constructor(private DJ: SoundService) {}
+    constructor(private dJ: SoundService) {}
 
     updateSlots(players: Player31[], yourPlayer: User): { player: Player31 | null; isHost: boolean }[] {
         const tempArray: { player: Player31 | null; isHost: boolean }[] = Array.from({ length: MAX_N_PLAYERS }, (_, i) => ({
@@ -30,12 +30,30 @@ export class GameVisualsService {
         return slots;
     }
 
+    updateSlotsUno(players: PlayerUno[], yourPlayer: User): { player: PlayerUno | null; isHost: boolean }[] {
+        const tempArray: { player: PlayerUno | null; isHost: boolean }[] = Array.from({ length: MAX_N_PLAYERS }, (_, i) => ({
+            player: players[i] || null,
+            isHost: i === 0 && players[0]?.username === yourPlayer.username,
+        }));
+
+        const yourPlayerIndex = tempArray.findIndex((slot) => slot.player?.username === yourPlayer.username);
+        this.movementNeeded = MY_PLAYER_POSITION - (yourPlayerIndex % MAX_N_PLAYERS);
+
+        const slots: { player: PlayerUno | null; isHost: boolean }[] = [];
+        for (let i = 0; i < tempArray.length; i++) {
+            const newIndex = (i + this.movementNeeded) % tempArray.length;
+            slots[newIndex] = tempArray[i];
+        }
+        [slots[0], slots[2]] = [slots[2], slots[0]];
+        return slots;
+    }
+
     getPlayerMovement() {
         return this.movementNeeded;
     }
 
     drawCardAnimation() {
-        this.DJ.playSound('drawCard');
+        this.dJ.playSound('drawCard');
         setTimeout(() => {
             const cardElements = document.querySelectorAll('.card');
             const newCardElement = cardElements[cardElements.length - 1];
@@ -47,7 +65,7 @@ export class GameVisualsService {
     }
 
     drawDeckAnimation() {
-        this.DJ.playSound('drawCard');
+        this.dJ.playSound('drawCard');
         setTimeout(() => {
             const deckCard = document.querySelector('.center-image.dump-stack-card.over-deck');
             if (deckCard) {
@@ -60,7 +78,7 @@ export class GameVisualsService {
     }
 
     dumpCardAnimation() {
-        this.DJ.playSound('dropCard');
+        this.dJ.playSound('dropCard');
         setTimeout(() => {
             const returnedCardElement = document.querySelector('.center-image.dump-stack-card.current-returned');
             if (returnedCardElement) {
@@ -73,7 +91,7 @@ export class GameVisualsService {
     }
 
     async drawDumpAnimation(): Promise<void> {
-        this.DJ.playSound('drawCard');
+        this.dJ.playSound('drawCard');
         return new Promise((resolve) => {
             setTimeout(() => {
                 const returnedCardElement = document.querySelector('.center-image.dump-stack-card.current-returned');

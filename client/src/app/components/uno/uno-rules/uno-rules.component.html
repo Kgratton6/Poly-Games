@@ -1,0 +1,37 @@
+<h2>Rules of Uno</h2>
+
+<div class="intro">
+    <div class="card-images">
+        <img class="card" src="./assets/img/cardsUno/Yellow_3.png" alt="Yellow 3" />
+        <img class="card" src="./assets/img/cardsUno/Special_14.png" alt="Special Card" />
+        <img class="card" src="./assets/img/cardsUno/Green_12.png" alt="Green 12" />
+    </div>
+
+    <p>The goal of Uno is to be the first player to get rid of all your cards.</p>
+</div>
+
+<p>Gameplay:</p>
+<ul>
+    <li>On your turn, play a card that matches the color or number of the top card on the discard pile.</li>
+    <li>
+        If you cannot play a card, draw one from the draw pile. If the drawn card can be played, you may do so immediately; otherwise, your turn ends.
+    </li>
+    <li>You cannot end the game with a special card in your hand.</li>
+</ul>
+
+<p>Special Cards:</p>
+<ul>
+    <li>
+        <strong>Wild Draw Four:</strong> Forces the next player to draw four cards and skip their turn. The player who played this card chooses the
+        new color to be matched. The next player can also play a Wild Draw Four. In this case, the total number of cards to be drawn is cumulative.
+    </li>
+    <li><strong>Wild:</strong> Allows the player to choose the color that continues the play.</li>
+    <li><strong>Skip:</strong> The next player loses their turn.</li>
+    <li><strong>Reverse:</strong> Reverses the direction of play.</li>
+    <li>
+        <strong>Draw Two:</strong> Forces the next player to draw two cards and skip their turn. The player who played this card chooses the color to
+        be matched. The next player can also play a Draw Two. In this case, the total number of cards to be drawn is cumulative.
+    </li>
+</ul>
+
+<button mat-button (click)="closeDialog()">Close</button>

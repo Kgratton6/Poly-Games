@@ -1,0 +1,34 @@
+.green-button {
+    background-color: #469949;
+    color: white;
+    margin: 0 5px;
+}
+
+.red-button {
+    background-color: #dd333e;
+    color: white;
+    margin: 0 5px;
+}
+
+.yellow-button {
+    background-color: #f6c91e;
+    color: white;
+    margin: 0 5px;
+}
+
+.blue-button {
+    background-color: #0098dc;
+    color: white;
+    margin: 0 5px;
+}
+
+.color-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    overflow: auto;
+    gap: 10px;
+    background-color: var(--secondary-background) !important;
+}

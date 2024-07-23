@@ -1,0 +1,35 @@
+<div class="grid-main-area">
+    <div class="actions-area">
+        <button mat-button class="accent-button-1 growing-button" id="quit-button" (click)="quitGame()">Quit game</button>
+        <h2 *ngIf="!isHost">Waiting on the host to start the game...</h2>
+        <h2 *ngIf="isHost">You are the host. Waiting on players to join...</h2>
+        <button mat-button class="accent-button-1 growing-button" (click)="startGame()" *ngIf="isHost">Start game</button>
+        <button mat-button class="accent-button-1 deactivate-button" *ngIf="!isHost">Start game</button>
+    </div>
+    <div class="table-area">
+        <div class="player-grid">
+            <div *ngFor="let slot of slots; let i = index" class="player-slot" [attr.id]="i === 1 || i === 3 || i === 5 ? 'start' : 'end'">
+                <ng-container *ngIf="slot.player; else placeholder">
+                    <img src="./assets/img/profile-icons/{{ slot.player.icon }}.png" class="user-icon game-user-icon" />
+                    <div class="info">
+                        <span class="name">{{ slot.player.username }}</span>
+                        <span class="name" *ngIf="slot.isHost">(host)</span>
+                    </div>
+                </ng-container>
+                <ng-template #placeholder>
+                    <div class="placeholder-icon"></div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+    <div class="cards-area">
+        <div class="cards-container">
+            <img class="card" style="--i: -2" [style.--d]="5" src="./assets/img/cardsUno/Yellow_11.png" />
+            <img class="card" style="--i: -1" [style.--d]="5" src="./assets/img/cardsUno/Red_11.png" />
+            <img class="card" style="--i: -0" [style.--d]="5" src="./assets/img/cardsUno/Green_11.png" />
+            <img class="card" style="--i: 1" [style.--d]="5" src="./assets/img/cardsUno/Blue_11.png" />
+            <img class="card" style="--i: 2" [style.--d]="5" src="./assets/img/cardsUno/Special_14.png" />
+        </div>
+        <button mat-button class="rules-button secondary-button" (click)="unoRules()"><fa-icon [icon]="questionIcon"></fa-icon></button>
+    </div>
+</div>

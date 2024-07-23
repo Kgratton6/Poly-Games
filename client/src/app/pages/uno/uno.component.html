@@ -1,0 +1,11 @@
+<app-header></app-header>
+<div class="page-container">
+    <div class="grid-page">
+        <div>
+            <app-uno-waiting [yourPlayer]="yourPlayer" *ngIf="gameState === 'waiting'"></app-uno-waiting>
+            <app-uno-game [yourPlayer]="yourPlayer" *ngIf="gameState === 'game'"></app-uno-game>
+            <app-uno-results *ngIf="gameState === 'results'"></app-uno-results>
+        </div>
+        <app-chat [chats]="chats" [yourUsername]="yourPlayer.username" (messageSent)="newText($event)"></app-chat>
+    </div>
+</div>

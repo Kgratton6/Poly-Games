@@ -18,7 +18,7 @@
             <div class="game-title">Thirty One</div>
             <div class="game-description">Play a card game where you have to get 31 points</div>
             <div>
-                <button mat-button class="accent-button-1" (click)="createTable('thirty-one')">Create a table</button>
+                <button mat-button class="accent-button-1" (click)="createTable('thirty-one')">Create table</button>
                 <button mat-button class="accent-button-1" (click)="thirtyOneRules()">Rules</button>
             </div>
         </div>
@@ -26,15 +26,15 @@
             <div class="game-title">Uno</div>
             <div class="game-description">Join a table and play the classic card game Uno with friends</div>
             <div>
-                <button mat-button class="accent-button-1">Create a table</button>
-                <button mat-button class="accent-button-1">Rules</button>
+                <button mat-button class="accent-button-1" (click)="createTable('uno')">Create table</button>
+                <button mat-button class="accent-button-1" (click)="unoRules()">Rules</button>
             </div>
         </div>
         <div class="blackjack-container game-container">
             <div class="game-title">Blackjack</div>
             <div class="game-description">Test your luck in a fast-paced game of 21 against a dealer</div>
             <div>
-                <button mat-button class="accent-button-1">Create a table</button>
+                <button mat-button class="accent-button-1">Create table</button>
                 <button mat-button class="accent-button-1">Rules</button>
             </div>
         </div>

@@ -70,7 +70,7 @@
 
     <div class="cards-area">
         <div class="cards-container" [ngClass]="{ 'cards-active': yourPlayer.username === table31.players[table31.turn].username }">
-            <div *ngFor="let card of cards; let i = index" class="card" [style.--i]="i - (cards.length - 1) / 2">
+            <div *ngFor="let card of cards; let i = index" class="card" [style.--d]="cards.length" [style.--i]="i - (cards.length - 1) / 2">
                 <img src="./assets/img/cards/{{ card.color }} {{ card.value }}.png" (click)="dumpCard(i)" />
             </div>
         </div>

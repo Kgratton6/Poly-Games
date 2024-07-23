@@ -32,6 +32,12 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ThirtyOneComponent } from './pages/thirty-one/thirty-one.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { ThirtyOneRulesComponent } from './components/thirty-one/thirty-one-rules/thirty-one-rules.component';
+import { UnoComponent } from './pages/uno/uno.component';
+import { UnoGameComponent } from './components/uno/uno-game/uno-game.component';
+import { UnoWaitingComponent } from './components/uno/uno-waiting/uno-waiting.component';
+import { UnoResultsComponent } from './components/uno/uno-results/uno-results.component';
+import { UnoRulesComponent } from './components/uno/uno-rules/uno-rules.component';
+import { ColorDialogComponent } from './components/uno/color-dialog/color-dialog.component';
 
 /**
  * Main module that is used in main.ts.
@@ -64,6 +70,12 @@ import { ThirtyOneRulesComponent } from './components/thirty-one/thirty-one-rule
         TablesListComponent,
         ChatComponent,
         ThirtyOneRulesComponent,
+        UnoComponent,
+        UnoGameComponent,
+        UnoWaitingComponent,
+        UnoResultsComponent,
+        UnoRulesComponent,
+        ColorDialogComponent,
     ],
     imports: [
         AppMaterialModule,
