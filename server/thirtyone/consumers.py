@@ -189,10 +189,3 @@ class ThirtyOneConsumer(BaseSocketConsumer):
     def sendChat(self, data):
         self.table.chats.add_message(self.user.username, data)
         self.broadcast(SendEvents.NewChat.value, self.table.chats.getChats())
-
-
-
-
-
-
-

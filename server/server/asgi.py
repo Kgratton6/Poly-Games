@@ -14,11 +14,13 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "server.settings")
 django.setup()
 from channels.routing import ProtocolTypeRouter, URLRouter
 from thirtyone.consumers import ThirtyOneConsumer
+from uno.consumers import UnoConsumer
 from django.urls import re_path
 
 django_asgi_app = get_asgi_application()
 
-application = ProtocolTypeRouter({
+application = ProtocolTypeRouter({ 
     'http': django_asgi_app,
-    'websocket': URLRouter([re_path('ws/thirty-one', ThirtyOneConsumer.as_asgi())])
+    'websocket': URLRouter([re_path('ws/thirty-one', ThirtyOneConsumer.as_asgi()), 
+                            re_path('ws/uno', UnoConsumer.as_asgi())])
 })

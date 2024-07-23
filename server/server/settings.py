@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'users',
     'thirtyone',
+    'uno',
 
     'django.contrib.admin',
     'django.contrib.auth',
