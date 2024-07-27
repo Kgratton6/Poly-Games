@@ -1,0 +1,36 @@
+<h2>Rules of Blackjack</h2>
+
+<div class="intro">
+    <div class="card-images">
+        <img class="card" src="./assets/img/cards/Spades 12.png" alt="Spades 12" />
+        <img class="card" src="./assets/img/cards/Spades 1.png" alt="Spades 1" />
+    </div>
+
+    <p>The goal of Blackjack is to have a hand value closer to 21 than the dealer's hand without exceeding 21.</p>
+</div>
+
+<p>Card Values:</p>
+<ul>
+    <li>Aces: 1 or 11 points (player's choice)</li>
+    <li>Face cards (King, Queen, Jack): 10 points each</li>
+</ul>
+
+<p>Gameplay:</p>
+<ul>
+    <li>
+        At the start, each player and the dealer are dealt two cards. Players' cards are usually dealt face up, while the dealer has one card face up
+        and one face down.
+    </li>
+    <li>Players take turns deciding to "Hit" (draw a card) or "Stand" (keep their current hand).</li>
+    <li>If a player’s hand value exceeds 21, they "bust" and lose the round.</li>
+</ul>
+
+<p>Winning :</p>
+<ul>
+    <li>If a player's hand value is closer to 21 than the dealer’s without busting, the player wins.</li>
+    <li>If the dealer busts, all remaining players win.</li>
+    <li>If a player’s hand value and the dealer’s hand value are equal, it is a "push" and the player's bet is returned.</li>
+    <li>A "Blackjack" (an Ace and a 10-point card) is the highest possible hand and beats any other hand except another Blackjack.</li>
+</ul>
+
+<button mat-button (click)="closeDialog()">Close</button>

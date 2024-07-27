@@ -196,19 +196,21 @@ class UnoConsumer(BaseSocketConsumer):
             self.table.isPLus2Section = True
             self.table.totalDrawAccumulated = self.table.totalDrawAccumulated + 2
         if value == 12:
-            self.table.turnDirection = not self.table.turnDirection
+            if (len(self.table.players) - len(self.table.finishedPlayers)) == 2:
+                self.broadcast(SendEvents.NewTurn.value, self.table.nextTurn())
+            else: 
+                self.table.turnDirection = not self.table.turnDirection
             self.broadcast(SendEvents.Error.value, 'The turn is changed!')
         if value == 13:
             self.table.lastSpecialColor = color
             print(self.table.lastSpecialColor)
-            self.broadcast(SendEvents.Error.value, 'Color has been changed to ' + color)
+            self.broadcast(SendEvents.SpecialColor.value, color)
         if value == 14:
             self.table.isPLus4Section = True
             self.table.totalDrawAccumulated = self.table.totalDrawAccumulated + 4
             self.table.lastSpecialColor = color
             print(self.table.lastSpecialColor)
-            self.broadcast(SendEvents.Error.value, 'Color has been changed to ' + color)
-
+            self.broadcast(SendEvents.SpecialColor.value, color)
 
 
         if self.table.isLastPlayerCard():

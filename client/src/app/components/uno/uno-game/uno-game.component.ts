@@ -34,6 +34,7 @@ export class UnoGameComponent implements OnInit {
     questionIcon = faQuestionCircle;
     isPlayerUno = false;
     unoPlayer = '';
+    currentSpecialColor = '';
 
     constructor(
         private socket: SocketUnoService,
@@ -78,14 +79,19 @@ export class UnoGameComponent implements OnInit {
             this.cards.push(newCard);
             this.gameVisuals.drawCardAnimation();
         });
+        this.socket.on(ReceveEvents.SpecialColor, (color: string) => {
+            this.currentSpecialColor = color;
+        });
         this.socket.on(ReceveEvents.DrawDeck, () => {
             if (this.tableUno.players[this.tableUno.turn].username !== this.yourPlayer.username) {
                 this.updateAnimationOffset();
                 this.gameVisuals.drawDeckAnimation();
                 this.tableUno.players[this.tableUno.turn].nCards++;
             }
+            if (this.tableUno.players[this.tableUno.turn].username === this.unoPlayer) this.isPlayerUno = false;
         });
         this.socket.on(ReceveEvents.DumpCard, (dumpedCard: Card) => {
+            if (dumpedCard.color !== 'special') this.currentSpecialColor = '';
             this.updateAnimationOffset();
             this.gameVisuals.dumpCardAnimation();
             this.dump.push(dumpedCard);

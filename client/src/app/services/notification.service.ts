@@ -29,7 +29,7 @@ export class NotificationService {
         this.isNotifying = true;
 
         const snackBarRef = this.snackBar.open(text || '', 'Close', {
-            duration: 1000,
+            duration: 2000,
             verticalPosition: 'top',
             horizontalPosition: 'center',
         });

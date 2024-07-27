@@ -34,3 +34,4 @@ class SendEvents(Enum):
     NewChat = 'newChat'
     Uno = 'uno'
     Winners = 'winners'
+    SpecialColor = 'specialColor'

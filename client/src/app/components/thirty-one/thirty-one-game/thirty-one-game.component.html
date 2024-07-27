@@ -2,10 +2,10 @@
     <div class="actions-area">
         <button mat-button class="accent-button-1 growing-button" id="quit-button" (click)="quitGame()">Quit game</button>
         <h2>Its {{ table31.players[table31.turn].username }}'s turn to play</h2>
-        <div class="last-turn-message" *ngIf="lastTurnPlayer">{{ lastTurnPlayer }} Decided to finish the game</div>
         <button mat-button class="accent-button-1 deactivate-button">Start game</button>
     </div>
     <div class="table-area">
+        <div class="last-turn-message" *ngIf="lastTurnPlayer">{{ lastTurnPlayer }} Decided to finish the game</div>
         <div class="player-grid">
             <div *ngFor="let slot of slots; let i = index" class="player-slot" [attr.id]="i === 1 || i === 3 || i === 5 ? 'start' : 'end'">
                 <ng-container *ngIf="slot.player; else placeholder">

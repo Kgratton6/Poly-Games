@@ -1,0 +1,247 @@
+.table-area {
+    position: relative;
+}
+
+.center-images {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    flex: 1;
+    gap: 30px;
+}
+
+.center-image-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    gap: 10px;
+}
+
+.cards-container .card:active,
+.cards-active .card:hover {
+    translate: 0 !important;
+    z-index: 100;
+}
+
+.split-1 {
+    left: 400% !important;
+}
+// Animation
+@keyframes draw-card {
+    0% {
+        transform: translateY(-120px) scale(1);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-20px) scale(1);
+        opacity: 1;
+    }
+}
+.new-card {
+    animation: draw-card 1s ease-out;
+}
+
+@keyframes draw-card-split1 {
+    0% {
+        transform: rotate(-60deg) translateY(-200px) scale(0.3);
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-20px) scale(1);
+        opacity: 1;
+    }
+}
+.draw-split1 {
+    animation: draw-card-split1 1s ease-out;
+}
+
+@keyframes draw-card-dealer {
+    0% {
+        transform: translateY(100px) scale(1);
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-20px) scale(1);
+        opacity: 1;
+    }
+}
+.draw-dealer {
+    animation: draw-card-dealer 1s ease-out;
+}
+
+.black-jack-button {
+    border-radius: 20px !important;
+    font-weight: bold;
+    width: 50px;
+    color: white !important;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+
+    transition:
+        transform 0.3s ease,
+        background-color 0.3s ease;
+}
+
+.black-jack-button:disabled {
+    background-color: #888 !important;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.accent-button-1:disabled {
+    background-color: #888 !important;
+}
+
+.black-jack-button:hover {
+    transform: scale(1.05);
+    background-color: #888 !important;
+}
+
+.cards-container:hover .card,
+.cards-active .card {
+    transform: translate(calc(var(--i) * 50px), -20px);
+}
+
+.cards-container .card:active,
+.cards-active .card:hover {
+    translate: calc(var(--i) * 20px / var(--d)) -15px;
+    z-index: 100;
+}
+
+// buttons
+.cards-area {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.buttons-row {
+    margin-top: 10px;
+}
+
+.rules-button {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+.stand-button {
+    background-color: rgb(203, 0, 0) !important;
+}
+
+.hit-button {
+    background-color: var(--accent-color-1) !important;
+}
+
+.split-button,
+.double-down-button {
+    background-color: rgb(59, 59, 255) !important;
+}
+
+// Slider
+.bet-slider {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.slider-label {
+    margin-right: 10px;
+    margin-left: 5px;
+}
+
+.game-state-message,
+.game-results-message {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white !important;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 1.2em;
+    text-align: center;
+    z-index: 1000;
+}
+
+// bet
+.bet-display {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 340%);
+    width: max-content;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0px;
+
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+
+    border: solid 2px rgba(0, 0, 0, 0.7);
+}
+
+.money-display {
+    width: max-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    background-color: rgba(0, 0, 0, 0.7);
+
+    padding: 0 10px;
+    border-radius: 20px !important;
+
+    border: solid 2px rgba(0, 0, 0, 0.7);
+}
+
+.bet-display img,
+.money-display img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.bet-display span,
+.money-display span {
+    font-size: 17px;
+    color: white;
+}
+
+// In Game CSS and animations
+@keyframes borderBlink {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 128, 0, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 5px rgba(0, 128, 0, 0.8);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 128, 0, 0.8);
+    }
+}
+.user-icon.isTurn {
+    box-shadow: 0 0 0 0 transparent;
+    animation: borderBlink 2s infinite;
+}
+
+.highlight-border {
+    box-shadow: 0 0 0 5px rgba(209, 160, 0, 0.8);
+    border-radius: 5px;
+}

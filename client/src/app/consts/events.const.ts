@@ -36,6 +36,7 @@ export enum ReceveEvents {
 
     Uno = 'uno',
     Winners = 'winners',
+    SpecialColor = 'specialColor',
 }
 
 export enum SendEvents {

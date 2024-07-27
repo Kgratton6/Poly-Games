@@ -107,4 +107,50 @@ export class GameVisualsService {
             }, 0);
         });
     }
+
+    // Blackjack animations
+    async drawCardAnimationBJ(): Promise<void> {
+        return new Promise((resolve) => {
+            this.dJ.playSound('dropCard');
+            setTimeout(() => {
+                const cardElements = document.querySelectorAll('.card-deck');
+                const newCardElement = cardElements[cardElements.length - 1];
+                newCardElement.classList.add('new-card');
+                setTimeout(() => {
+                    newCardElement.classList.remove('new-card');
+                    resolve();
+                }, ANIMATION_DELAY);
+            }, 0);
+        });
+    }
+
+    async drawCardAnimationBJSplit1(): Promise<void> {
+        return new Promise((resolve) => {
+            this.dJ.playSound('dropCard');
+            setTimeout(() => {
+                const cardElements = document.querySelectorAll('.card-split1');
+                const newCardElement = cardElements[cardElements.length - 1];
+                newCardElement.classList.add('draw-split1');
+                setTimeout(() => {
+                    newCardElement.classList.remove('draw-split1');
+                    resolve();
+                }, ANIMATION_DELAY);
+            }, 0);
+        });
+    }
+
+    async drawDealerAnimation(): Promise<void> {
+        return new Promise((resolve) => {
+            this.dJ.playSound('dropCard');
+            setTimeout(() => {
+                const cardElements = document.querySelectorAll('.card-dealer');
+                const newCardElement = cardElements[cardElements.length - 1];
+                newCardElement.classList.add('draw-dealer');
+                setTimeout(() => {
+                    newCardElement.classList.remove('draw-dealer');
+                    resolve();
+                }, ANIMATION_DELAY);
+            }, 0);
+        });
+    }
 }

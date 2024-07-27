@@ -1,0 +1,136 @@
+<div class="grid-main-area">
+    <div class="actions-area">
+        <button mat-button class="accent-button-1 growing-button" id="quit-button" (click)="quitGame()">Quit game</button>
+        <h2 class="game-results-message" *ngIf="!gameStateMessage">Dealer {{ calculateTotal(dealerCards) }} vs Player {{ calculateTotal(cards) }}</h2>
+        <h2 class="game-results-message" *ngIf="!gameStateMessage && split1.length !== 0">
+            Hand 2 : Dealer {{ calculateTotal(dealerCards) }} vs Player {{ calculateTotal(split1) }}
+        </h2>
+        <h2 class="game-results-message" *ngIf="gameStateMessage">{{ gameStateMessage }}</h2>
+        <h2 class="game-results-message" *ngIf="gameStateSplit">Hand 2 : {{ gameStateSplit }}</h2>
+        <button mat-button [disabled]="!isGameFinished" class="accent-button-1 growing-button" (click)="playAgain()">Play again</button>
+    </div>
+    <div class="table-area">
+        <div class="player-grid">
+            <div class="player-slot" id="end"><div class="placeholder-icon"></div></div>
+            <div class="player-slot" id="start"><img src="./assets/img/profile-icons/dealer.png" class="user-icon game-user-icon" /></div>
+            <div class="player-slot" id="end"><div class="placeholder-icon"></div></div>
+            <div class="player-slot" id="start"><div class="placeholder-icon"></div></div>
+            <div class="player-slot your-player-slot" id="end">
+                <img
+                    src="./assets/img/profile-icons/{{ yourPlayer.icon }}.png"
+                    class="user-icon game-user-icon your-user-icon"
+                    [ngClass]="{ isTurn: !isGameFinished }"
+                />
+            </div>
+            <div class="player-slot" id="start"><div class="placeholder-icon"></div></div>
+        </div>
+        <div class="center-images">
+            <div class="center-image-row">
+                <div class="cards-container cards-active">
+                    <div
+                        *ngFor="let card of dealerCards; let i = index"
+                        class="card card-dealer"
+                        [style.--d]="-dealerCards.length"
+                        [style.--i]="i - (dealerCards.length - 1) / 2"
+                    >
+                        <img *ngIf="card.isReturned" src="./assets/img/cards/{{ card.color }} {{ card.value }}.png" />
+                        <img *ngIf="!card.isReturned" src="./assets/img/cards/returned-blue.png" />
+                    </div>
+                </div>
+            </div>
+            <div class="center-image-row">
+                <div class="deck-stack">
+                    <img src="./assets/img/cards/returned-blue.png" class="center-image dump-stack-card over-deck" />
+                    <img src="./assets/img/cards/returned-blue.png" class="center-image under-deck" />
+                </div>
+            </div>
+
+            <div class="cards-setup">
+                <div class="cards-container cards-active">
+                    <div
+                        *ngFor="let card of cards; let i = index"
+                        class="card card-deck"
+                        [ngClass]="{ 'highlight-border': !splitTurn && split1.length !== 0 }"
+                        [style.--d]="cards.length"
+                        [style.--i]="i - (cards.length - 1) / 2"
+                    >
+                        <img *ngIf="card.isReturned" src="./assets/img/cards/{{ card.color }} {{ card.value }}.png" />
+                        <img *ngIf="!card.isReturned" src="./assets/img/cards/returned-blue.png" />
+                    </div>
+                    <div class="bet-display" *ngIf="bet !== 0">
+                        <img src="./assets/img/profile-icons/dollar.png" />
+                        <span>{{ bet }} $</span>
+                    </div>
+                </div>
+                <div class="cards-container split-1 cards-active">
+                    <div
+                        *ngFor="let card of split1; let i = index"
+                        class="card card-split1"
+                        [ngClass]="{ 'highlight-border': splitTurn }"
+                        [style.--d]="split1.length"
+                        [style.--i]="i - (split1.length - 1) / 2"
+                    >
+                        <img *ngIf="card.isReturned" src="./assets/img/cards/{{ card.color }} {{ card.value }}.png" />
+                        <img *ngIf="!card.isReturned" src="./assets/img/cards/returned-blue.png" />
+                    </div>
+                    <div class="bet-display" *ngIf="split1.length !== 0 && bet !== 0">
+                        <img src="./assets/img/profile-icons/dollar.png" />
+                        <span>{{ bet }} $</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cards-area">
+        <div class="center-image-row buttons-row">
+            <button
+                class="black-jack-button stand-button growing-button"
+                mat-flat-button
+                [disabled]="gameStateMessage.length !== 0 || bet === 0"
+                (click)="onStand()"
+            >
+                stand
+            </button>
+            <button
+                class="black-jack-button hit-button growing-button"
+                mat-flat-button
+                [disabled]="gameStateMessage.length !== 0 || bet === 0"
+                (click)="onHit()"
+            >
+                hit
+            </button>
+            <div class="money-display">
+                <img src="./assets/img/profile-icons/dollar.png" />
+                <span>{{ totalMoney }} $</span>
+            </div>
+            <button
+                class="black-jack-button split-button growing-button"
+                mat-flat-button
+                [disabled]="!(cards.length === 2 && cards[0].value === cards[1].value) || !(gameStateMessage.length === 0) || bet === 0"
+                (click)="onSplit()"
+            >
+                split
+            </button>
+            <button
+                class="black-jack-button double-down-button growing-button"
+                mat-flat-button
+                [disabled]="!calculateDoubleDown() || !(gameStateMessage.length === 0) || bet === 0"
+                (click)="onDoubleDown()"
+            >
+                Double
+            </button>
+        </div>
+        <mat-card-content class="bet-slider">
+            <div class="slider-label">50$</div>
+            <mat-slider class="example-margin slider-component" [max]="totalMoney" [min]="50" [step]="50" [discrete]="true">
+                <input matSliderThumb #slider />
+            </mat-slider>
+            <div class="slider-label">{{ totalMoney }}$</div>
+            <button class="black-jack-button hit-button growing-button" [disabled]="bet !== 0" mat-flat-button (click)="onBet(+slider.value)">
+                Bet
+            </button>
+        </mat-card-content>
+        <button mat-button class="rules-button secondary-button" (click)="blackJackRules()"><fa-icon [icon]="questionIcon"></fa-icon></button>
+    </div>
+</div>

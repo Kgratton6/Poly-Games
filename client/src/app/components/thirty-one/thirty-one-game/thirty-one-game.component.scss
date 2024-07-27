@@ -3,5 +3,16 @@
 }
 
 .last-turn-message {
-    color: rgb(189, 0, 0);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white !important;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 1.1em;
+    text-align: center;
+    z-index: 1000;
+
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 300%);
+    width: max-content;
 }

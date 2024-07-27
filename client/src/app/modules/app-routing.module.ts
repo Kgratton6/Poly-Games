@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@app/guards/auth.guard';
 import { AccountComponent } from '@app/pages/account/account.component';
+import { BlackJackComponent } from '@app/pages/black-jack/black-jack.component';
 import { CreateAccountComponent } from '@app/pages/create-account/create-account.component';
 import { HomeComponent } from '@app/pages/home/home.component';
 import { LiveGameComponent } from '@app/pages/live-game/live-game.component';
@@ -23,6 +24,7 @@ const routes: Routes = [
             { path: 'live-game', component: LiveGameComponent },
             { path: 'live-game/thirty-one/:tableId', component: ThirtyOneComponent },
             { path: 'live-game/uno/:tableId', component: UnoComponent },
+            { path: 'live-game/black-jack/:tableId', component: BlackJackComponent },
         ],
     },
     { path: '**', component: NotFoundComponent },

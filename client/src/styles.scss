@@ -366,7 +366,8 @@ input {
     align-items: center;
 }
 
-.cards-container .card {
+.cards-container .card,
+.cards-container-2 .card {
     width: 65px !important;
     height: 93px;
     cursor: pointer;
@@ -591,4 +592,11 @@ input {
     align-self: flex-end;
     margin-left: 30px;
     margin-bottom: 30px;
+}
+
+.bet-slider {
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 20px;
+    background-color: var(--regular-button) !important;
 }

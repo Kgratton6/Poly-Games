@@ -14,3 +14,5 @@ export const SKIP_TURN = 10;
 export const DRAW_2 = 11;
 export const CHANGE_COLOR = 13;
 export const DRAW_4 = 14;
+export const CARD_COLORS: string[] = ['Hearts', 'Diamond', 'Spades', 'Clubs'];
+export const CARD_VALUES: number[] = Array.from({ length: 13 }, (_, i) => i + 1);
