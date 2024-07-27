@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { CARD_COLORS } from '@app/consts/game.const';
+import { CARD_COLORS, CARD_VALUES } from '@app/consts/game.const';
 import { BJCard } from '@app/interfaces/card';
 import { BehaviorSubject } from 'rxjs';
 import { GameVisualsService } from './game-visuals.service';
@@ -51,10 +51,9 @@ export class BlackJackService {
         this.deck = [];
         for (let i = 0; i < 3; i++) {
             for (const color of CARD_COLORS) {
-                // for (const value of CARD_VALUES) {
-                //     this.deck.push({ value, color, isReturned: false });
-                // }
-                this.deck.push({ value: 5, color, isReturned: false });
+                for (const value of CARD_VALUES) {
+                    this.deck.push({ value, color, isReturned: false });
+                }
             }
         }
         this.shuffleDeck();
