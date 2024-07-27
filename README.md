@@ -21,6 +21,9 @@ Poly Games is an ongoing personal project aimed at developing a full-stack appli
 ### Uno game example
 ![Uno game](img/screenshot7.png)
 
+### Blackjack game example
+![Uno game](img/screenshot8.png)
+
 ### Home Page
 ![Home Page](img/screenshot1.png)
 
