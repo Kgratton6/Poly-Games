@@ -1,7 +1,5 @@
 # Poly Games
 
-## Visit the Website
-
 Visit the deployed website [here](https://www.poly-games.online).
 
 ## Overview
