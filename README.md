@@ -2,7 +2,7 @@
 
 ## Visit the Website
 
-Visit the live version of the project [here](https://www.poly-games.online).
+Visit the deployed website [here](https://www.poly-games.online).
 
 ## Overview
 
