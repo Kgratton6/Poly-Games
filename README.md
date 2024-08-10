@@ -1,8 +1,6 @@
 # Poly Games
 
-## Visit the Website
-
-Visit the live version of the project [here](https://www.poly-games.online).
+Visit the deployed website [here](https://www.poly-games.online).
 
 ## Overview
 
@@ -19,10 +17,10 @@ Poly Games is an ongoing personal project aimed at developing a full-stack appli
 ## 📸 Project Screenshots
 
 ### Uno game example
-![Uno game](img/screenshot7.png)
+![Uno game](img/screenshot12.png)
 
 ### Blackjack game example
-![Uno game](img/screenshot8.png)
+![Uno game](img/screenshot13.png)
 
 ### Home Page
 ![Home Page](img/screenshot1.png)
@@ -32,12 +30,6 @@ Poly Games is an ongoing personal project aimed at developing a full-stack appli
 
 ### Creating an account Page
 ![Creating an Account Page](img/screenshot3.png)
-
-### Dark mode
-![Dark mode demo](img/screenshot4.png)
-
-### In Game visuals and chat
-![In Game](img/screenshot5.png)
 
 ### Active tables page
 ![Active tables](img/screenshot6.png)
