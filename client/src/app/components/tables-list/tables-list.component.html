@@ -1,4 +1,6 @@
 <div class="scrollable tables-container">
+    <div *ngIf="tables31.length === 0 && tablesUno.length === 0" class="no-tables-placeholder">Looks like no one is playing at the moment...</div>
+
     <div *ngFor="let table of tables31" class="table-container">
         <div class="text-elements">
             <div class="game-title">Thirty One</div>
