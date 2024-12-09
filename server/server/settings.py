@@ -80,7 +80,7 @@ DATABASES = {
 CHANNEL_LAYERS = {
     "default": {
         "CONFIG": {
-            "hosts": ['redis://default:OhZph2whxwuBkC41uvZ5dcGVUsu4EZAU@redis-10563.c15.us-east-1-2.ec2.cloud.redislabs.com:10563'],
+            "hosts": ['redis://default:GI6JYdB9HWkj6MQ8iU6XVnd90y8KH4Gm@redis-18431.c81.us-east-1-2.ec2.redns.redis-cloud.com:18431'],
         },
         "BACKEND": "channels_redis.core.RedisChannelLayer",
     },
