@@ -9,7 +9,7 @@ SECRET_KEY = 'django-insecure-cq59z=c%3)sczjqu#=iw5q-r59wo@+xfai7_den2mcmvp3p+cs
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CORS_ALLOWED_ORIGINS = [ "http://localhost:4200", "https://www.poly-games.online", "poly-games-9283.vercel.app"]
+CORS_ALLOWED_ORIGINS = [ "http://localhost:4200", "https://www.poly-games.online", "poly-games-9283.vercel.app", "http://poly-games-9283.vercel.app"]
 CORS_ALLOW_HEADERS = ("token", "content-type")
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_HEADERS = True
