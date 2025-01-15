@@ -9,7 +9,12 @@ SECRET_KEY = 'django-insecure-cq59z=c%3)sczjqu#=iw5q-r59wo@+xfai7_den2mcmvp3p+cs
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CORS_ALLOWED_ORIGINS = [ "http://localhost:4200", "https://www.poly-games.online", "poly-games-9283.vercel.app", "https://poly-games-9283.vercel.app"]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",
+    "https://www.poly-games.online",
+    "https://poly-games-9283.vercel.app",
+    "https://poly-games-9283.vercel.app"
+]
 CORS_ALLOW_HEADERS = ("token", "content-type")                                                         
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_HEADERS = True
@@ -80,7 +85,7 @@ DATABASES = {
 CHANNEL_LAYERS = {
     "default": {
         "CONFIG": {
-            "hosts": ['redis://default:GI6JYdB9HWkj6MQ8iU6XVnd90y8KH4Gm@redis-18431.c81.us-east-1-2.ec2.redns.redis-cloud.com:18431'],
+            "hosts": ['redis://default:QpUKXQiWGL3KgGRDYELdaewc67T6SlBn@redis-17405.c232.us-east-1-2.ec2.redns.redis-cloud.com:17405'],
         },
         "BACKEND": "channels_redis.core.RedisChannelLayer",
     },
