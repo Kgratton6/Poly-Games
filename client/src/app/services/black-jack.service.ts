@@ -12,6 +12,7 @@ import { NotificationService } from './notification.service';
     providedIn: 'root',
 })
 export class BlackJackService {
+    isBankrupt = false;
     cards: BJCard[] = [];
     split1: BJCard[] = [];
     isSplit = false;
@@ -268,9 +269,10 @@ export class BlackJackService {
             this.newBet(0);
             this.isGameFinished = true;
             this.isGameFinishedSubject.next(this.isGameFinished);
-            if (this.money === 0) {
+            if (this.money === 0 && !this.isBankrupt) {
                 this.notification.notify("We don't want broke people in this casino...");
                 this.notification.notify('You can now leave or play for fun.');
+                this.isBankrupt = true;
             }
         }
     }
@@ -308,6 +310,9 @@ export class BlackJackService {
     }
 
     newMoney(amount: number) {
+        if (this.isBankrupt) {
+            return;
+        }
         this.money = amount;
         this.moneySubject.next(this.money);
     }
