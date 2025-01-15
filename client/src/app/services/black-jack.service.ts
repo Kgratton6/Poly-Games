@@ -109,6 +109,7 @@ export class BlackJackService {
             this.splitTurnSubject.next(this.splitTurn);
             this.betSubject.next(this.bet);
         } else {
+            this.isBankrupt = false;
             this.initializeDeck();
             this.newMoney(1000);
             this.clearTable();
