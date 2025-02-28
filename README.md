@@ -4,7 +4,7 @@ Visit the deployed website [here](https://poly-games-9283.vercel.app).
 
 ## Overview
 
-Poly Games is an ongoing personal project aimed at developing a full-stack application where users can enjoy playing card games online. The project integrates both front-end and back-end technologies to create a seamless gaming experience, allowing multiple players to connect, play, and interact in real-time.
+Poly Games is personal project aimed at developing a full-stack application where users can enjoy playing card games online. The project integrates both front-end and back-end technologies to create a seamless gaming experience, allowing multiple players to connect, play, and interact in real-time.
 
 ## 🌟 Features
 
